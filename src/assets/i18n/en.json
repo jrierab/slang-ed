@@ -1,0 +1,10 @@
+{
+	"APP.title": "Simple Lang Files Editor",
+	"APP.Home": "Home",
+	"APP.About": "About",
+	"APP.Contact": "Contact",
+	"APP.Done": "Done",
+	"APP.Cancel": "Cancel",
+	"APP.language": "Language",
+	"APP.lang-current": "Current language"
+}
