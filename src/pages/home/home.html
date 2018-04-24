@@ -1,7 +1,25 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>Simple Lang files Editor</ion-title>
-  </ion-navbar>
+  <ion-toolbar>
+
+      <div class="menu-option" float-start (click)="doNewProject()">
+        <ion-icon name="ios-folder-outline"></ion-icon>
+        <p>New Project</p>
+      </div>
+      <div class="menu-option" float-start (click)="doOpenProject()">
+        <ion-icon name="ios-folder-open-outline"></ion-icon>
+        <p>Open Project</p>
+      </div>
+      <div class="menu-option" float-start [ngClass]="{'menu-disabled': !needsSaving}" (click)="doSaveProject()">
+        <ion-icon name="md-download"></ion-icon>
+        <p>Save Project</p>
+      </div>
+
+      <div class="menu-option" float-end (click)="doOpenSettings()">
+        <ion-icon name="options"></ion-icon>
+        <p>Settings</p>
+      </div>
+    
+  </ion-toolbar>
 </ion-header>
 
 <ion-content padding>

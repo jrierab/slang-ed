@@ -18,6 +18,7 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { LangService } from '../providers/lang-service';
 import { ElectronProvider } from '../providers/electron-provider';
+import { LangToolsService } from '../providers/lang-tools-service';
 
 // Translations
 export function createTranslateLoader(http: HttpClient) {
@@ -57,7 +58,8 @@ export function createTranslateLoader(http: HttpClient) {
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     LangService,
-    ElectronProvider
+    ElectronProvider,
+    LangToolsService
   ]
 })
 export class AppModule {}

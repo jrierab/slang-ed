@@ -1,3 +1,28 @@
 page-home {
+    .menu-option {
+        cursor: pointer;
+        text-align: center;
+        margin: 5px;
+
+        ion-icon {
+            color: map-get($colors, forest);
+            margin-top: 5px;
+            margin-bottom: 5px;
+            font-size: 2em;
+        }
+
+        p {
+            margin: 0;
+        }
+    }
+
+    .menu-disabled {
+        cursor: default;
+        color: map-get($colors, sleek-grey);
+
+        ion-icon {
+            color: map-get($colors, sleek-grey);
+        }
+    }
 
 }

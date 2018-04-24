@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 
+import { langFileObject } from "../customTypes/langObject.types"
+
 // Not very elegant, but avoid types failing... 
 const electron = window['require']("electron");
+
+// https://nodejs.org/api/fs.html
 const fs = electron.remote.require('fs')
 
 /*
@@ -52,7 +56,9 @@ export class ElectronProvider {
     return path_to_i18n;
   }
 
-  readTranslations(path : string) {
+  readTranslationsFiles(path : string): Array<langFileObject> {
+    let langFiles : Array<langFileObject> = [];
+
     if(path) {
       let files : Array<string> = fs.readdirSync(path, 'utf-8');
 
@@ -61,13 +67,13 @@ export class ElectronProvider {
 
         if(regex.test(file)) {
           let data = fs.readFileSync(path+"/"+file, 'utf-8');
-        
-          console.log("> "+file);
-          //if (data) console.log(data);          
+
+          langFiles.push({filename: file, contents: data})
         }
       });
     }
 
+    return langFiles;
   }
 
 }
