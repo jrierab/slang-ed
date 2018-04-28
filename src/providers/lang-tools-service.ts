@@ -17,8 +17,6 @@ export class LangToolsService {
   }
 
   initTranslations(langFiles: Array<langFileObject>) {
-    let firstLanguage = true;
-
     this.translations = {languages: [], i18n: {}};
 
     langFiles.forEach(langFile => {
@@ -27,17 +25,34 @@ export class LangToolsService {
 
       this.translations.languages.push(code);
 
-      for (let key of Object.keys(lang_translations)) {
-        if(firstLanguage) this.translations.i18n[key] = {};
+      this.buildLangStructure(code, this.translations.i18n, lang_translations);
 
-        this.translations.i18n[key][code] = {value: lang_translations[key], approved: false, preserve: false, foundInSrc: false, comment: ""};
-      };
-
-      firstLanguage = false;
     });
 
     console.log("> Lang structure...", this.translations);
     //console.log(JSON.stringify(this.translations));
+  }
+
+  buildLangStructure(lang: string, level: Object, lang_translations: Object) {
+    for (let key of Object.keys(lang_translations)) {
+      let subkeys : Array<string> = key.split('.');
+      let deep_level = level;
+      let deep_key = key;
+
+      subkeys.forEach(k=> {
+        if( !deep_level.hasOwnProperty(k) ) deep_level[k] = {};
+        deep_level = deep_level[k];
+      })
+
+      let translation = lang_translations[key];
+
+      if(translation instanceof Object) {
+        this.buildLangStructure(lang, deep_level, translation);
+        
+      } else {
+        deep_level[lang] = {value: translation, approved: false, preserve: false, foundInSrc: false, comment: ""};
+      }
+    };
   }
 
 }
