@@ -25,7 +25,7 @@ export class LangToolsService {
 
       this.translations.languages.push(code);
 
-      this.buildLangStructure(code, this.translations.i18n, lang_translations);
+      this.buildLangStructure(code, "", this.translations.i18n, lang_translations);
 
     });
 
@@ -33,23 +33,30 @@ export class LangToolsService {
     //console.log(JSON.stringify(this.translations));
   }
 
-  buildLangStructure(lang: string, level: Object, lang_translations: Object) {
+  buildLangStructure(lang: string, top_key: string, level: Object, lang_translations: Object) {
+    //level['full_key'] = deep_key;
+
     for (let key of Object.keys(lang_translations)) {
       let subkeys : Array<string> = key.split('.');
       let deep_level = level;
-      let deep_key = key;
+      let deep_key = top_key;
 
       subkeys.forEach(k=> {
         if( !deep_level.hasOwnProperty(k) ) deep_level[k] = {};
+        deep_level['full_key'] = deep_key;
         deep_level = deep_level[k];
+        deep_key = deep_key+(deep_key.length>0? '.': '')+k;
+        deep_level['isLeaf'] = false;
       })
 
       let translation = lang_translations[key];
 
       if(translation instanceof Object) {
-        this.buildLangStructure(lang, deep_level, translation);
+        this.buildLangStructure(lang, deep_key, deep_level, translation);
         
       } else {
+        deep_level['isLeaf'] = true;
+        deep_level['full_key'] = deep_key;
         deep_level[lang] = {value: translation, approved: false, preserve: false, foundInSrc: false, comment: ""};
       }
     };
