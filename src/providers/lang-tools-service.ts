@@ -11,13 +11,14 @@ import { langFileObject, langTranslationsObject } from "../customTypes/langObjec
 @Injectable()
 export class LangToolsService {
   translations : langTranslationsObject;
+  emptyTranslations : langTranslationsObject = {languages: [], i18n: {}};
 
   constructor() {
     console.log('### LangToolsService');
   }
 
   initTranslations(langFiles: Array<langFileObject>) {
-    this.translations = {languages: [], i18n: {}};
+    this.translations = JSON.parse(JSON.stringify(this.emptyTranslations));
 
     langFiles.forEach(langFile => {
       let code : string = langFile.filename.substring(0, 2);
@@ -26,11 +27,11 @@ export class LangToolsService {
       this.translations.languages.push(code);
 
       this.buildLangStructure(code, "", this.translations.i18n, lang_translations);
-
     });
 
     console.log("> Lang structure...", this.translations);
-    //console.log(JSON.stringify(this.translations));
+
+    return this.translations;
   }
 
   buildLangStructure(lang: string, top_key: string, level: Object, lang_translations: Object) {

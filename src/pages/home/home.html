@@ -22,17 +22,23 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-  <h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p>
-  <button ion-button (click)="doSelectFolder()">Dir</button>
-  <button ion-button (click)="doZoomIn()">+</button>
-  <button ion-button (click)="doZoomOut()">-</button>
+<ion-content no-padding>
+
+  <div class="sl-main-container">
+
+    <div class="sl-list-container">
+      <h3>{{ "langs.keys" | translate }}</h3>
+      
+      <list-word class="sl-list-word" *ngFor="let word of words" [word]="word" [list]="translations.i18n[word]"></list-word>
+    </div>
+
+    <div class="sl-translations-container">
+      <h3>{{ "langs.edit_translations" | translate }}</h3>
+
+    </div>
+  </div>
+
+
+  <!--button ion-button (click)="doZoomIn()">+</button>
+  <button ion-button (click)="doZoomOut()">-</button-->
 </ion-content>

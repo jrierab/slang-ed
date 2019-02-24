@@ -5,13 +5,19 @@ import { NavController } from 'ionic-angular';
 import { ElectronProvider } from '../../providers/electron-provider';
 import { LangToolsService } from '../../providers/lang-tools-service';
 
-import { langFileObject } from "../../customTypes/langObject.types"
+import { langFileObject, langTranslationsObject } from "../../customTypes/langObject.types"
+import { ListWordComponent } from '../../components/list-word/list-word';
+import { ComponentsModule } from "../../components/components.module"
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage {
+  translations : langTranslationsObject = this.langTools.emptyTranslations;
+
+  words : Array<string>;
+
   needsSaving : boolean = false;
 
   constructor(  public navCtrl: NavController,
@@ -34,8 +40,15 @@ export class HomePage {
       if(path_to_i18n) {
         let langFiles : Array<langFileObject> = this.electron.readTranslationsFiles(path_to_i18n);
 
-        this.langTools.initTranslations(langFiles);
-
+        this.translations = this.langTools.initTranslations(langFiles);
+ 
+        this.words = [];
+        for(let key of Object.keys(this.translations.i18n)) {
+          if( this.translations.i18n[key] !== null && (typeof this.translations.i18n[key] === 'object')) this.words.push(key);
+        }
+        this.words.sort();
+        console.log("Words [Top]", this.words);
+  
         this.needsSaving = false;
       }
     }

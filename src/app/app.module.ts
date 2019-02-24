@@ -19,6 +19,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { LangService } from '../providers/lang-service';
 import { ElectronProvider } from '../providers/electron-provider';
 import { LangToolsService } from '../providers/lang-tools-service';
+import { ComponentsModule } from "../components/components.module"
 
 // Translations
 export function createTranslateLoader(http: HttpClient) {
@@ -36,6 +37,7 @@ export function createTranslateLoader(http: HttpClient) {
   imports: [
     BrowserModule,
     HttpClientModule,
+    ComponentsModule,
     TranslateModule.forRoot({
       loader: {
           provide: TranslateLoader,

@@ -6,5 +6,9 @@
 	"APP.Done": "Done",
 	"APP.Cancel": "Cancel",
 	"APP.language": "Language",
-	"APP.lang-current": "Current language"
+	"APP.lang-current": "Current language",
+	"langs" : {
+		"keys": "Keys to translate",
+		"edit_translations": "Edit translations"
+	}
 }

@@ -6,5 +6,9 @@
 	"APP.Done": "Fet",
 	"APP.Cancel": "Cancel·lar",
 	"APP.language": "Idioma",
-	"APP.lang-current": "Idioma actual"
+	"APP.lang-current": "Idioma actual",
+	"langs" : {
+		"keys": "Claus a traduir",
+		"edit_translations": "Editar traduccions"
+	}
 }
