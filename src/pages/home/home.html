@@ -1,7 +1,11 @@
 <ion-header>
   <ion-toolbar>
 
-      <div class="menu-option" float-start (click)="doNewProject()">
+      <div class="menu-option" float-start (click)="doInitFrom()">
+        <ion-icon name="ios-folder-outline"></ion-icon>
+        <p>Init from...</p>
+      </div>
+      <div class="menu-option" [ngClass]="{'menu-disabled': true}" float-start (click)="doNewProject()">
         <ion-icon name="ios-folder-outline"></ion-icon>
         <p>New Project</p>
       </div>
@@ -9,11 +13,15 @@
         <ion-icon name="ios-folder-open-outline"></ion-icon>
         <p>Open Project</p>
       </div>
-      <div class="menu-option" float-start [ngClass]="{'menu-disabled': !needsSaving}" (click)="doSaveProject()">
+      <div class="menu-option" float-start [ngClass]="{'menu-disabled': !projectNeedsSaving}" (click)="doSaveProject()">
         <ion-icon name="md-download"></ion-icon>
         <p>Save Project</p>
       </div>
-
+      <div class="menu-option" float-start [ngClass]="{'menu-disabled': !translationsNeedsSaving}" (click)="doSaveTranslations()">
+        <ion-icon name="md-chatboxes"></ion-icon>
+        <p>Save Translations</p>
+      </div>
+  
       <div class="menu-option" float-end (click)="doOpenSettings()">
         <ion-icon name="options"></ion-icon>
         <p>Settings</p>
@@ -33,7 +41,10 @@
     </div>
 
     <div class="sl-translations-container">
-      <h3>{{ "langs.edit_translations" | translate }}</h3>
+      <h3>
+        {{ "langs.edit_translations" | translate }}
+        <span *ngFor="let lang of translations.languages">[{{ lang }}]</span>
+      </h3>
 
     </div>
   </div>

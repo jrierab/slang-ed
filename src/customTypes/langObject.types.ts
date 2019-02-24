@@ -21,6 +21,8 @@ export interface langFileObject {
  * langTranslationsObject
  */
 export interface langTranslationsObject {
+    projectFolder : string,
+    i18nFolder : string,
     languages :  Array<string>,
     i18n: { [key: string] : { [key: string] : langTopicObject } }
 }

@@ -29,7 +29,7 @@ export class ListWordComponent {
 
   ngOnChanges() {
     this.indents = Array(this.level).fill(0).map((x,i)=>i);
-    
+
     if(this.list.isLeaf) {
       //console.log("Leaf..."+this.word);
 
@@ -39,7 +39,7 @@ export class ListWordComponent {
         if( this.list[key] !== null && (typeof this.list[key] === 'object')) this.words.push(key);
       }
       this.words.sort();
-      console.log("Words for "+this.word, this.words);
+      //console.log("Words for "+this.word, this.words);
 
     } else {
       console.log("Should ignore..."+this.word);

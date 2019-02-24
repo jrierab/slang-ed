@@ -11,7 +11,7 @@ import { langFileObject, langTranslationsObject } from "../customTypes/langObjec
 @Injectable()
 export class LangToolsService {
   translations : langTranslationsObject;
-  emptyTranslations : langTranslationsObject = {languages: [], i18n: {}};
+  emptyTranslations : langTranslationsObject = {languages: [], i18n: {}, projectFolder: "", i18nFolder: ""};
 
   constructor() {
     console.log('### LangToolsService');
@@ -22,11 +22,17 @@ export class LangToolsService {
 
     langFiles.forEach(langFile => {
       let code : string = langFile.filename.substring(0, 2);
-      let lang_translations : any = JSON.parse(langFile.contents);
+      let lang_translations : any;
 
-      this.translations.languages.push(code);
-
-      this.buildLangStructure(code, "", this.translations.i18n, lang_translations);
+      try {
+        lang_translations = JSON.parse(langFile.contents);
+        this.translations.languages.push(code);
+  
+        this.buildLangStructure(code, "", this.translations.i18n, lang_translations);
+      } catch(e) {
+        // TODO: Catch error and give a proper error message to the user
+        console.log(e);
+      }
     });
 
     console.log("> Lang structure...", this.translations);
@@ -35,8 +41,6 @@ export class LangToolsService {
   }
 
   buildLangStructure(lang: string, top_key: string, level: Object, lang_translations: Object) {
-    //level['full_key'] = deep_key;
-
     for (let key of Object.keys(lang_translations)) {
       let subkeys : Array<string> = key.split('.');
       let deep_level = level;
