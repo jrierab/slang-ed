@@ -17,7 +17,7 @@
         <ion-icon name="md-download"></ion-icon>
         <p>Save Project</p>
       </div>
-      <div class="menu-option" float-start [ngClass]="{'menu-disabled': !translationsNeedsSaving}" (click)="doSaveTranslations()">
+      <div class="menu-option" float-start [ngClass]="{'menu-disabled': !langTools.isTranslationsSavingRequired()}" (click)="doSaveTranslations()">
         <ion-icon name="md-chatboxes"></ion-icon>
         <p>Save Translations</p>
       </div>
@@ -46,6 +46,7 @@
         <span *ngFor="let lang of translations.languages">[{{ lang }}]</span>
       </h3>
 
+      <edit-word></edit-word>
     </div>
   </div>
 

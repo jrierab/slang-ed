@@ -4,7 +4,7 @@
   <ion-icon name="md-arrow-dropright" *ngIf="!list.isLeaf && !showChilds" (click)="showChilds=true"></ion-icon>
   <ion-icon name="md-arrow-dropdown" *ngIf="!list.isLeaf && showChilds" (click)="showChilds=false"></ion-icon>
   <ion-icon name="code-working" color="marine" *ngIf="list.isLeaf"></ion-icon>
-  <span (click)="showChilds=!showChilds">
+  <span (click)="doClick()">
     {{ word }}
   </span>
   <div *ngIf="showChilds" >

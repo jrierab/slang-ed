@@ -9,13 +9,18 @@ export interface langFileObject {
 /**
  * 
  */
- export interface langTopicObject {
+export interface langTopicObject {
     value: string,
     comment: string,
     approved : boolean,
     foundInSrc : boolean,
     preserve : boolean
- }
+}
+
+
+export interface languaguesTopicObject { 
+    [key: string] : { [key: string] : langTopicObject } 
+}
 
 /**
  * langTranslationsObject
@@ -24,5 +29,5 @@ export interface langTranslationsObject {
     projectFolder : string,
     i18nFolder : string,
     languages :  Array<string>,
-    i18n: { [key: string] : { [key: string] : langTopicObject } }
+    i18n: languaguesTopicObject
 }

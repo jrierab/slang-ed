@@ -1,13 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
-
 
 import { ElectronProvider } from '../../providers/electron-provider';
 import { LangToolsService } from '../../providers/lang-tools-service';
 
 import { langFileObject, langTranslationsObject } from "../../customTypes/langObject.types"
-import { ListWordComponent } from '../../components/list-word/list-word';
-import { ComponentsModule } from "../../components/components.module"
 
 @Component({
   selector: 'page-home',
@@ -19,11 +15,9 @@ export class HomePage {
   words : Array<string>;
 
   projectNeedsSaving : boolean = false;
-  translationsNeedsSaving : boolean = false;
 
-  constructor(  public navCtrl: NavController,
-                public electron : ElectronProvider,
-                public langTools : LangToolsService
+  constructor(  private electron : ElectronProvider,
+                private langTools : LangToolsService
               ) 
   {
   }
@@ -58,7 +52,6 @@ export class HomePage {
         this.words.sort();
   
         this.projectNeedsSaving = true;
-        this.translationsNeedsSaving = true;
       }
     }
   }
@@ -74,10 +67,12 @@ export class HomePage {
   }
 
   doSaveTranslations() {
-    if(this.translationsNeedsSaving) {
+    if(this.langTools.isTranslationsSavingRequired()) {
       if( this.electron.writeTranslationFiles(this.translations, false) ) {
-        this.translationsNeedsSaving = false;
-      };
+        this.langTools.doTranslationNeedsSaving(false);
+      } else {
+        this.langTools.doTranslationNeedsSaving(true);
+      }
     }    
   }
 

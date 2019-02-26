@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { langFileObject, langTranslationsObject } from "../customTypes/langObject.types"
+import { LangToolsService } from '../providers/lang-tools-service';
 
 // Not very elegant, but avoid types failing... 
 const electron = window['require']("electron");
@@ -18,7 +19,7 @@ const fs = electron.remote.require('fs')
 export class ElectronProvider {
   currentZoom: number = 0;
 
-  constructor() {
+  constructor(private langTools : LangToolsService) {
     console.log('### ElectronProvider');
   }
 
@@ -77,7 +78,7 @@ export class ElectronProvider {
   }
 
   writeTranslationFiles(translations: langTranslationsObject, treeMode: boolean): boolean {
-    let isOk: boolean = false;
+    let isOk: boolean = true;
     
     if(treeMode) {
       console.log("TreeMode is not yet supported: reverting to fullKey mode");
@@ -89,10 +90,10 @@ export class ElectronProvider {
       let data : string = "{\n";
 
       // Rename current file to preserve it in case of error
-      fs.rename(filename, filename+".bak");
+      fs.renameSync(filename, filename+".bak");
 
       for(let key in translations.i18n) {
-        if (key !== "isLeaf" && key !="full_key") {
+        if (!this.langTools.isReservedKey(key)) {
           if(!isFirst) {
             data += ",\n\n";
           }
@@ -102,30 +103,42 @@ export class ElectronProvider {
       }
       data += "\n}\n";
 
-      console.log("Saving translations into: "+filename);
-      fs.writeFileSync(filename, data);
+      console.log(filename);
+      fs.writeFileSync(filename, data, 'utf8');
 
-      // Verify files
-      try {
-        JSON.parse(fs.readFileSync(filename, 'utf-8'));
+      if(! fs.existsSync(filename) ) {
+        isOk = false;
+        console.log("ERROR: Unable to create file !!!");
 
-        // Remove possible old err file
-        if(fs.existsSync(filename+".err")) {
-          fs.unlink(filename+".err");
-          console.log("Removing old "+filename+".err");
-        }
-        isOk = true;
-
-      } catch(e) {
-        console.log("ERROR", e);
-
-        // Preserve file with errors to analyze
-        fs.rename(filename, filename+".err");
         // Recover preserved file in case of error
-        fs.rename(filename+".bak", filename);
+        fs.renameSync(filename+".bak", filename);
 
         console.log("Recovering "+filename+"...");
-        console.log("Translation (with errors) stored in "+filename+".err");
+        
+      } else {
+        // Verify files
+        try {
+          JSON.parse(fs.readFileSync(filename, 'utf-8'));
+
+          // All ok. Remove possible old err file
+          if(fs.existsSync(filename+".err")) {
+            fs.unlinkSync(filename+".err");
+            console.log("Removing old "+filename+".err");
+          }
+
+        } catch(e) {
+          isOk = false;
+          console.log("ERROR", e);
+
+          // Preserve file with errors to analyze
+          fs.renameSync(filename, filename+".err");
+
+          // Recover preserved file in case of error
+          fs.renameSync(filename+".bak", filename);
+
+          console.log("Recovering "+filename+"...");
+          console.log("Translation (with errors) stored in "+filename+".err");
+        }
       }
     }
 

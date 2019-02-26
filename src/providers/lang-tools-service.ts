@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-import { langFileObject, langTranslationsObject } from "../customTypes/langObject.types"
+import { langFileObject, languaguesTopicObject, langTranslationsObject } from "../customTypes/langObject.types"
 
 /*
   Generated class for the LangToolsService provider.
@@ -12,6 +13,9 @@ import { langFileObject, langTranslationsObject } from "../customTypes/langObjec
 export class LangToolsService {
   translations : langTranslationsObject;
   emptyTranslations : langTranslationsObject = {languages: [], i18n: {}, projectFolder: "", i18nFolder: ""};
+
+  private currentWord: BehaviorSubject<languaguesTopicObject> = new BehaviorSubject(null);
+  private translationsNeedsSaving : BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor() {
     console.log('### LangToolsService');
@@ -36,6 +40,9 @@ export class LangToolsService {
     });
 
     console.log("> Lang structure...", this.translations);
+
+    this.doTranslationNeedsSaving(false);
+    this.doClearEditWord();
 
     return this.translations;
   }
@@ -67,4 +74,32 @@ export class LangToolsService {
     };
   }
 
+  doEditWord(word: languaguesTopicObject): void {
+    if(this.currentWord.value !== word) {
+      this.currentWord.next(word);
+    }
+  }
+
+  doClearEditWord() {
+    if(this.currentWord.value) {
+      this.currentWord.next(null);
+    }
+  }
+
+  isReservedKey(key: string): boolean {
+    const reservedKeys = ['isLeaf', 'full_key'];
+    return reservedKeys.findIndex((k) => k === key) !== -1;
+  }
+
+  doTranslationNeedsSaving(b: boolean): void {
+    this.translationsNeedsSaving.next(b);
+  }
+
+  isTranslationsSavingRequired(): boolean {
+    return this.translationsNeedsSaving.value;
+  }
+
+  getCurrentlyEditedWord(): BehaviorSubject<languaguesTopicObject> {
+    return this.currentWord;
+  }
 }

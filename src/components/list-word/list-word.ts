@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { LangToolsService } from '../../providers/lang-tools-service';
 
 /**
  * Generated class for the ListWordComponent component.
@@ -23,7 +24,7 @@ export class ListWordComponent {
   
   indents : Array<number>;
 
-  constructor() {
+  constructor(private langTools : LangToolsService) {
     console.log('### ListWordComponent');
   }
 
@@ -44,6 +45,16 @@ export class ListWordComponent {
     } else {
       console.log("Should ignore..."+this.word);
       this.shouldIgnore = true;
+    }
+  }
+
+  public doClick() {
+    if(this.list.isLeaf) {
+      this.langTools.doEditWord(this.list);
+
+    } else {
+      this.showChilds = !this.showChilds;
+      this.langTools.doClearEditWord();
     }
   }
 
