@@ -4,6 +4,9 @@ edit-word {
         margin-left: 3rem;
         background-color: white;
         color: darkblue;
+        span {
+            margin: 0;
+        }
     }
     div {
         display: flex;
@@ -16,13 +19,13 @@ edit-word {
             font-weight: bold;
             margin-right: 5px;
         }
-        input {
-            flex-grow: 1;
-            padding: 5px;
-            background-color: beige;
-            &:focus {
-                font-weight: bold;
-            }
+    }
+    input {
+        flex-grow: 1;
+        padding: 5px;
+        background-color: beige;
+        &:focus {
+            font-weight: bold;
         }
     }
 }

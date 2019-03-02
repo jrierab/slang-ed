@@ -38,13 +38,10 @@ export class ListWordComponent {
   }
 
   public doClick() {
-    if(this.word.isLeaf) {
-      this.langTools.doEditWord(this.word);
-
-    } else {
+    if(!this.word.isLeaf) {
       this.showChilds = !this.showChilds;
-      this.langTools.doClearEditWord();
     }
+    this.langTools.doEditWord(this.word);
   }
 
 }

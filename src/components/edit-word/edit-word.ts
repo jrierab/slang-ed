@@ -17,26 +17,57 @@ export class EditWordComponent {
   word: langNodeObject;
   langs: Array<langTopicObject>;
 
+  isLeaf : boolean = false;
+
+  key_before : string;
+  key_after : string;
+
   constructor(private langTools : LangToolsService) {
     console.log('### EditWordComponent');
   }
 
   ngOnInit() {
-    this.langTools.getCurrentlyEditedWord().subscribe((word)=> {
-      this.word = word;
-      this.doEdit();
+    this.langTools.getCurrentlyEditedWord().subscribe((data: langNodeObject)=> {
+      if(data) {
+        this.word = data;
+        this.doEdit();
+      } else {
+        this.isLeaf = false;        
+      }
     });
   }
 
   doEdit() {
     if(this.word) {
       this.langs = this.word.nodes as Array<langTopicObject>;
+      this.isLeaf = this.word.isLeaf;
+
+      const key: string = this.word['full_key'] as string;
+      const p: number = key.lastIndexOf('.');
+      if(p>0) {
+        this.key_before = key.substring(0, p);
+        this.key_after = key.substring(p+1);
+      } else {
+        this.key_before = "";
+        this.key_after = key;
+      }
+
     } else {
-      this.langs = [];      
+      this.langs = [];
     }
   }
 
   updatesWord(event) {
+    if( !this.langTools.isTranslationsSavingRequired() ) {
+      this.langTools.doTranslationNeedsSaving(true);
+    }
+  }
+
+  updatesKeyAfter(event) {
+    this.word.key = this.key_after;
+
+    this.langTools.doReplaceKeyInDescendants(this.word, this.key_before);
+
     if( !this.langTools.isTranslationsSavingRequired() ) {
       this.langTools.doTranslationNeedsSaving(true);
     }

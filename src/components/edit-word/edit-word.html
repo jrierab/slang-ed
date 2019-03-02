@@ -1,8 +1,14 @@
 <!-- Generated template for the EditWordComponent component -->
 <ng-container *ngIf="word">
-  <h3 class="word-key">{{ word.full_key }}</h3>
+  <h3 class="word-key">
+    {{ key_before }}
+    <span *ngIf="key_before">.</span>
+    <input type="text" [(ngModel)]="key_after" (ngModelChange)="updatesKeyAfter($event)">
+  </h3>
+  <ng-container *ngIf="isLeaf">
   <div *ngFor="let lang of langs">
     <span>{{ lang.lang }}: </span>
     <input type="text" [(ngModel)]="lang.value" (ngModelChange)="updatesWord($event)">
   </div>
+  </ng-container>
 </ng-container>

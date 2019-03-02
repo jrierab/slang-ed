@@ -133,4 +133,12 @@ export class LangToolsService {
   getCurrentlyEditedWord(): BehaviorSubject<langNodeObject> {
     return this.currentWord;
   }
+
+  doReplaceKeyInDescendants(parent: langNodeObject, key_before: string) {
+    parent.full_key = key_before+(key_before? ".": "")+parent.key;
+
+    if(!parent.isLeaf) {
+      parent.nodes.forEach( (son: langNodeObject) => this.doReplaceKeyInDescendants(son, parent.full_key));
+    }    
+  }
 }
