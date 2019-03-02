@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-import { langFileObject, languaguesTopicObject, langTranslationsObject } from "../customTypes/langObject.types"
+import { langFileObject, langNodeObject, langTranslationsObject, langTopicObject } from "../customTypes/langObject.types"
 
 /*
   Generated class for the LangToolsService provider.
@@ -11,18 +11,28 @@ import { langFileObject, languaguesTopicObject, langTranslationsObject } from ".
 */
 @Injectable()
 export class LangToolsService {
-  translations : langTranslationsObject;
-  emptyTranslations : langTranslationsObject = {languages: [], i18n: {}, projectFolder: "", i18nFolder: ""};
-
-  private currentWord: BehaviorSubject<languaguesTopicObject> = new BehaviorSubject(null);
+  translations : langTranslationsObject = this.clearTranslations();
+  
+  private currentWord: BehaviorSubject<langNodeObject> = new BehaviorSubject(null);
   private translationsNeedsSaving : BehaviorSubject<boolean> = new BehaviorSubject(false);
-
+  
   constructor() {
     console.log('### LangToolsService');
   }
+  
+  clearTranslations(): langTranslationsObject {
+    const emptyOptions = {projectFolder: "", i18nFolder: ""};
+    const emptyRoot = {key :"", full_key: "", isLeaf: false, level: 0, nodes: []};
 
+    return {
+      options: JSON.parse(JSON.stringify(emptyOptions)),
+      languages: [],
+      root: JSON.parse(JSON.stringify(emptyRoot))
+    }
+  }
+  
   initTranslations(langFiles: Array<langFileObject>) {
-    this.translations = JSON.parse(JSON.stringify(this.emptyTranslations));
+    this.translations = this.clearTranslations();
 
     langFiles.forEach(langFile => {
       let code : string = langFile.filename.substring(0, 2);
@@ -32,7 +42,7 @@ export class LangToolsService {
         lang_translations = JSON.parse(langFile.contents);
         this.translations.languages.push(code);
   
-        this.buildLangStructure(code, "", this.translations.i18n, lang_translations);
+        this.buildLangStructure(code, this.translations.root, lang_translations);
       } catch(e) {
         // TODO: Catch error and give a proper error message to the user
         console.log(e);
@@ -40,41 +50,63 @@ export class LangToolsService {
     });
 
     console.log("> Lang structure...", this.translations);
-
+    
     this.doTranslationNeedsSaving(false);
     this.doClearEditWord();
-
+    
     return this.translations;
   }
-
-  buildLangStructure(lang: string, top_key: string, level: Object, lang_translations: Object) {
+  
+  buildLangStructure(lang: string, level: langNodeObject, lang_translations: Object) {
     for (let key of Object.keys(lang_translations)) {
       let subkeys : Array<string> = key.split('.');
-      let deep_level = level;
-      let deep_key = top_key;
-
+      let deep_level : langNodeObject = level;
+            
       subkeys.forEach(k=> {
-        if( !deep_level.hasOwnProperty(k) ) deep_level[k] = {};
-        deep_level['full_key'] = deep_key;
-        deep_level = deep_level[k];
-        deep_key = deep_key+(deep_key.length>0? '.': '')+k;
-        deep_level['isLeaf'] = false;
+        const node : langNodeObject = deep_level.nodes.find((el: langNodeObject) => el.key === k) as langNodeObject;
+
+        if (!node) {
+          const new_node = {
+            key: k,
+            full_key: deep_level.full_key + (deep_level.full_key? ".": "")+k,
+            isLeaf : false,
+            level: deep_level.level + 1,
+            nodes : []
+          };
+          deep_level.nodes.push(new_node);
+          deep_level = new_node;
+        } else {
+          deep_level = node;
+        }
       })
-
+            
       let translation = lang_translations[key];
-
+      
       if(translation instanceof Object) {
-        this.buildLangStructure(lang, deep_key, deep_level, translation);
+        this.buildLangStructure(lang, deep_level, translation);
         
       } else {
-        deep_level['isLeaf'] = true;
-        deep_level['full_key'] = deep_key;
-        deep_level[lang] = {value: translation, approved: false, preserve: false, foundInSrc: false, comment: ""};
+        deep_level.isLeaf = true;
+
+        const langNode : langTopicObject = deep_level.nodes.find((n: langTopicObject)=> n.lang === lang) as langTopicObject;
+
+        if(langNode) {
+          console.log("ERROR: "+deep_level.full_key+" already defined for lang "+lang+" !!!");
+        } else {
+          deep_level.nodes.push({
+            lang: lang,
+            value: translation, 
+            approved: false, 
+            preserve: false, 
+            foundInSrc: false, 
+            comment: ""
+          });
+        }
       }
     };
   }
 
-  doEditWord(word: languaguesTopicObject): void {
+  doEditWord(word: langNodeObject): void {
     if(this.currentWord.value !== word) {
       this.currentWord.next(word);
     }
@@ -86,9 +118,8 @@ export class LangToolsService {
     }
   }
 
-  isReservedKey(key: string): boolean {
-    const reservedKeys = ['isLeaf', 'full_key'];
-    return reservedKeys.findIndex((k) => k === key) !== -1;
+  sort(words: Array<langNodeObject>) {
+    words.sort((a: langNodeObject, b: langNodeObject) => (a.key > b.key? 1: -1));
   }
 
   doTranslationNeedsSaving(b: boolean): void {
@@ -99,7 +130,7 @@ export class LangToolsService {
     return this.translationsNeedsSaving.value;
   }
 
-  getCurrentlyEditedWord(): BehaviorSubject<languaguesTopicObject> {
+  getCurrentlyEditedWord(): BehaviorSubject<langNodeObject> {
     return this.currentWord;
   }
 }

@@ -10,6 +10,7 @@ export interface langFileObject {
  * 
  */
 export interface langTopicObject {
+    lang : string,
     value: string,
     comment: string,
     approved : boolean,
@@ -17,17 +18,24 @@ export interface langTopicObject {
     preserve : boolean
 }
 
+export interface langNodeObject {
+    key : string;
+    full_key : string;
+    isLeaf : boolean;
+    level : number;
+    nodes: Array<langNodeObject | langTopicObject>
+}
 
-export interface languaguesTopicObject { 
-    [key: string] : { [key: string] : langTopicObject } 
+export interface langOptionsObject {
+    projectFolder : string,
+    i18nFolder : string,
 }
 
 /**
  * langTranslationsObject
  */
 export interface langTranslationsObject {
-    projectFolder : string,
-    i18nFolder : string,
-    languages :  Array<string>,
-    i18n: languaguesTopicObject
+    options : langOptionsObject;
+    languages : Array<string>;
+    root: langNodeObject
 }

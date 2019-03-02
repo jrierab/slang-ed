@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { langFileObject, langTranslationsObject } from "../customTypes/langObject.types"
-import { LangToolsService } from '../providers/lang-tools-service';
+import { langFileObject, langTranslationsObject, langNodeObject, langTopicObject } from "../customTypes/langObject.types"
 
 // Not very elegant, but avoid types failing... 
 const electron = window['require']("electron");
@@ -19,7 +18,7 @@ const fs = electron.remote.require('fs')
 export class ElectronProvider {
   currentZoom: number = 0;
 
-  constructor(private langTools : LangToolsService) {
+  constructor() {
     console.log('### ElectronProvider');
   }
 
@@ -84,26 +83,27 @@ export class ElectronProvider {
       console.log("TreeMode is not yet supported: reverting to fullKey mode");
     }
     
-    for(let lang of translations.languages) {
-      const filename = translations.i18nFolder+"/"+lang+".json";
+    translations.languages.forEach( (lang) => {
+      const filename = translations.options.i18nFolder+"/"+lang+".json";
       let isFirst: boolean = true;
       let data : string = "{\n";
 
       // Rename current file to preserve it in case of error
       fs.renameSync(filename, filename+".bak");
 
-      for(let key in translations.i18n) {
-        if (!this.langTools.isReservedKey(key)) {
-          if(!isFirst) {
-            data += ",\n\n";
-          }
-          data += this.buildForKey(lang, translations.i18n[key], 1, true);
-          isFirst = false;
+      translations.root.nodes.forEach( (node: langNodeObject)=> {
+        if(!isFirst) {
+          data += ",\n\n";
         }
-      }
+        data += this.buildForKey(lang, node, true);
+        isFirst = false;
+
+      });
       data += "\n}\n";
 
       console.log(filename);
+      console.log(data);
+
       fs.writeFileSync(filename, data, 'utf8');
 
       if(! fs.existsSync(filename) ) {
@@ -140,28 +140,32 @@ export class ElectronProvider {
           console.log("Translation (with errors) stored in "+filename+".err");
         }
       }
-    }
+    });
 
     return isOk;
   }
 
-  private buildForKey(lang: string, level: any, indent: number, isFirst: boolean): string {
+  private buildForKey(lang: string, level: langNodeObject, isFirst: boolean): string {
     let data : string = "";
+    let indent = level.level;
 
-    if( level['isLeaf'] ) {
+    if( level.isLeaf ) {
       data = (isFirst? "": ",\n");
       for(let i=0; i<indent; i++) {
         data += "  ";
       }
-      data += '"'+level['full_key']+'": "'+level[lang].value+'"';
+      const langNode : langTopicObject = level.nodes.find((n: langTopicObject)=> n.lang === lang) as langTopicObject;
+      if(langNode) {
+        data += '"'+level.full_key+'": "'+langNode.value+'"';
+      } else {
+        data += '"'+level.full_key+'": ""';
+      }
 
     } else {
-      for(let key in level) {
-        if (key !== "isLeaf" && key !="full_key") {
-          data += this.buildForKey(lang, level[key], indent+1, isFirst);
-          isFirst = false; 
-        }
-      }
+      level.nodes.forEach( (subnode: langNodeObject) => {
+        data += this.buildForKey(lang, subnode, isFirst);
+        isFirst = false; 
+      })
     }
     return data;
   }

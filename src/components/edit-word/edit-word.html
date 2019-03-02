@@ -2,7 +2,7 @@
 <ng-container *ngIf="word">
   <h3 class="word-key">{{ word.full_key }}</h3>
   <div *ngFor="let lang of langs">
-    <span>{{ lang }}: </span>
-    <input type="text" [(ngModel)]="word[lang].value" (ngModelChange)="updatesWord($event)">
+    <span>{{ lang.lang }}: </span>
+    <input type="text" [(ngModel)]="lang.value" (ngModelChange)="updatesWord($event)">
   </div>
 </ng-container>

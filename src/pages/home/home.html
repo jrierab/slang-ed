@@ -37,7 +37,7 @@
     <div class="sl-list-container">
       <h3>{{ "langs.keys" | translate }}</h3>
       
-      <list-word class="sl-list-word" *ngFor="let word of words" [word]="word" [list]="translations.i18n[word]"></list-word>
+      <list-word class="sl-list-word" *ngFor="let word of words" [word]="word" [list]="level"></list-word>
     </div>
 
     <div class="sl-translations-container">

@@ -3,16 +3,17 @@ import { Component } from '@angular/core';
 import { ElectronProvider } from '../../providers/electron-provider';
 import { LangToolsService } from '../../providers/lang-tools-service';
 
-import { langFileObject, langTranslationsObject } from "../../customTypes/langObject.types"
+import { langFileObject, langTranslationsObject, langNodeObject, langTopicObject } from "../../customTypes/langObject.types"
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage {
-  translations : langTranslationsObject = this.langTools.emptyTranslations;
+  translations : langTranslationsObject = this.langTools.clearTranslations();
 
-  words : Array<string>;
+  level : langNodeObject;
+  words : Array<langNodeObject | langTopicObject>;
 
   projectNeedsSaving : boolean = false;
 
@@ -29,12 +30,12 @@ export class HomePage {
   doInitFrom() {
     let folder = this.electron.selectFolder();
 
-    console.log("> Selected folder: "+folder);
+    //console.log("> Selected folder: "+folder);
 
     if(folder) {
       let path_to_i18n = this.electron.findTranslationsFolder(folder);
 
-      console.log("> i18n folder: "+path_to_i18n);
+      //console.log("> i18n folder: "+path_to_i18n);
 
       if(path_to_i18n) {
         let langFiles : Array<langFileObject> = this.electron.readTranslationsFiles(path_to_i18n);
@@ -42,15 +43,13 @@ export class HomePage {
         this.translations = this.langTools.initTranslations(langFiles);
 
         // Remember paths
-        this.translations.projectFolder = folder;
-        this.translations.i18nFolder = path_to_i18n;
+        this.translations.options.projectFolder = folder;
+        this.translations.options.i18nFolder = path_to_i18n;
  
-        this.words = [];
-        for(let key of Object.keys(this.translations.i18n)) {
-          if( this.translations.i18n[key] !== null && (typeof this.translations.i18n[key] === 'object')) this.words.push(key);
-        }
-        this.words.sort();
-  
+        this.level = this.translations.root;
+        this.words = this.level.nodes;
+        this.langTools.sort(this.words as Array<langNodeObject>);
+
         this.projectNeedsSaving = true;
       }
     }

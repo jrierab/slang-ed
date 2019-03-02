@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { languaguesTopicObject } from "../../customTypes/langObject.types"
+import { langNodeObject, langTopicObject } from "../../customTypes/langObject.types"
 
 import { LangToolsService } from '../../providers/lang-tools-service';
 
@@ -14,8 +14,8 @@ import { LangToolsService } from '../../providers/lang-tools-service';
   templateUrl: 'edit-word.html'
 })
 export class EditWordComponent {
-  word: languaguesTopicObject;
-  langs: Array<string> = [];
+  word: langNodeObject;
+  langs: Array<langTopicObject>;
 
   constructor(private langTools : LangToolsService) {
     console.log('### EditWordComponent');
@@ -29,14 +29,10 @@ export class EditWordComponent {
   }
 
   doEdit() {
-    // console.log("Editing: ", this.word);
-    this.langs = [];
     if(this.word) {
-      for(let lang of Object.keys(this.word)) {
-        if( !this.langTools.isReservedKey(lang) ) {
-          this.langs.push(lang);
-        }
-      }
+      this.langs = this.word.nodes as Array<langTopicObject>;
+    } else {
+      this.langs = [];      
     }
   }
 

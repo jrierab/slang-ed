@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { LangToolsService } from '../../providers/lang-tools-service';
+import { langNodeObject, langTopicObject } from "../../customTypes/langObject.types"
 
 /**
  * Generated class for the ListWordComponent component.
@@ -12,13 +13,10 @@ import { LangToolsService } from '../../providers/lang-tools-service';
   templateUrl: 'list-word.html'
 })
 export class ListWordComponent {
-  @Input() word;
-  @Input() list;
-  @Input() level : number = 0;
+  @Input() word : langNodeObject;
+  @Input() list: langNodeObject;
 
-  words : Array<string>;
-
-  shouldIgnore : boolean = false;
+  words : Array<langNodeObject | langTopicObject>;
 
   showChilds : boolean = false;
   
@@ -29,28 +27,19 @@ export class ListWordComponent {
   }
 
   ngOnChanges() {
-    this.indents = Array(this.level).fill(0).map((x,i)=>i);
+    this.indents = Array(this.word.level).fill(0).map((x,i)=>i);
 
     if(this.list.isLeaf) {
-      //console.log("Leaf..."+this.word);
-
-    } else if( this.list ) {
       this.words = [];
-      for(let key of Object.keys(this.list)) {
-        if( this.list[key] !== null && (typeof this.list[key] === 'object')) this.words.push(key);
-      }
-      this.words.sort();
-      //console.log("Words for "+this.word, this.words);
-
     } else {
-      console.log("Should ignore..."+this.word);
-      this.shouldIgnore = true;
+      this.words = this.word.nodes;
+      this.langTools.sort(this.words as Array<langNodeObject>);
     }
   }
 
   public doClick() {
-    if(this.list.isLeaf) {
-      this.langTools.doEditWord(this.list);
+    if(this.word.isLeaf) {
+      this.langTools.doEditWord(this.word);
 
     } else {
       this.showChilds = !this.showChilds;
