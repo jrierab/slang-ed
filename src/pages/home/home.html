@@ -21,7 +21,23 @@
         <ion-icon name="md-chatboxes"></ion-icon>
         <p>Save Translations</p>
       </div>
-  
+      <div class="menu-option" float-start [ngClass]="{'menu-disabled': !projectReady}" (click)="doAddRootNode()">
+        <ion-icon name="md-add-circle"></ion-icon>
+        <p>Root</p>
+      </div>
+      <div class="menu-option" float-start [ngClass]="{'menu-disabled': !addNodeOrIdReady}" (click)="doAddNode()">
+        <ion-icon name="md-add"></ion-icon>
+        <p>Node</p>
+      </div>
+      <div class="menu-option" float-start [ngClass]="{'menu-disabled': !addNodeOrIdReady}" (click)="doAddId()">
+        <ion-icon name="md-add"></ion-icon>
+        <p>Id</p>
+      </div>
+      <div class="menu-option" float-start [ngClass]="{'menu-disabled': !removeNodeReady}" (click)="doRemoveCurrent()">
+        <ion-icon name="md-remove"></ion-icon>
+        <p>Delete</p>
+      </div>
+
       <div class="menu-option" float-end (click)="doOpenSettings()">
         <ion-icon name="options"></ion-icon>
         <p>Settings</p>

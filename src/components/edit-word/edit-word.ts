@@ -28,8 +28,8 @@ export class EditWordComponent {
 
   ngOnInit() {
     this.langTools.getCurrentlyEditedWord().subscribe((data: langNodeObject)=> {
+      this.word = data;
       if(data) {
-        this.word = data;
         this.doEdit();
       } else {
         this.isLeaf = false;        

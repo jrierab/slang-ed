@@ -57,6 +57,43 @@ export class LangToolsService {
     return this.translations;
   }
   
+  createNodeAtLevel(parent: langNodeObject, key: string): langNodeObject {
+    const new_node = {
+      key: key,
+      full_key: parent.full_key + (parent.full_key? ".": "")+key,
+      isLeaf : false,
+      level: parent.level + 1,
+      nodes : []
+    };
+    parent.nodes.push(new_node);
+    return new_node;
+  }
+
+  createIdAtLevel(parent: langNodeObject, key: string): langNodeObject {
+    const new_node = this.createNodeAtLevel(parent, key);
+    new_node.isLeaf = true;
+
+    this.translations.languages.forEach((lang)=> {
+      new_node.nodes.push({
+        lang: lang,
+        value: "", 
+        approved: false, 
+        preserve: false, 
+        foundInSrc: false, 
+        comment: ""
+      });
+    });
+    return new_node;
+  }
+
+  removeNode(node: langNodeObject): void {
+    const parent = this.getParent(node);
+    let pos : number = parent.nodes.indexOf(node);
+    if (pos !== -1) {
+      parent.nodes.splice(pos, 1);  
+    }
+  }
+
   buildLangStructure(lang: string, level: langNodeObject, lang_translations: Object) {
     for (let key of Object.keys(lang_translations)) {
       let subkeys : Array<string> = key.split('.');
@@ -66,15 +103,7 @@ export class LangToolsService {
         const node : langNodeObject = deep_level.nodes.find((el: langNodeObject) => el.key === k) as langNodeObject;
 
         if (!node) {
-          const new_node = {
-            key: k,
-            full_key: deep_level.full_key + (deep_level.full_key? ".": "")+k,
-            isLeaf : false,
-            level: deep_level.level + 1,
-            nodes : []
-          };
-          deep_level.nodes.push(new_node);
-          deep_level = new_node;
+          deep_level= this.createNodeAtLevel(deep_level, k);
         } else {
           deep_level = node;
         }
@@ -134,11 +163,43 @@ export class LangToolsService {
     return this.currentWord;
   }
 
+  getCurrentlyEditedWordValue(): langNodeObject {
+    return this.currentWord.value;
+  }
+
   doReplaceKeyInDescendants(parent: langNodeObject, key_before: string) {
     parent.full_key = key_before+(key_before? ".": "")+parent.key;
 
     if(!parent.isLeaf) {
       parent.nodes.forEach( (son: langNodeObject) => this.doReplaceKeyInDescendants(son, parent.full_key));
     }    
+  }
+
+  countDescendants(level: langNodeObject): number {    
+    if(level.isLeaf) return 1;
+
+    let n : number = 0;
+    level.nodes.forEach((node: langNodeObject) => {
+      n += this.countDescendants(node);
+    });
+    return n;
+  }
+
+  getParent(node: langNodeObject): langNodeObject {
+    const keys = node.full_key.split('.');
+    let parent = this.translations.root;
+
+    // Remove last key, which is the key for the node itself
+    keys.pop();
+
+    keys.forEach((key: string) => {
+      const son: langNodeObject = parent.nodes.find((n: langNodeObject) => n.key === key) as langNodeObject;
+      if(son) {
+        parent = son;
+      } else {
+        throw("Missing node with key '"+key+'" when looking for parent');
+      }
+    });
+    return parent;
   }
 }
