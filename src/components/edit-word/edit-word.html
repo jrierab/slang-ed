@@ -3,7 +3,7 @@
   <h3 class="word-key">
     {{ key_before }}
     <span *ngIf="key_before">.</span>
-    <input type="text" [(ngModel)]="key_after" (ngModelChange)="updatesKeyAfter($event)">
+    <input type="text" [(ngModel)]="key_after" (ngModelChange)="updatesKeyAfter($event)" (blur)="updateParent($event)">
   </h3>
   <ng-container *ngIf="isLeaf">
   <div *ngFor="let lang of langs">

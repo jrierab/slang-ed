@@ -148,7 +148,9 @@ export class LangToolsService {
   }
 
   sort(words: Array<langNodeObject>) {
-    words.sort((a: langNodeObject, b: langNodeObject) => (a.key > b.key? 1: -1));
+    words.sort((a: langNodeObject, b: langNodeObject) => {
+      return ( a === b ? 0 : (a.key? a.key.toLowerCase(): "") > (b.key? b.key.toLowerCase(): "")? 1: -1); 
+    });
   }
 
   doTranslationNeedsSaving(b: boolean): void {
@@ -201,5 +203,10 @@ export class LangToolsService {
       }
     });
     return parent;
+  }
+
+  sortParentNodes(node: langNodeObject) : void {
+    const parent : langNodeObject = this.getParent(node);
+    this.sort(parent.nodes as Array<langNodeObject>);
   }
 }

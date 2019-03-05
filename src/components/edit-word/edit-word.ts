@@ -21,6 +21,7 @@ export class EditWordComponent {
 
   key_before : string;
   key_after : string;
+  key_original : string;
 
   constructor(private langTools : LangToolsService) {
     console.log('### EditWordComponent');
@@ -33,6 +34,8 @@ export class EditWordComponent {
         this.doEdit();
       } else {
         this.isLeaf = false;        
+        this.key_original = "";
+        this.key_after = "";
       }
     });
   }
@@ -51,9 +54,12 @@ export class EditWordComponent {
         this.key_before = "";
         this.key_after = key;
       }
+      this.key_original = this.key_after;
 
     } else {
       this.langs = [];
+      this.key_original = "";
+      this.key_after = "";
     }
   }
 
@@ -73,4 +79,9 @@ export class EditWordComponent {
     }
   }
 
+  updateParent(event) {
+    if(this.key_original !== this.key_after) {
+      this.langTools.sortParentNodes(this.word);
+    }
+  }
 }
