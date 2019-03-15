@@ -5,6 +5,7 @@ import { ElectronProvider } from '../../providers/electron-provider';
 import { LangToolsService } from '../../providers/lang-tools-service';
 
 import { langFileObject, langTranslationsObject, langNodeObject, langTopicObject } from "../../customTypes/langObject.types"
+import { UndoService } from '../../providers/undo-service';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +13,7 @@ import { langFileObject, langTranslationsObject, langNodeObject, langTopicObject
   styleUrls: ['home.page.scss']
 })
 export class HomePage {
-  translations : langTranslationsObject = this.langTools.clearTranslations();
+  private translations : langTranslationsObject = this.langTools.clearTranslations();
 
   level : langNodeObject;
   words : Array<langNodeObject | langTopicObject>;
@@ -24,6 +25,7 @@ export class HomePage {
 
   constructor(  private electron : ElectronProvider,
                 private langTools : LangToolsService,
+                private undoService: UndoService,
                 private alertCtrl: AlertController
               ) 
   {
@@ -65,14 +67,32 @@ export class HomePage {
         this.translations.options.projectFolder = folder;
         this.translations.options.i18nFolder = path_to_i18n;
  
-        this.level = this.translations.root;
-        this.words = this.level.nodes;
-        this.langTools.sort(this.words as Array<langNodeObject>);
-
-        this.projectNeedsSaving = true;
-        this.projectReady = true;
+        this.doInitFromTranslations(true);
       }
     }
+  }
+
+  doInitFromTranslations(shouldInit: boolean = false) {
+    this.level = this.translations.root;
+    this.words = this.level.nodes;
+    //this.langTools.sort(this.words as Array<langNodeObject>);
+    this.doSortTranslations(this.level);
+
+    this.projectNeedsSaving = true;
+    this.projectReady = true;
+
+    if (shouldInit) {
+      this.undoService.clearHistory(this.translations);
+    }
+  }
+
+  doSortTranslations(node: langNodeObject) {
+    this.langTools.sort(node.nodes as Array<langNodeObject>);
+    node.nodes.forEach((n: langNodeObject) => {
+      if(!n.isLeaf) {
+        this.doSortTranslations(n);
+      }
+    });
   }
 
   doOpenProject() {
@@ -100,6 +120,8 @@ export class HomePage {
   }
 
   doAddRootNode() {
+    this.langTools.doClearEditWord();
+
     const newNode : langNodeObject = this.langTools.createNodeAtLevel(this.level, "New_Node");
     this.projectNeedsSaving = true;
     this.langTools.doTranslationNeedsSaving(true);
@@ -108,6 +130,8 @@ export class HomePage {
   
   doAddNode() {
     const level : langNodeObject = this.langTools.getCurrentlyEditedWordValue();
+
+    this.langTools.doClearEditWord();
     const newNode : langNodeObject = this.langTools.createNodeAtLevel(level, "New_Node");
     this.projectNeedsSaving = true;
     this.langTools.doTranslationNeedsSaving(true);
@@ -116,6 +140,8 @@ export class HomePage {
   
   doAddId() {
     const level : langNodeObject = this.langTools.getCurrentlyEditedWordValue();
+    
+    this.langTools.doClearEditWord();
     const newId : langNodeObject = this.langTools.createIdAtLevel(level, "New_Id");
     this.projectNeedsSaving = true;
     this.langTools.doTranslationNeedsSaving(true);
@@ -136,8 +162,8 @@ export class HomePage {
         {
           text: 'Agree',
           handler: () => {
-            this.langTools.removeNode(level);
             this.langTools.doClearEditWord();
+            this.langTools.removeNode(level);
             this.projectNeedsSaving = true;
             this.langTools.doTranslationNeedsSaving(true);
           }
@@ -145,6 +171,22 @@ export class HomePage {
       ]
     });
     confirm.present();
+  }
+
+  doUndo() {
+    if (this.undoService.hasHistory() ) {
+      this.translations = this.langTools.undo();
+      this.doInitFromTranslations();
+      //console.log(this.level);
+    }
+  }
+
+  doRedo() {
+    if (this.undoService.hasFuture() ) {
+      this.translations = this.langTools.redo();
+      this.doInitFromTranslations();
+      //console.log(this.level);
+    }
   }
 
   doZoomIn() {

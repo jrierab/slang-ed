@@ -1,6 +1,5 @@
 <ion-header>
     <ion-toolbar color="secondary">
-
         <div class="menu-option tooltip" float-start (click)="doInitFrom()">
             <ion-icon src="assets/icon/folder.svg"></ion-icon>
             <p class="tooltiptext tooltip-right">Init from...</p>
@@ -9,34 +8,34 @@
             <ion-icon src="assets/icon/folder_new.svg"></ion-icon>
             <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': true}">New Project</p>
         </div>
-        <div class="menu-option tooltip" float-start (click)="doOpenProject()">
+        <div class="menu-option tooltip" [ngClass]="{'menu-disabled': true}" float-start (click)="doOpenProject()">
             <ion-icon src="assets/icon/folder_clean.svg"></ion-icon>
-            <p class="tooltiptext">Open Project</p>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': true}">Open Project</p>
         </div>
-        <div class="menu-option tooltip" float-start [ngClass]="{'menu-disabled': !projectNeedsSaving}"
+        <div class="menu-option tooltip" float-start [ngClass]="{'menu-disabled': true || !projectNeedsSaving}"
             (click)="doSaveProject()">
-            <ion-icon src="assets/icon/folder_save.svg"></ion-icon>
-            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !projectNeedsSaving}">Save Project</p>
+            <ion-icon src="assets/icon/folder-save.svg"></ion-icon>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': true || !projectNeedsSaving}">Save Project</p>
         </div>
         <div class="menu-option tooltip" float-start
             [ngClass]="{'menu-disabled': !langTools.isTranslationsSavingRequired()}" (click)="doSaveTranslations()">
-            <ion-icon name="md-chatboxes"></ion-icon>
+            <ion-icon src="assets/icon/harddisk.svg"></ion-icon>
             <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !langTools.isTranslationsSavingRequired()}">Save
                 Translations</p>
         </div>
         <div class="menu-option tooltip" float-start [ngClass]="{'menu-disabled': !projectReady}"
             (click)="doAddRootNode()">
-            <ion-icon src="assets/icon/plus-cercle.svg"></ion-icon>
+            <ion-icon src="assets/icon/family-tree.svg"></ion-icon>
             <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !projectReady}">Add Root</p>
         </div>
         <div class="menu-option tooltip" float-start [ngClass]="{'menu-disabled': !addNodeOrIdReady}"
             (click)="doAddNode()">
-            <ion-icon src="assets/icon/plus.svg"></ion-icon>
+            <ion-icon src="assets/icon/family-tree-node.svg"></ion-icon>
             <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !addNodeOrIdReady}">Add Node</p>
         </div>
         <div class="menu-option tooltip" float-start [ngClass]="{'menu-disabled': !addNodeOrIdReady}"
             (click)="doAddId()">
-            <ion-icon src="assets/icon/add-black.svg"></ion-icon>
+            <ion-icon src="assets/icon/family-tree-id.svg"></ion-icon>
             <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !addNodeOrIdReady}">Add Id</p>
         </div>
         <div class="menu-option tooltip" float-start [ngClass]="{'menu-disabled': !removeNodeReady}"
@@ -45,11 +44,24 @@
             <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !removeNodeReady}">Delete</p>
         </div>
 
-        <div class="menu-option tooltip" float-end (click)="doOpenSettings()">
-            <ion-icon src="assets/icon/settings.svg"></ion-icon>
-            <p class="tooltiptext tooltip-left">Settings</p>
+        <div class="menu-option tooltip" float-start [ngClass]="{'menu-disabled': !undoService.hasHistory()}"
+            (click)="doUndo()">
+            <ion-icon src="assets/icon/undo.svg"></ion-icon>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !undoService.hasHistory()}">Undo</p>
         </div>
-
+        <div class="menu-option tooltip" float-start [ngClass]="{'menu-disabled': !undoService.hasFuture()}"
+            (click)="doRedo()">
+            <ion-icon src="assets/icon/redo.svg"></ion-icon>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !undoService.hasFuture()}">Redo</p>
+        </div>
+        <div class="menu-option tooltip" float-end [ngClass]="{'menu-disabled': true}" (click)="doShowAbout()">
+            <ion-icon src="assets/icon/bunny.svg"></ion-icon>
+            <p class="tooltiptext tooltip-left" [ngClass]="{'tooltiptext-disabled': true}">About</p>
+        </div>
+        <div class="menu-option tooltip" float-end [ngClass]="{'menu-disabled': true}" (click)="doOpenSettings()">
+            <ion-icon src="assets/icon/settings.svg"></ion-icon>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': true}">Settings</p>
+        </div>
     </ion-toolbar>
 </ion-header>
 

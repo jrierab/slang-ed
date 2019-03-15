@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 import { langFileObject, langNodeObject, langTranslationsObject, langTopicObject } from "../customTypes/langObject.types"
+import { UndoService } from './undo-service';
 
 /*
   Generated class for the LangToolsService provider.
@@ -11,12 +12,12 @@ import { langFileObject, langNodeObject, langTranslationsObject, langTopicObject
 */
 @Injectable()
 export class LangToolsService {
-  translations : langTranslationsObject = this.clearTranslations();
+  private translations : langTranslationsObject = this.clearTranslations();
   
   private currentWord: BehaviorSubject<langNodeObject> = new BehaviorSubject(null);
   private translationsNeedsSaving : BehaviorSubject<boolean> = new BehaviorSubject(false);
   
-  constructor() {
+  constructor(private undoService: UndoService) {
     console.log('### LangToolsService');
   }
   
@@ -53,7 +54,9 @@ export class LangToolsService {
     
     this.doTranslationNeedsSaving(false);
     this.doClearEditWord();
-    
+
+    //this.undoService.clearHistory(this.translations);
+
     return this.translations;
   }
   
@@ -137,12 +140,14 @@ export class LangToolsService {
 
   doEditWord(word: langNodeObject): void {
     if(this.currentWord.value !== word) {
+      //this.undoService.rememberThisHistory(this.wordNum, "Update Word: "+(this.currentWord.value? this.currentWord.value.full_key: "null"), this.translations);
       this.currentWord.next(word);
     }
   }
 
   doClearEditWord() {
     if(this.currentWord.value) {
+      //this.undoService.rememberThisHistory(this.wordNum, "Clear Word: "+this.currentWord.value.full_key, this.translations);
       this.currentWord.next(null);
     }
   }
@@ -174,7 +179,7 @@ export class LangToolsService {
 
     if(!parent.isLeaf) {
       parent.nodes.forEach( (son: langNodeObject) => this.doReplaceKeyInDescendants(son, parent.full_key));
-    }    
+    }
   }
 
   countDescendants(level: langNodeObject): number {    
@@ -209,4 +214,20 @@ export class LangToolsService {
     const parent : langNodeObject = this.getParent(node);
     this.sort(parent.nodes as Array<langNodeObject>);
   }
+
+  undo(): langTranslationsObject {
+    this.translations = this.undoService.undo(this.translations);
+    return this.translations;
+  }
+
+  redo(): langTranslationsObject {
+    this.translations = this.undoService.redo(this.translations);
+    return this.translations;
+  }
+
+  doRememberTranslations(key: string): void {
+    this.undoService.rememberThisHistory(key, this.translations);
+
+  }
+
 }

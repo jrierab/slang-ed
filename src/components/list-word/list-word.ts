@@ -34,7 +34,7 @@ export class ListWordComponent {
       this.words = [];
     } else {
       this.words = this.word.nodes;
-      this.langTools.sort(this.words as Array<langNodeObject>);
+      //this.langTools.sort(this.words as Array<langNodeObject>);
     }
   }
 
@@ -42,6 +42,7 @@ export class ListWordComponent {
     if(!this.word.isLeaf) {
       this.showChilds = !this.showChilds;
     }
+    this.langTools.doRememberTranslations(this.word.full_key);
     this.langTools.doEditWord(this.word);
   }
 

@@ -19,6 +19,7 @@ import { LangService } from '../providers/lang-service';
 import { ElectronProvider } from '../providers/electron-provider';
 import { LangToolsService } from '../providers/lang-tools-service';
 import { ComponentsModule } from "../components/components.module"
+import { UndoService } from '../providers/undo-service';
 
 // Translations
 export function createTranslateLoader(http: HttpClient) {
@@ -47,6 +48,7 @@ export function createTranslateLoader(http: HttpClient) {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     LangService,
     ElectronProvider,
+    UndoService,
     LangToolsService
   ],
   bootstrap: [AppComponent]
