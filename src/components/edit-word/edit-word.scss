@@ -1,29 +1,30 @@
-    h3.word-key {
-        margin-top: 1rem;
-        margin-left: 3rem;
-        background-color: white;
-        color: darkblue;
-        span {
-            margin: 0;
-        }
+h3.word-key {
+    margin-top: 1rem;
+    margin-left: 3rem;
+    margin-right: 10px;
+    background-color: white;
+    color: darkblue;
+    span {
+        margin-right: 10px;
     }
-    div {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        margin: 10px;
-        font-size: 110%;
-        span {
-            flex-grow: 0;
-            font-weight: bold;
-            margin-right: 5px;
-        }
+}
+div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 10px;
+    font-size: 110%;
+    span.word-language {
+        flex-grow: 0;
+        font-weight: bold;
+        margin-right: 5px;
     }
-    input {
-        flex-grow: 1;
-        padding: 5px;
-        background-color: beige;
-        &:focus {
-            font-weight: bold;
-        }
+}
+input {
+    flex-grow: 1;
+    padding: 5px;
+    background-color: beige;
+    &:focus {
+        font-weight: bold;
     }
+}

@@ -10,7 +10,8 @@ import { langNodeObject, langTopicObject } from "../../customTypes/langObject.ty
  */
 @Component({
   selector: 'list-word',
-  templateUrl: 'list-word.html'
+  templateUrl: 'list-word.html',
+  styleUrls: ['list-word.scss']
 })
 export class ListWordComponent {
   @Input() word : langNodeObject;
