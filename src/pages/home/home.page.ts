@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
+import { AlertController } from '@ionic/angular';
 
 import { ElectronProvider } from '../../providers/electron-provider';
 import { LangToolsService } from '../../providers/lang-tools-service';
-import { AlertController } from 'ionic-angular';
 
 import { langFileObject, langTranslationsObject, langNodeObject, langTopicObject } from "../../customTypes/langObject.types"
 
 @Component({
-  selector: 'page-home',
-  templateUrl: 'home.html'
+  selector: 'app-home',
+  templateUrl: 'home.page.html',
+  styleUrls: ['home.page.scss']
 })
 export class HomePage {
   translations : langTranslationsObject = this.langTools.clearTranslations();
@@ -121,12 +122,12 @@ export class HomePage {
     this.langTools.doEditWord(newId);
   }
 
-  doRemoveCurrent() {
+  async doRemoveCurrent() {
     const level : langNodeObject = this.langTools.getCurrentlyEditedWordValue();
     const nodes = this.langTools.countDescendants(level);
 
-    const confirm = this.alertCtrl.create({
-      title: 'Remove "'+level.full_key+'" ?',
+    const confirm = await this.alertCtrl.create({
+      header: 'Remove "'+level.full_key+'" ?',
       message: 'This will DELETE '+nodes+' language definitions !',
       buttons: [
         {

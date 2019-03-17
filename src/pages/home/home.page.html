@@ -2,39 +2,39 @@
   <ion-toolbar>
 
       <div class="menu-option" float-start (click)="doInitFrom()">
-        <ion-icon name="ios-folder-outline"></ion-icon>
+        <ion-icon name="folder-open" size="small"></ion-icon>
         <p>Init from...</p>
       </div>
       <div class="menu-option" [ngClass]="{'menu-disabled': true}" float-start (click)="doNewProject()">
-        <ion-icon name="ios-folder-outline"></ion-icon>
+        <ion-icon name="folder-open" size="small"></ion-icon>
         <p>New Project</p>
       </div>
       <div class="menu-option" float-start (click)="doOpenProject()">
-        <ion-icon name="ios-folder-open-outline"></ion-icon>
+        <ion-icon name="folder" size="small"></ion-icon>
         <p>Open Project</p>
       </div>
       <div class="menu-option" float-start [ngClass]="{'menu-disabled': !projectNeedsSaving}" (click)="doSaveProject()">
-        <ion-icon name="md-download"></ion-icon>
+        <ion-icon name="md-download" size="small"></ion-icon>
         <p>Save Project</p>
       </div>
       <div class="menu-option" float-start [ngClass]="{'menu-disabled': !langTools.isTranslationsSavingRequired()}" (click)="doSaveTranslations()">
-        <ion-icon name="md-chatboxes"></ion-icon>
+        <ion-icon name="md-chatboxes" size="small"></ion-icon>
         <p>Save Translations</p>
       </div>
       <div class="menu-option" float-start [ngClass]="{'menu-disabled': !projectReady}" (click)="doAddRootNode()">
-        <ion-icon name="md-add-circle"></ion-icon>
+        <ion-icon name="md-add-circle" size="small"></ion-icon>
         <p>Root</p>
       </div>
       <div class="menu-option" float-start [ngClass]="{'menu-disabled': !addNodeOrIdReady}" (click)="doAddNode()">
-        <ion-icon name="md-add"></ion-icon>
+        <ion-icon name="md-add" size="small"></ion-icon>
         <p>Node</p>
       </div>
       <div class="menu-option" float-start [ngClass]="{'menu-disabled': !addNodeOrIdReady}" (click)="doAddId()">
-        <ion-icon name="md-add"></ion-icon>
+        <ion-icon name="md-add" size="small"></ion-icon>
         <p>Id</p>
       </div>
       <div class="menu-option" float-start [ngClass]="{'menu-disabled': !removeNodeReady}" (click)="doRemoveCurrent()">
-        <ion-icon name="md-remove"></ion-icon>
+        <ion-icon name="md-remove" size="small"></ion-icon>
         <p>Delete</p>
       </div>
 

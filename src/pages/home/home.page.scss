@@ -1,11 +1,10 @@
-page-home {
     .menu-option {
         cursor: pointer;
         text-align: center;
         margin: 5px;
 
         ion-icon {
-            color: map-get($colors, forest);
+            color: var(--ion-color-dark-tint);
             margin-top: 5px;
             margin-bottom: 5px;
             font-size: 2rem;
@@ -18,10 +17,10 @@ page-home {
 
     .menu-disabled {
         cursor: default;
-        color: map-get($colors, sleek-grey);
+        color: var(--ion-color-medium-tint);
 
         ion-icon {
-            color: map-get($colors, sleek-grey);
+            color: var(--ion-color-medium-tint);
         }
     }
 
@@ -49,4 +48,4 @@ page-home {
     .sl-translations-container {
         flex-grow: 1;
     }
-}
+
