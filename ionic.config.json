@@ -1,8 +1,7 @@
 {
   "name": "slang-ed",
-  "app_id": "",
-  "type": "ionic-angular",
   "integrations": {
     "cordova": {}
-  }
+  },
+  "type": "angular"
 }

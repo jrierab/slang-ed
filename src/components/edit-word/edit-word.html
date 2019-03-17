@@ -7,7 +7,7 @@
   </h3>
   <ng-container *ngIf="isLeaf">
   <div *ngFor="let lang of langs">
-    <span>{{ lang.lang }}: </span>
+    <span class="word-language">{{ lang.lang }}: </span>
     <input type="text" [(ngModel)]="lang.value" (ngModelChange)="updatesWord($event)">
   </div>
   </ng-container>

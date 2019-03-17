@@ -11,7 +11,8 @@ import { LangToolsService } from '../../providers/lang-tools-service';
  */
 @Component({
   selector: 'edit-word',
-  templateUrl: 'edit-word.html'
+  templateUrl: 'edit-word.html',
+  styleUrls: ['edit-word.scss']
 })
 export class EditWordComponent {
   word: langNodeObject;
