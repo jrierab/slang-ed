@@ -27,24 +27,26 @@ export class UndoService {
     this.currentStatus = {key: "Init", contents: JSON.stringify(translations)};
     this.history.push({key: this.currentStatus.key, contents: this.currentStatus.contents});
     this.showHistory("* clearHistory");
-    //this.rememberThisHistory(, translations);
-    //this.prevStatus = this.history[0].contents;
-    //this.currentStatus = null;
   }
 
   rememberThisHistory(key: string, translations: langTranslationsObject): void {
     const newStatus : undoObject = {key: key, contents: JSON.stringify(translations)};
     const differs: boolean = newStatus.contents !== this.currentStatus.contents;
     
-    console.log("- Current key: "+this.currentStatus.key);
+    // console.log("- Current key: "+key+" stored key: "+this.currentStatus.key, translations.root.nodes[1]['key']) ;
+    
     //console.log(newStatus);
-
+    
     if(differs) {
-      key = this.currentStatus.key;
-      this.history.push({key: this.currentStatus.key, contents: newStatus.contents});
+      const stored = JSON.parse(this.currentStatus.contents);
+      const value = stored.root.nodes[1]['key'];
+      // console.log("Stored ", stored.root.nodes[1]['key']);
+
+      const newKey = this.currentStatus.key;
+      this.history.push({key: this.currentStatus.key, contents: this.currentStatus.contents});
       this.future.length = 0;
       this.currentStatus = newStatus;
-      this.showHistory("* Add to history: "+key);
+      this.showHistory("* Add to history: "+newKey+ " with value "+value+" because of "+key);
 
     } else {
       this.currentStatus.key = key;
@@ -61,8 +63,24 @@ export class UndoService {
   }
 
   undo(translations: langTranslationsObject): langTranslationsObject {
-    const currentTranslations : string = JSON.stringify(translations);
-    let last : undoObject = this.history.pop();
+    // console.log("UNDO current ", translations.root.nodes[1]['key']);
+    const newStatus : undoObject = {key: this.currentStatus.key, contents: JSON.stringify(translations)};
+    const differs: boolean = newStatus.contents !== this.currentStatus.contents;
+
+    const stored = JSON.parse(this.currentStatus.contents);
+    // console.log("UNDO stored ", stored.root.nodes[1]['key']);
+
+
+    //const currentTranslations : string = JSON.stringify(translations);
+    let last : undoObject = (differs? this.currentStatus: this.history.pop());
+    //let last : undoObject = this.history.pop();
+
+    const storedLast : langTranslationsObject = JSON.parse(last.contents);
+    // console.log("UNDO last ", storedLast.root.nodes[1]['key']);
+    
+    // console.log("UNDO: "+(differs? "differs": "equal"));
+
+    // newStatus.key = "UNDO "+last.key;
 
     /*
     if (last.contents === currentStatus && this.history.length > 1) {
@@ -72,11 +90,15 @@ export class UndoService {
     }
     */
 
-    this.currentStatus = last;
-    this.future.push({key: "Undo: "+last.key, contents: currentTranslations});
+    //this.currentStatus = last;
+    //this.future.push({key: "Undo: "+last.key, contents: last.contents});
 
     this.showHistory("UNDO");
-    return JSON.parse(last.contents);
+
+    // this.currentStatus = (differs? newStatus: {...this.history[this.history.length - 1]});
+    this.currentStatus = last;
+
+    return storedLast;
   }
   
   redo(translations: langTranslationsObject): langTranslationsObject {
