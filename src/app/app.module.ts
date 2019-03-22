@@ -11,14 +11,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 // ngx-translate
-import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
-import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { LangService } from '../providers/lang-service';
 import { ElectronProvider } from '../providers/electron-provider';
 import { LangToolsService } from '../providers/lang-tools-service';
-import { ComponentsModule } from "../components/components.module"
+import { ComponentsModule } from '../components/components.module';
 import { UndoService } from '../providers/undo-service';
 
 // Translations
@@ -30,18 +30,18 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
-    BrowserModule, 
+    BrowserModule,
     FormsModule,
     HttpClientModule,
     ComponentsModule,
     TranslateModule.forRoot({
       loader: {
-          provide: TranslateLoader,
-          useFactory: (createTranslateLoader),
-          deps: [HttpClient]
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
       }
     }),
-	  IonicModule.forRoot(), AppRoutingModule],
+    IonicModule.forRoot(), AppRoutingModule],
   providers: [
     StatusBar,
     SplashScreen,
@@ -53,4 +53,4 @@ export function createTranslateLoader(http: HttpClient) {
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
