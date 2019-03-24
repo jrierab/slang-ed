@@ -12,109 +12,92 @@ import { LangTranslationsObject } from '../customTypes/langObject.types';
 @Injectable()
 export class UndoService {
 
-  private history: Array<UndoObject> = [];
-  private future: Array<UndoObject> = [];
+    private history: Array<UndoObject> = [];
+    private future: Array<UndoObject> = [];
 
-  private currentStatus: UndoObject = null;
+    private currentHistoryStatus: UndoObject = null;
 
-  constructor() {
-    console.log('### UndoService');
-  }
-
-  clearHistory(translations: LangTranslationsObject): void {
-    this.history.length = 0;
-    this.future.length = 0;
-    this.currentStatus = { key: 'Init', contents: JSON.stringify(translations) };
-    this.history.push({ key: this.currentStatus.key, contents: this.currentStatus.contents });
-    this.showHistory('* clearHistory');
-  }
-
-  rememberThisHistory(key: string, translations: LangTranslationsObject): void {
-    const newStatus: UndoObject = { key: key, contents: JSON.stringify(translations) };
-    const differs: boolean = newStatus.contents !== this.currentStatus.contents;
-
-    // console.log("- Current key: "+key+" stored key: "+this.currentStatus.key, translations.root.nodes[1]['key']) ;
-
-    // console.log(newStatus);
-
-    if (differs) {
-      const stored = JSON.parse(this.currentStatus.contents);
-      const value = stored.root.nodes[1]['key'];
-      // console.log("Stored ", stored.root.nodes[1]['key']);
-
-      const newKey = this.currentStatus.key;
-      this.history.push({ key: this.currentStatus.key, contents: this.currentStatus.contents });
-      this.future.length = 0;
-      this.currentStatus = newStatus;
-      this.showHistory('* Add to history: ' + newKey + ' with value ' + value + ' because of ' + key);
-
-    } else {
-      this.currentStatus.key = key;
-      this.showHistory('- Update key: ' + key);
+    constructor() {
+        console.log('### UndoService');
     }
-  }
 
-  hasHistory(): boolean {
-    return this.history.length > 1;
-  }
-
-  hasFuture(): boolean {
-    return this.future.length > 0;
-  }
-
-  undo(translations: LangTranslationsObject): LangTranslationsObject {
-    // console.log("UNDO current ", translations.root.nodes[1]['key']);
-    const newStatus: UndoObject = { key: this.currentStatus.key, contents: JSON.stringify(translations) };
-    const differs: boolean = newStatus.contents !== this.currentStatus.contents;
-
-    const stored = JSON.parse(this.currentStatus.contents);
-    // console.log("UNDO stored ", stored.root.nodes[1]['key']);
-
-
-    // const currentTranslations : string = JSON.stringify(translations);
-    const last: UndoObject = (differs ? this.currentStatus : this.history.pop());
-    // let last : undoObject = this.history.pop();
-
-    const storedLast: LangTranslationsObject = JSON.parse(last.contents);
-    // console.log("UNDO last ", storedLast.root.nodes[1]['key']);
-
-    // console.log("UNDO: "+(differs? "differs": "equal"));
-
-    // newStatus.key = "UNDO "+last.key;
-
-    /*
-    if (last.contents === currentStatus && this.history.length > 1) {
-      // Something was added, but no changes have been made. Remove another brick
-      last = this.history.pop();
-      this.showHistory("Remove another key because last is the same (no edits made)");
+    clearHistory(translations: LangTranslationsObject): void {
+        this.history.length = 0;
+        this.future.length = 0;
+        this.currentHistoryStatus = { key: 'Init', contents: JSON.stringify(translations) };
+        this.history.push({ key: this.currentHistoryStatus.key, contents: this.currentHistoryStatus.contents });
+        this.showHistory('* clearHistory');
     }
-    */
 
-    // this.currentStatus = last;
-    // this.future.push({key: "Undo: "+last.key, contents: last.contents});
+    rememberThisHistory(key: string, translations: LangTranslationsObject): void {
+        const currentStatus: UndoObject = { key: key, contents: JSON.stringify(translations) };
+        const differs: boolean = currentStatus.contents !== this.currentHistoryStatus.contents;
 
-    this.showHistory('UNDO');
+        if (differs) {
+            // Adds pending history and remember current status
+            const stored = JSON.parse(this.currentHistoryStatus.contents);
+            const value = stored.root.nodes[1]['key'];
 
-    // this.currentStatus = (differs? newStatus: {...this.history[this.history.length - 1]});
-    this.currentStatus = last;
+            const newKey = this.currentHistoryStatus.key;
+            this.history.push({ key: this.currentHistoryStatus.key, contents: this.currentHistoryStatus.contents });
+            this.future.length = 0;
+            this.currentHistoryStatus = currentStatus;
+            this.showHistory('* Add to history: ' + newKey + ' with value ' + value + ' because of ' + key);
 
-    return storedLast;
-  }
+        } else {
+            //  Simply updates the current key
+            this.currentHistoryStatus.key = key;
+            this.showHistory('- Update key: ' + key);
+        }
+    }
 
-  redo(translations: LangTranslationsObject): LangTranslationsObject {
-    const currentTranslations: string = JSON.stringify(translations);
-    const last: UndoObject = this.future.pop();
-    this.history.push({ key: 'Redo: ' + last.key, contents: currentTranslations });
-    this.currentStatus = last;
+    hasHistory(): boolean {
+        return this.history.length > 1;
+    }
 
-    this.showHistory('REDO');
-    return JSON.parse(last.contents);
-  }
+    hasFuture(): boolean {
+        return this.future.length > 0;
+    }
 
-  showHistory(msg: string) {
-    console.log(msg);
-    this.history.forEach((h, i) => console.log(' - ' + i + ': ' + h.key));
-    this.future.forEach((h, i) => console.log(' + ' + i + ': ' + h.key));
-  }
+    undo(translations: LangTranslationsObject): LangTranslationsObject {
+        const curentStatus: UndoObject = { key: this.currentHistoryStatus.key, contents: JSON.stringify(translations) };
+        const differs: boolean = curentStatus.contents !== this.currentHistoryStatus.contents;
+        const lastHistoryStatus: UndoObject = (differs ? this.currentHistoryStatus : this.history.pop());
+
+        const lastHistoryObject: LangTranslationsObject = JSON.parse(lastHistoryStatus.contents);
+
+        this.showHistory('UNDO');
+
+        // Remember the current status
+        this.currentHistoryStatus = lastHistoryStatus;
+
+        // Remember the future
+        this.future.push({ key: curentStatus.key, contents: curentStatus.contents });
+
+        return lastHistoryObject;
+    }
+
+    redo(translations: LangTranslationsObject): LangTranslationsObject {
+        const curentStatus: UndoObject = { key: this.currentHistoryStatus.key, contents: JSON.stringify(translations) };
+        const differs: boolean = curentStatus.contents !== this.currentHistoryStatus.contents;
+
+        if (differs) {
+            // Should store current status in history
+            this.history.push({ key: this.currentHistoryStatus.key, contents: this.currentHistoryStatus.contents });
+        }
+
+        const newFutureStatus: UndoObject = this.future.pop();
+        const newFutureObject: LangTranslationsObject = JSON.parse(newFutureStatus.contents);
+        this.currentHistoryStatus = newFutureStatus;
+
+        this.showHistory('REDO');
+        return newFutureObject;
+    }
+
+    showHistory(msg: string) {
+        console.log(msg);
+        this.history.forEach((h, i) => console.log(' - ' + i + ': ' + h.key));
+        this.future.forEach((h, i) => console.log(' + ' + i + ': ' + h.key));
+    }
 
 }

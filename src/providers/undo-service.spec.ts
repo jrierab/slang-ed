@@ -59,19 +59,17 @@ describe('UndoService', () => {
         translations = JSON.parse(JSON.stringify(t));
     });
 
-    /*
     it('ClearHistory test', () => {
         const myTranslations = JSON.parse(JSON.stringify(translations));
 
         // Init and start
         undoService.clearHistory(myTranslations);
 
-        expect(undoService.hasHistory()).toBe(false, "hasHistory");
-        expect(undoService.hasFuture()).toBe(false, "hasFuture");
+        expect(undoService.hasHistory()).toBe(false, 'hasHistory');
+        expect(undoService.hasFuture()).toBe(false, 'hasFuture');
     });
-    */
 
-    it('Undo/Redo 1 cycle', () => {
+    it('Undo 2 keys, 2 cycles', () => {
         let myTranslations = JSON.parse(JSON.stringify(translations));
 
         // console.log(JSON.stringify(myTranslations));
@@ -84,7 +82,7 @@ describe('UndoService', () => {
             undoService.rememberThisHistory('key_0', myTranslations);
 
             expect(undoService.hasHistory()).toBe(false, 'hasHistory');
-            // expect(undoService.hasFuture()).toBe(false, "hasFuture");
+            expect(undoService.hasFuture()).toBe((i === 1 ? false : true), 'hasFuture (1)');
 
             // Click another key and modify it
             undoService.rememberThisHistory('key_1', myTranslations);
@@ -94,7 +92,7 @@ describe('UndoService', () => {
             undoService.rememberThisHistory('key_2', myTranslations);
 
             expect(undoService.hasHistory()).toBe(true, 'hasHistory');
-            expect(undoService.hasFuture()).toBe(false, 'hasFuture');
+            expect(undoService.hasFuture()).toBe(false, 'hasFuture (2)');
 
             // UNDO - from history
             myTranslations = undoService.undo(myTranslations);
@@ -117,24 +115,49 @@ describe('UndoService', () => {
             expect(myTranslations.root.nodes[1]['key']).toBe('key_1', 'UNDO key_1 (2)');
         }
         expect(undoService.hasHistory()).toBe(false, 'hasHistory');
-        // expect(undoService.hasFuture()).toBe(true, "hasFuture");
+        expect(undoService.hasFuture()).toBe(true, 'hasFuture (3)');
     });
 
-    /*
-    it('#getObservableValue should return value from observable',
-    (done: DoneFn) => {
-    undoService.getObservableValue().subscribe(value => {
-        expect(value).toBe('observable value');
-        done();
-    });
-    });
+    it('Undo/Redo 2 keys, 2 cycles', () => {
+        let myTranslations = JSON.parse(JSON.stringify(translations));
 
-    it('#getPromiseValue should return value from a promise',
-    (done: DoneFn) => {
-    undoService.getPromiseValue().then(value => {
-        expect(value).toBe('promise value');
-        done();
+        // Init and start
+        undoService.clearHistory(myTranslations);
+
+        // Click one key and modify it
+        undoService.rememberThisHistory('key_1', myTranslations);
+        myTranslations.root.nodes[1].key = 'key_1_mod';
+
+        // Click another key - this will store the new data
+        undoService.rememberThisHistory('key_2', myTranslations);
+
+        expect(undoService.hasHistory()).toBe(true, 'hasHistory');
+        expect(undoService.hasFuture()).toBe(false, 'hasFuture');
+
+        // UNDO - from history
+        myTranslations = undoService.undo(myTranslations);
+        console.log('Value returned: ' + myTranslations.root.nodes[1]['key']);
+
+        // Should have recovered
+        expect(myTranslations.root.nodes[1]['key']).toBe('key_1', 'UNDO key_1 (1)');
+        expect(undoService.hasFuture()).toBe(true, 'hasFuture');
+
+        // REDO
+        myTranslations = undoService.redo(myTranslations);
+        console.log('Value returned: ' + myTranslations.root.nodes[1]['key']);
+
+        // Should have recovered the modified value
+        expect(myTranslations.root.nodes[1]['key']).toBe('key_1_mod', 'REDO key_1 (1)');
+        expect(undoService.hasFuture()).toBe(false, 'hasFuture');
+
+        // UNDO - from history
+        myTranslations = undoService.undo(myTranslations);
+        console.log('Value returned: ' + myTranslations.root.nodes[1]['key']);
+
+        // Should have recovered (again)
+        expect(myTranslations.root.nodes[1]['key']).toBe('key_1', 'UNDO key_1 (2)');
+        expect(undoService.hasFuture()).toBe(true, 'hasFuture');
+
+
     });
-    });
-    */
 });
