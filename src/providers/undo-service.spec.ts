@@ -97,7 +97,7 @@ describe('UndoService', () => {
             // UNDO - from history
             myTranslations = undoService.undo(myTranslations);
 
-            console.log('Value returned: ' + myTranslations.root.nodes[1]['key']);
+            // console.log('Value returned: ' + myTranslations.root.nodes[1]['key']);
 
             // Should have recovered
             expect(myTranslations.root.nodes[1]['key']).toBe('key_1', 'UNDO key_1 (1)');
@@ -109,7 +109,7 @@ describe('UndoService', () => {
             // UNDO - from pending currentStatus
             myTranslations = undoService.undo(myTranslations);
 
-            console.log(i + ' >>> Value returned: ' + myTranslations.root.nodes[1]['key']);
+            // console.log(i + ' >>> Value returned: ' + myTranslations.root.nodes[1]['key']);
 
             // Should have recovered
             expect(myTranslations.root.nodes[1]['key']).toBe('key_1', 'UNDO key_1 (2)');
@@ -136,7 +136,7 @@ describe('UndoService', () => {
 
         // UNDO - from history
         myTranslations = undoService.undo(myTranslations);
-        console.log('Value returned: ' + myTranslations.root.nodes[1]['key']);
+        // console.log('Value returned: ' + myTranslations.root.nodes[1]['key']);
 
         // Should have recovered
         expect(myTranslations.root.nodes[1]['key']).toBe('key_1', 'UNDO key_1 (1)');
@@ -144,7 +144,7 @@ describe('UndoService', () => {
 
         // REDO
         myTranslations = undoService.redo(myTranslations);
-        console.log('Value returned: ' + myTranslations.root.nodes[1]['key']);
+        // console.log('Value returned: ' + myTranslations.root.nodes[1]['key']);
 
         // Should have recovered the modified value
         expect(myTranslations.root.nodes[1]['key']).toBe('key_1_mod', 'REDO key_1 (1)');
@@ -152,12 +152,75 @@ describe('UndoService', () => {
 
         // UNDO - from history
         myTranslations = undoService.undo(myTranslations);
-        console.log('Value returned: ' + myTranslations.root.nodes[1]['key']);
+        // console.log('Value returned: ' + myTranslations.root.nodes[1]['key']);
 
         // Should have recovered (again)
         expect(myTranslations.root.nodes[1]['key']).toBe('key_1', 'UNDO key_1 (2)');
         expect(undoService.hasFuture()).toBe(true, 'hasFuture');
 
+        // Now, test deep UNDO/REDO
 
+        // key 0 and modify it
+        undoService.rememberThisHistory('key_0', myTranslations);
+        myTranslations.root.nodes[0].key = 'key_0_deep';
+
+        // key 1 and modify it
+        undoService.rememberThisHistory('key_1', myTranslations);
+        myTranslations.root.nodes[1].key = 'key_1_deep';
+
+        // key 0 language and modify it
+        undoService.rememberThisHistory('key_0_value', myTranslations);
+        myTranslations.root.nodes[0].nodes[0].nodes[0].value = 'value_0_deep';
+
+        // key 0 language and modify it
+        undoService.rememberThisHistory('key_1_value', myTranslations);
+        myTranslations.root.nodes[1].nodes[1].nodes[1].value = 'value_1_deep';
+
+        // undoService.rememberThisHistory('key_2', myTranslations);
+
+        for (let i = 0; i < 2; i++) {
+            // console.log("myTranslations.root.nodes[0].key", myTranslations.root.nodes[0].key);
+            // console.log("myTranslations.root.nodes[1].key", myTranslations.root.nodes[1].key);
+            // console.log("myTranslations.root.nodes[0].nodes[0].nodes[0].value", myTranslations.root.nodes[0].nodes[0].nodes[0].value);
+            // console.log("myTranslations.root.nodes[1].nodes[1].nodes[1].value", myTranslations.root.nodes[1].nodes[1].nodes[1].value);
+
+            myTranslations = undoService.undo(myTranslations);
+            expect(myTranslations.root.nodes[1].nodes[1].nodes[1].value).toBe('value_en_1_1', 'UNDO value_1_deep');
+            expect(undoService.hasHistory()).toBe(true, 'hasHistory');
+            expect(undoService.hasFuture()).toBe(true, 'hasFuture');
+            myTranslations = undoService.undo(myTranslations);
+            expect(myTranslations.root.nodes[0].nodes[0].nodes[0].value).toBe('value_ca_0_0', 'UNDO value_0_deep');
+            myTranslations = undoService.undo(myTranslations);
+            expect(myTranslations.root.nodes[1].key).toBe('key_1', 'UNDO key_1');
+            myTranslations = undoService.undo(myTranslations);
+            expect(myTranslations.root.nodes[0].key).toBe('key_0', 'UNDO key_0');
+
+            // console.log("myTranslations.root.nodes[0].key", myTranslations.root.nodes[0].key);
+            // console.log("myTranslations.root.nodes[1].key", myTranslations.root.nodes[1].key);
+            // console.log("myTranslations.root.nodes[0].nodes[0].nodes[0].value", myTranslations.root.nodes[0].nodes[0].nodes[0].value);
+            // console.log("myTranslations.root.nodes[1].nodes[1].nodes[1].value", myTranslations.root.nodes[1].nodes[1].nodes[1].value);
+
+            expect(undoService.hasHistory()).toBe(false, 'hasHistory');
+            expect(undoService.hasFuture()).toBe(true, 'hasFuture');
+
+            myTranslations = undoService.redo(myTranslations);
+            expect(myTranslations.root.nodes[0].key).toBe('key_0_deep', 'REDO key_0_deep');
+            myTranslations = undoService.redo(myTranslations);
+            expect(myTranslations.root.nodes[1].key).toBe('key_1_deep', 'REDO key_1_deep');
+            myTranslations = undoService.redo(myTranslations);
+            expect(myTranslations.root.nodes[0].nodes[0].nodes[0].value).toBe('value_0_deep', 'REDO value_0_deep');
+            expect(undoService.hasHistory()).toBe(true, 'hasHistory');
+            expect(undoService.hasFuture()).toBe(true, 'hasFuture');
+            myTranslations = undoService.redo(myTranslations);
+            expect(myTranslations.root.nodes[1].nodes[1].nodes[1].value).toBe('value_1_deep', 'REDO value_1_deep');
+
+            // console.log("myTranslations.root.nodes[0].key", myTranslations.root.nodes[0].key);
+            // console.log("myTranslations.root.nodes[1].key", myTranslations.root.nodes[1].key);
+            // console.log("myTranslations.root.nodes[0].nodes[0].nodes[0].value", myTranslations.root.nodes[0].nodes[0].nodes[0].value);
+            // console.log("myTranslations.root.nodes[1].nodes[1].nodes[1].value", myTranslations.root.nodes[1].nodes[1].nodes[1].value);
+
+            expect(undoService.hasHistory()).toBe(true, 'hasHistory');
+            expect(undoService.hasFuture()).toBe(false, 'hasFuture');
+        }
     });
 });

@@ -26,7 +26,7 @@ export class UndoService {
         this.future.length = 0;
         this.currentHistoryStatus = { key: 'Init', contents: JSON.stringify(translations) };
         this.history.push({ key: this.currentHistoryStatus.key, contents: this.currentHistoryStatus.contents });
-        this.showHistory('* clearHistory');
+        // this.showHistory('* clearHistory');
     }
 
     rememberThisHistory(key: string, translations: LangTranslationsObject): void {
@@ -42,12 +42,12 @@ export class UndoService {
             this.history.push({ key: this.currentHistoryStatus.key, contents: this.currentHistoryStatus.contents });
             this.future.length = 0;
             this.currentHistoryStatus = currentStatus;
-            this.showHistory('* Add to history: ' + newKey + ' with value ' + value + ' because of ' + key);
+            // this.showHistory('* Add to history: ' + newKey + ' with value ' + value + ' because of ' + key);
 
         } else {
             //  Simply updates the current key
             this.currentHistoryStatus.key = key;
-            this.showHistory('- Update key: ' + key);
+            // this.showHistory('- Update key: ' + key);
         }
     }
 
@@ -66,7 +66,7 @@ export class UndoService {
 
         const lastHistoryObject: LangTranslationsObject = JSON.parse(lastHistoryStatus.contents);
 
-        this.showHistory('UNDO');
+        // this.showHistory('UNDO');
 
         // Remember the current status
         this.currentHistoryStatus = lastHistoryStatus;
@@ -82,22 +82,25 @@ export class UndoService {
         const differs: boolean = curentStatus.contents !== this.currentHistoryStatus.contents;
 
         if (differs) {
-            // Should store current status in history
+            // Should store the previous status in history
             this.history.push({ key: this.currentHistoryStatus.key, contents: this.currentHistoryStatus.contents });
         }
+        // Store the current status in history
+        this.history.push({ key: curentStatus.key, contents: curentStatus.contents });
 
         const newFutureStatus: UndoObject = this.future.pop();
         const newFutureObject: LangTranslationsObject = JSON.parse(newFutureStatus.contents);
         this.currentHistoryStatus = newFutureStatus;
 
-        this.showHistory('REDO');
+        // this.showHistory('REDO');
         return newFutureObject;
     }
 
+    /*
     showHistory(msg: string) {
         console.log(msg);
         this.history.forEach((h, i) => console.log(' - ' + i + ': ' + h.key));
         this.future.forEach((h, i) => console.log(' + ' + i + ': ' + h.key));
     }
-
+    */
 }
