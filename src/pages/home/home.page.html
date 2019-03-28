@@ -2,70 +2,82 @@
     <ion-toolbar color="secondary">
         <div class="menu-option tooltip" float-start (click)="doInitFrom()">
             <ion-icon src="assets/icon/folder.svg"></ion-icon>
-            <p class="tooltiptext tooltip-right">Init from...</p>
+            <p class="tooltiptext tooltip-right">{{ "Menu.InitFrom" | translate }}</p>
         </div>
         <div class="menu-option tooltip" [ngClass]="{'menu-disabled': true}" float-start (click)="doNewProject()">
             <ion-icon src="assets/icon/folder_new.svg"></ion-icon>
-            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': true}">New Project</p>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': true}">{{ "Menu.NewProject" | translate }}</p>
         </div>
         <div class="menu-option tooltip" [ngClass]="{'menu-disabled': true}" float-start (click)="doOpenProject()">
             <ion-icon src="assets/icon/folder_clean.svg"></ion-icon>
-            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': true}">Open Project</p>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': true}">{{ "Menu.OpenProject" | translate }}</p>
         </div>
         <div class="menu-option tooltip" float-start [ngClass]="{'menu-disabled': true || !projectNeedsSaving}"
             (click)="doSaveProject()">
             <ion-icon src="assets/icon/folder-save.svg"></ion-icon>
-            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': true || !projectNeedsSaving}">Save Project</p>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': true || !projectNeedsSaving}">
+                {{ "Menu.SaveProject" | translate }}</p>
         </div>
         <div class="menu-option tooltip" float-start
             [ngClass]="{'menu-disabled': !langTools.isTranslationsSavingRequired()}" (click)="doSaveTranslations()">
             <ion-icon src="assets/icon/harddisk.svg"></ion-icon>
-            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !langTools.isTranslationsSavingRequired()}">Save
-                Translations</p>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !langTools.isTranslationsSavingRequired()}">
+                {{ "Menu.SaveTranslations" | translate }}</p>
         </div>
         <div class="menu-option tooltip" float-start [ngClass]="{'menu-disabled': !projectReady}"
             (click)="doAddRootNode()">
             <ion-icon src="assets/icon/family-tree.svg"></ion-icon>
-            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !projectReady}">Add Root</p>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !projectReady}">{{ "Menu.AddRoot" | translate }}
+            </p>
         </div>
         <div class="menu-option tooltip" float-start [ngClass]="{'menu-disabled': !addNodeOrIdReady}"
             (click)="doAddNode()">
             <ion-icon src="assets/icon/family-tree-node.svg"></ion-icon>
-            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !addNodeOrIdReady}">Add Node</p>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !addNodeOrIdReady}">
+                {{ "Menu.AddNode" | translate }}</p>
         </div>
         <div class="menu-option tooltip" float-start [ngClass]="{'menu-disabled': !addNodeOrIdReady}"
             (click)="doAddId()">
             <ion-icon src="assets/icon/family-tree-id.svg"></ion-icon>
-            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !addNodeOrIdReady}">Add Id</p>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !addNodeOrIdReady}">
+                {{ "Menu.AddId" | translate }}</p>
         </div>
         <div class="menu-option tooltip" float-start [ngClass]="{'menu-disabled': !removeNodeReady}"
             (click)="doRemoveCurrent()">
             <ion-icon src="assets/icon/minus.svg"></ion-icon>
-            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !removeNodeReady}">Delete</p>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !removeNodeReady}">
+                {{ "Menu.Delete" | translate }}</p>
         </div>
 
         <div class="menu-option tooltip" float-start [ngClass]="{'menu-disabled': !undoService.hasHistory()}"
             (click)="doUndo()">
             <ion-icon src="assets/icon/undo.svg"></ion-icon>
-            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !undoService.hasHistory()}">Undo</p>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !undoService.hasHistory()}">
+                {{ "Menu.Undo" | translate }}</p>
         </div>
         <div class="menu-option tooltip" float-start [ngClass]="{'menu-disabled': !undoService.hasFuture()}"
             (click)="doRedo()">
             <ion-icon src="assets/icon/redo.svg"></ion-icon>
-            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !undoService.hasFuture()}">Redo</p>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !undoService.hasFuture()}">
+                {{ "Menu.Redo" | translate }}</p>
         </div>
         <div class="menu-option tooltip" float-end [ngClass]="{'menu-disabled': true}" (click)="doShowAbout()">
             <ion-icon src="assets/icon/bunny.svg"></ion-icon>
-            <p class="tooltiptext tooltip-left" [ngClass]="{'tooltiptext-disabled': true}">About</p>
+            <p class="tooltiptext tooltip-left" [ngClass]="{'tooltiptext-disabled': true}">
+                {{ "Menu.About" | translate }}</p>
         </div>
         <div class="menu-option tooltip" float-end [ngClass]="{'menu-disabled': true}" (click)="doOpenSettings()">
             <ion-icon src="assets/icon/settings.svg"></ion-icon>
-            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': true}">Settings</p>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': true}">{{ "Menu.Settings" | translate }}</p>
         </div>
     </ion-toolbar>
 </ion-header>
 
 <ion-content no-padding>
+    <div class="language-folder" *ngIf="projectReady">
+        <span class="lang-folder-title">{{ "Menu.ngxTranslateDir" | translate }}:</span>
+        {{ translations.options.i18nFolder }}
+    </div>
 
     <div class="sl-main-container">
 

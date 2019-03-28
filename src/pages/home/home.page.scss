@@ -81,6 +81,14 @@ h3 {
     }
 }
 
+.language-folder {
+    padding: 5px;
+    background-color: cadetblue;
+    color: white;
+    .lang-folder-title {
+        font-weight: bold;
+    }
+}
 .sl-main-container {
     display: flex;
     flex-direction: row;

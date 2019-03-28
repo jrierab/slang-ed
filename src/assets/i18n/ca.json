@@ -11,8 +11,18 @@
     "langs.edit_translations": "Editar traduccions",
     "langs.keys": "Claus a traduir",
 
+    "Menu.About": "Sobre",
+    "Menu.AddId": "Afegir paraula",
+    "Menu.AddNode": "Afegir Node",
+    "Menu.AddRoot": "Afegir Arrel",
+    "Menu.Delete": "Esborrar",
     "Menu.InitFrom": "Inicia des de...",
     "Menu.NewProject": "Nou Prrojece",
+    "Menu.ngxTranslateDir": "Directori fitxers ngx-translate",
     "Menu.OpenProject": "Obrir Projecte",
-    "Menu.SaveProject": "Guardar Projecte"
+    "Menu.Redo": "Refés",
+    "Menu.SaveProject": "Guardar Projecte",
+    "Menu.SaveTranslations": "Guardar Traduccions",
+    "Menu.Settings": "Configuració",
+    "Menu.Undo": "Desfés"
 }
