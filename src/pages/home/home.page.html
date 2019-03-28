@@ -1,72 +1,91 @@
 <ion-header>
-  <ion-toolbar color="primary">
+    <ion-toolbar color="secondary">
+        <div class="menu-option tooltip" float-start (click)="doInitFrom()">
+            <ion-icon src="assets/icon/folder.svg"></ion-icon>
+            <p class="tooltiptext tooltip-right">Init from...</p>
+        </div>
+        <div class="menu-option tooltip" [ngClass]="{'menu-disabled': true}" float-start (click)="doNewProject()">
+            <ion-icon src="assets/icon/folder_new.svg"></ion-icon>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': true}">New Project</p>
+        </div>
+        <div class="menu-option tooltip" [ngClass]="{'menu-disabled': true}" float-start (click)="doOpenProject()">
+            <ion-icon src="assets/icon/folder_clean.svg"></ion-icon>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': true}">Open Project</p>
+        </div>
+        <div class="menu-option tooltip" float-start [ngClass]="{'menu-disabled': true || !projectNeedsSaving}"
+            (click)="doSaveProject()">
+            <ion-icon src="assets/icon/folder-save.svg"></ion-icon>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': true || !projectNeedsSaving}">Save Project</p>
+        </div>
+        <div class="menu-option tooltip" float-start
+            [ngClass]="{'menu-disabled': !langTools.isTranslationsSavingRequired()}" (click)="doSaveTranslations()">
+            <ion-icon src="assets/icon/harddisk.svg"></ion-icon>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !langTools.isTranslationsSavingRequired()}">Save
+                Translations</p>
+        </div>
+        <div class="menu-option tooltip" float-start [ngClass]="{'menu-disabled': !projectReady}"
+            (click)="doAddRootNode()">
+            <ion-icon src="assets/icon/family-tree.svg"></ion-icon>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !projectReady}">Add Root</p>
+        </div>
+        <div class="menu-option tooltip" float-start [ngClass]="{'menu-disabled': !addNodeOrIdReady}"
+            (click)="doAddNode()">
+            <ion-icon src="assets/icon/family-tree-node.svg"></ion-icon>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !addNodeOrIdReady}">Add Node</p>
+        </div>
+        <div class="menu-option tooltip" float-start [ngClass]="{'menu-disabled': !addNodeOrIdReady}"
+            (click)="doAddId()">
+            <ion-icon src="assets/icon/family-tree-id.svg"></ion-icon>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !addNodeOrIdReady}">Add Id</p>
+        </div>
+        <div class="menu-option tooltip" float-start [ngClass]="{'menu-disabled': !removeNodeReady}"
+            (click)="doRemoveCurrent()">
+            <ion-icon src="assets/icon/minus.svg"></ion-icon>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !removeNodeReady}">Delete</p>
+        </div>
 
-      <div class="menu-option" float-start (click)="doInitFrom()">
-        <ion-icon name="folder-open" size="small"></ion-icon>
-        <p>Init from...</p>
-      </div>
-      <div class="menu-option" [ngClass]="{'menu-disabled': true}" float-start (click)="doNewProject()">
-        <ion-icon name="folder-open" size="small"></ion-icon>
-        <p>New Project</p>
-      </div>
-      <div class="menu-option" float-start (click)="doOpenProject()">
-        <ion-icon name="folder" size="small"></ion-icon>
-        <p>Open Project</p>
-      </div>
-      <div class="menu-option" float-start [ngClass]="{'menu-disabled': !projectNeedsSaving}" (click)="doSaveProject()">
-        <ion-icon name="md-download" size="small"></ion-icon>
-        <p>Save Project</p>
-      </div>
-      <div class="menu-option" float-start [ngClass]="{'menu-disabled': !langTools.isTranslationsSavingRequired()}" (click)="doSaveTranslations()">
-        <ion-icon name="md-chatboxes" size="small"></ion-icon>
-        <p>Save Translations</p>
-      </div>
-      <div class="menu-option" float-start [ngClass]="{'menu-disabled': !projectReady}" (click)="doAddRootNode()">
-        <ion-icon name="md-add-circle" size="small"></ion-icon>
-        <p>Root</p>
-      </div>
-      <div class="menu-option" float-start [ngClass]="{'menu-disabled': !addNodeOrIdReady}" (click)="doAddNode()">
-        <ion-icon name="md-add" size="small"></ion-icon>
-        <p>Node</p>
-      </div>
-      <div class="menu-option" float-start [ngClass]="{'menu-disabled': !addNodeOrIdReady}" (click)="doAddId()">
-        <ion-icon name="md-add" size="small"></ion-icon>
-        <p>Id</p>
-      </div>
-      <div class="menu-option" float-start [ngClass]="{'menu-disabled': !removeNodeReady}" (click)="doRemoveCurrent()">
-        <ion-icon name="md-remove" size="small"></ion-icon>
-        <p>Delete</p>
-      </div>
-
-      <div class="menu-option" float-end (click)="doOpenSettings()">
-        <ion-icon name="options" size="small"></ion-icon>
-        <p>Settings</p>
-      </div>
-    
-  </ion-toolbar>
+        <div class="menu-option tooltip" float-start [ngClass]="{'menu-disabled': !undoService.hasHistory()}"
+            (click)="doUndo()">
+            <ion-icon src="assets/icon/undo.svg"></ion-icon>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !undoService.hasHistory()}">Undo</p>
+        </div>
+        <div class="menu-option tooltip" float-start [ngClass]="{'menu-disabled': !undoService.hasFuture()}"
+            (click)="doRedo()">
+            <ion-icon src="assets/icon/redo.svg"></ion-icon>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !undoService.hasFuture()}">Redo</p>
+        </div>
+        <div class="menu-option tooltip" float-end [ngClass]="{'menu-disabled': true}" (click)="doShowAbout()">
+            <ion-icon src="assets/icon/bunny.svg"></ion-icon>
+            <p class="tooltiptext tooltip-left" [ngClass]="{'tooltiptext-disabled': true}">About</p>
+        </div>
+        <div class="menu-option tooltip" float-end [ngClass]="{'menu-disabled': true}" (click)="doOpenSettings()">
+            <ion-icon src="assets/icon/settings.svg"></ion-icon>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': true}">Settings</p>
+        </div>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content no-padding>
 
-  <div class="sl-main-container">
+    <div class="sl-main-container">
 
-    <div class="sl-list-container">
-      <h3>{{ "langs.keys" | translate }}</h3>
-      
-      <list-word class="sl-list-word" *ngFor="let word of words" [word]="word" [list]="level"></list-word>
+        <div class="sl-list-container">
+            <h3>{{ "langs.keys" | translate }}</h3>
+
+            <list-word class="sl-list-word" *ngFor="let word of words" [word]="word" [list]="level"></list-word>
+        </div>
+
+        <div class="sl-translations-container">
+            <h3>
+                {{ "langs.edit_translations" | translate }}
+                <span *ngFor="let lang of translations.languages">[{{ lang }}]</span>
+            </h3>
+
+            <edit-word></edit-word>
+        </div>
     </div>
 
-    <div class="sl-translations-container">
-      <h3>
-        {{ "langs.edit_translations" | translate }}
-        <span *ngFor="let lang of translations.languages">[{{ lang }}]</span>
-      </h3>
 
-      <edit-word></edit-word>
-    </div>
-  </div>
-
-
-  <!--button ion-button (click)="doZoomIn()">+</button>
+    <!--button ion-button (click)="doZoomIn()">+</button>
   <button ion-button (click)="doZoomOut()">-</button-->
 </ion-content>

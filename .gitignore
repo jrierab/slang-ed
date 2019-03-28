@@ -42,3 +42,7 @@ APK/
 # icons
 resources/android/
 resources/ios/
+
+src/assets/i18n/ca\.json\.bak
+
+src/assets/i18n/en\.json\.bak

@@ -1,14 +1,18 @@
 {
-	"APP.title": "Simple Lang Files Editor",
-	"APP.Home": "Home",
-	"APP.About": "About",
-	"APP.Contact": "Contact",
-	"APP.Done": "Done",
-	"APP.Cancel": "Cancel",
-	"APP.language": "Language",
-	"APP.lang-current": "Current language",
-	"langs" : {
-		"keys": "Keys to translate",
-		"edit_translations": "Edit translations"
-	}
+    "APP.About": "About",
+    "APP.Cancel": "Cancel",
+    "APP.Contact": "Contact",
+    "APP.Done": "Done",
+    "APP.Home": "Home",
+    "APP.lang-current": "Current language",
+    "APP.language": "Language",
+    "APP.title": "Simple Lang Files Editor",
+
+    "langs.edit_translations": "Edit translations",
+    "langs.keys": "Keys to translate",
+
+    "Menu.InitFrom": "Init from...",
+    "Menu.NewProject": "New Project",
+    "Menu.OpenProject": "Open Project",
+    "Menu.SaveProject": "Save Project"
 }

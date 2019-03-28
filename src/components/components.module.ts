@@ -7,18 +7,18 @@ import { ListWordComponent } from './list-word/list-word';
 import { EditWordComponent } from './edit-word/edit-word';
 
 @NgModule({
-	declarations: [
-		ListWordComponent,
-		EditWordComponent
-	],
-	imports: [
-		CommonModule, 
-		FormsModule, 
-		IonicModule
-	],
-	exports: [
-		ListWordComponent,
-		EditWordComponent
-	]
+    declarations: [
+        ListWordComponent,
+        EditWordComponent
+    ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule
+    ],
+    exports: [
+        ListWordComponent,
+        EditWordComponent
+    ]
 })
-export class ComponentsModule {}
+export class ComponentsModule { }

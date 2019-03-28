@@ -1,41 +1,42 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 
 import { ElectronProvider } from '../../providers/electron-provider';
 import { LangToolsService } from '../../providers/lang-tools-service';
 
-import { langFileObject, langTranslationsObject, langNodeObject, langTopicObject } from "../../customTypes/langObject.types"
+import { LangFileObject, LangTranslationsObject, LangNodeObject, LangTopicObject } from '../../customTypes/langObject.types';
+import { UndoService } from '../../providers/undo-service';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss']
 })
-export class HomePage {
-  translations : langTranslationsObject = this.langTools.clearTranslations();
+export class HomePage implements OnInit {
+  private translations: LangTranslationsObject = this.langTools.clearTranslations();
 
-  level : langNodeObject;
-  words : Array<langNodeObject | langTopicObject>;
+  level: LangNodeObject;
+  words: Array<LangNodeObject | LangTopicObject>;
 
-  projectNeedsSaving : boolean = false;
-  projectReady : boolean = false;
-  addNodeOrIdReady : boolean = false;
-  removeNodeReady : boolean = false;
+  projectNeedsSaving = false;
+  projectReady = false;
+  addNodeOrIdReady = false;
+  removeNodeReady = false;
 
-  constructor(  private electron : ElectronProvider,
-                private langTools : LangToolsService,
-                private alertCtrl: AlertController
-              ) 
-  {
+  constructor(private electron: ElectronProvider,
+    private langTools: LangToolsService,
+    private undoService: UndoService,
+    private alertCtrl: AlertController
+  ) {
   }
 
   ngOnInit() {
-    this.langTools.getCurrentlyEditedWord().subscribe((data: langNodeObject)=> {
+    this.langTools.getCurrentlyEditedWord().subscribe((data: LangNodeObject) => {
       this.addNodeOrIdReady = false;
       this.removeNodeReady = false;
-      if(data) {
+      if (data) {
         this.removeNodeReady = true;
-        if(!data.isLeaf) {
+        if (!data.isLeaf) {
           this.addNodeOrIdReady = true;
         }
       }
@@ -43,92 +44,116 @@ export class HomePage {
   }
 
   doNewProject() {
-    console.log("Create New project");
+    console.log('Create New project');
   }
 
   doInitFrom() {
-    let folder = this.electron.selectFolder();
+    const folder = this.electron.selectFolder();
 
-    //console.log("> Selected folder: "+folder);
+    // console.log("> Selected folder: "+folder);
 
-    if(folder) {
-      let path_to_i18n = this.electron.findTranslationsFolder(folder);
+    if (folder) {
+      const path_to_i18n = this.electron.findTranslationsFolder(folder);
 
-      //console.log("> i18n folder: "+path_to_i18n);
+      // console.log("> i18n folder: "+path_to_i18n);
 
-      if(path_to_i18n) {
-        let langFiles : Array<langFileObject> = this.electron.readTranslationsFiles(path_to_i18n);
+      if (path_to_i18n) {
+        const langFiles: Array<LangFileObject> = this.electron.readTranslationsFiles(path_to_i18n);
 
         this.translations = this.langTools.initTranslations(langFiles);
 
         // Remember paths
         this.translations.options.projectFolder = folder;
         this.translations.options.i18nFolder = path_to_i18n;
- 
-        this.level = this.translations.root;
-        this.words = this.level.nodes;
-        this.langTools.sort(this.words as Array<langNodeObject>);
 
-        this.projectNeedsSaving = true;
-        this.projectReady = true;
+        this.doInitFromTranslations(true);
       }
     }
   }
 
+  doInitFromTranslations(shouldInit: boolean = false) {
+    this.level = this.translations.root;
+    this.words = this.level.nodes;
+    // this.langTools.sort(this.words as Array<langNodeObject>);
+    this.doSortTranslations(this.level);
+
+    this.projectNeedsSaving = true;
+    this.projectReady = true;
+
+    if (shouldInit) {
+      this.undoService.clearHistory(this.translations);
+    }
+  }
+
+  doSortTranslations(node: LangNodeObject) {
+    this.langTools.sort(node.nodes as Array<LangNodeObject>);
+    node.nodes.forEach((n: LangNodeObject) => {
+      if (!n.isLeaf) {
+        this.doSortTranslations(n);
+      }
+    });
+  }
+
   doOpenProject() {
-    console.log("Open existing project");
+    console.log('Open existing project');
   }
 
   doSaveProject() {
-    if(this.projectNeedsSaving) {
-      console.log("Save current project");
+    if (this.projectNeedsSaving) {
+      console.log('Save current project');
     }
   }
 
   doSaveTranslations() {
-    if(this.langTools.isTranslationsSavingRequired()) {
-      if( this.electron.writeTranslationFiles(this.translations, false) ) {
+    if (this.langTools.isTranslationsSavingRequired()) {
+      if (this.electron.writeTranslationFiles(this.translations, false)) {
         this.langTools.doTranslationNeedsSaving(false);
       } else {
         this.langTools.doTranslationNeedsSaving(true);
       }
-    }    
+    }
   }
 
   doOpenSettings() {
-    console.log("Open project settings");
+    console.log('Open project settings');
   }
 
   doAddRootNode() {
-    const newNode : langNodeObject = this.langTools.createNodeAtLevel(this.level, "New_Node");
+    this.langTools.doClearEditWord();
+
+    const newNode: LangNodeObject = this.langTools.createNodeAtLevel(this.level, 'New_Node');
     this.projectNeedsSaving = true;
     this.langTools.doTranslationNeedsSaving(true);
     this.langTools.doEditWord(newNode);
   }
-  
+
   doAddNode() {
-    const level : langNodeObject = this.langTools.getCurrentlyEditedWordValue();
-    const newNode : langNodeObject = this.langTools.createNodeAtLevel(level, "New_Node");
+    const level: LangNodeObject = this.langTools.getCurrentlyEditedWordValue();
+
+    this.langTools.doClearEditWord();
+    const newNode: LangNodeObject = this.langTools.createNodeAtLevel(level, 'New_Node');
     this.projectNeedsSaving = true;
     this.langTools.doTranslationNeedsSaving(true);
     this.langTools.doEditWord(newNode);
   }
-  
+
   doAddId() {
-    const level : langNodeObject = this.langTools.getCurrentlyEditedWordValue();
-    const newId : langNodeObject = this.langTools.createIdAtLevel(level, "New_Id");
+    const level: LangNodeObject = this.langTools.getCurrentlyEditedWordValue();
+
+    this.langTools.doClearEditWord();
+    const newId: LangNodeObject = this.langTools.createIdAtLevel(level, 'New_Id');
     this.projectNeedsSaving = true;
     this.langTools.doTranslationNeedsSaving(true);
     this.langTools.doEditWord(newId);
   }
 
   async doRemoveCurrent() {
-    const level : langNodeObject = this.langTools.getCurrentlyEditedWordValue();
+    const level: LangNodeObject = this.langTools.getCurrentlyEditedWordValue();
     const nodes = this.langTools.countDescendants(level);
 
     const confirm = await this.alertCtrl.create({
-      header: 'Remove "'+level.full_key+'" ?',
-      message: 'This will DELETE '+nodes+' language definitions !',
+      header: 'Remove "' + level.full_key + '" ?',
+      message: 'This will DELETE ' + nodes + ' language definitions !',
       buttons: [
         {
           text: 'Cancel'
@@ -136,8 +161,8 @@ export class HomePage {
         {
           text: 'Agree',
           handler: () => {
-            this.langTools.removeNode(level);
             this.langTools.doClearEditWord();
+            this.langTools.removeNode(level);
             this.projectNeedsSaving = true;
             this.langTools.doTranslationNeedsSaving(true);
           }
@@ -147,12 +172,28 @@ export class HomePage {
     confirm.present();
   }
 
+  doUndo() {
+    if (this.undoService.hasHistory()) {
+      this.translations = this.langTools.undo();
+      this.doInitFromTranslations();
+      // console.log(this.level);
+    }
+  }
+
+  doRedo() {
+    if (this.undoService.hasFuture()) {
+      this.translations = this.langTools.redo();
+      this.doInitFromTranslations();
+      // console.log(this.level);
+    }
+  }
+
   doZoomIn() {
     this.electron.zoomIn();
   }
-  
+
   doZoomOut() {
     this.electron.zoomOut();
   }
-  
+
 }

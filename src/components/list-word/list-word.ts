@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { LangToolsService } from '../../providers/lang-tools-service';
-import { langNodeObject, langTopicObject } from "../../customTypes/langObject.types"
+import { LangNodeObject, LangTopicObject } from '../../customTypes/langObject.types';
 
 /**
  * Generated class for the ListWordComponent component.
@@ -13,35 +13,36 @@ import { langNodeObject, langTopicObject } from "../../customTypes/langObject.ty
   templateUrl: 'list-word.html',
   styleUrls: ['list-word.scss']
 })
-export class ListWordComponent {
-  @Input() word : langNodeObject;
-  @Input() list: langNodeObject;
+export class ListWordComponent implements OnChanges {
+  @Input() word: LangNodeObject;
+  @Input() list: LangNodeObject;
 
-  words : Array<langNodeObject | langTopicObject>;
+  words: Array<LangNodeObject | LangTopicObject>;
 
-  showChilds : boolean = false;
-  
-  indents : Array<number>;
+  showChilds = false;
 
-  constructor(private langTools : LangToolsService) {
+  indents: Array<number>;
+
+  constructor(private langTools: LangToolsService) {
     console.log('### ListWordComponent');
   }
 
   ngOnChanges() {
-    this.indents = Array(this.word.level).fill(0).map((x,i)=>i);
+    this.indents = Array(this.word.level).fill(0).map((x, i) => i);
 
-    if(this.list.isLeaf) {
+    if (this.list.isLeaf) {
       this.words = [];
     } else {
       this.words = this.word.nodes;
-      this.langTools.sort(this.words as Array<langNodeObject>);
+      // this.langTools.sort(this.words as Array<langNodeObject>);
     }
   }
 
   public doClick() {
-    if(!this.word.isLeaf) {
+    if (!this.word.isLeaf) {
       this.showChilds = !this.showChilds;
     }
+    this.langTools.doRememberTranslations(this.word.full_key);
     this.langTools.doEditWord(this.word);
   }
 
