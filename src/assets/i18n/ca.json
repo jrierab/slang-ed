@@ -1,14 +1,18 @@
 {
-	"APP.title": "Editor Senzill de fitxers d'Idioma",
-	"APP.Home": "Inici",
-	"APP.About": "Sobre",
-	"APP.Contact": "Contacte",
-	"APP.Done": "Fet",
-	"APP.Cancel": "Cancel·lar",
-	"APP.language": "Idioma",
-	"APP.lang-current": "Idioma actual",
-	"langs" : {
-		"keys": "Claus a traduir",
-		"edit_translations": "Editar traduccions"
-	}
+    "APP.About": "Sobre",
+    "APP.Cancel": "Cancel·lar",
+    "APP.Contact": "Contacte",
+    "APP.Done": "Fet",
+    "APP.Home": "Inici",
+    "APP.lang-current": "Idioma actual",
+    "APP.language": "Idioma",
+    "APP.title": "Editor Senzill de fitxers d'Idioma",
+
+    "langs.edit_translations": "Editar traduccions",
+    "langs.keys": "Claus a traduir",
+
+    "Menu.InitFrom": "Inicia des de...",
+    "Menu.NewProject": "Nou Prrojece",
+    "Menu.OpenProject": "Obrir Projecte",
+    "Menu.SaveProject": "Guardar Projecte"
 }
