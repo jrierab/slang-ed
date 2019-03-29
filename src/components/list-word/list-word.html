@@ -1,9 +1,9 @@
 <!-- Generated template for the ListWordComponent component -->
 <div>
-    <span *ngFor="let i of indents"></span>
+    <span class="word-indent" *ngFor="let i of indents"></span>
     <ion-icon name="md-arrow-dropright" *ngIf="!word.isLeaf && !showChilds" (click)="showChilds=true"></ion-icon>
     <ion-icon name="md-arrow-dropdown" *ngIf="!word.isLeaf && showChilds" (click)="showChilds=false"></ion-icon>
-    <span (click)="doClick()">
+    <span [ngClass]="{'node-word': !word.isLeaf}" (click)="doClick()">
         {{ word.key }}
     </span>
     <div *ngIf="showChilds">
