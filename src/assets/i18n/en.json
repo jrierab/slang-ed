@@ -8,8 +8,8 @@
     "APP.language": "Language",
     "APP.title": "Simple Lang Files Editor",
 
-    "langs.edit_translations": "Edit translations",
-    "langs.keys": "Keys to translate",
+    "Home.EditTranslations": "Edit translations",
+    "Home.Keys": "Keys to translate",
 
     "Menu.About": "About",
     "Menu.AddId": "Add Word",

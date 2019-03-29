@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 
-import { UndoObject } from '../customTypes/undoObject.types';
+import { UndoObject, HistoryInfoObject } from '../customTypes/undoObject.types';
 import { LangTranslationsObject } from '../customTypes/langObject.types';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 /*
   Generated class for the UndoService provider.
@@ -11,6 +12,10 @@ import { LangTranslationsObject } from '../customTypes/langObject.types';
 */
 @Injectable()
 export class UndoService {
+
+    private readonly _historyInfo: BehaviorSubject<HistoryInfoObject> = new BehaviorSubject({ history: 0, future: 0 });
+
+    public readonly historyInfo$: Observable<HistoryInfoObject> = this._historyInfo.asObservable();
 
     private history: Array<UndoObject> = [];
     private future: Array<UndoObject> = [];
@@ -27,6 +32,7 @@ export class UndoService {
         this.currentHistoryStatus = { key: 'Init', contents: JSON.stringify(translations) };
         this.history.push({ key: this.currentHistoryStatus.key, contents: this.currentHistoryStatus.contents });
         // this.showHistory('* clearHistory');
+        this.emitHistoryInfo();
     }
 
     rememberThisHistory(key: string, translations: LangTranslationsObject): void {
@@ -49,6 +55,7 @@ export class UndoService {
             this.currentHistoryStatus.key = key;
             // this.showHistory('- Update key: ' + key);
         }
+        this.emitHistoryInfo();
     }
 
     hasHistory(): boolean {
@@ -73,6 +80,7 @@ export class UndoService {
 
         // Remember the future
         this.future.push({ key: curentStatus.key, contents: curentStatus.contents });
+        this.emitHistoryInfo();
 
         return lastHistoryObject;
     }
@@ -91,9 +99,14 @@ export class UndoService {
         const newFutureStatus: UndoObject = this.future.pop();
         const newFutureObject: LangTranslationsObject = JSON.parse(newFutureStatus.contents);
         this.currentHistoryStatus = newFutureStatus;
+        this.emitHistoryInfo();
 
         // this.showHistory('REDO');
         return newFutureObject;
+    }
+
+    private emitHistoryInfo(): void {
+        this._historyInfo.next({ history: this.history.length - 1, future: this.future.length });
     }
 
     /*

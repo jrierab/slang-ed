@@ -8,8 +8,8 @@
     "APP.language": "Idioma",
     "APP.title": "Editor Senzill de fitxers d'Idioma",
 
-    "langs.edit_translations": "Editar traduccions",
-    "langs.keys": "Claus a traduir",
+    "Home.EditTranslations": "Editar traduccions",
+    "Home.Keys": "Claus a traduir",
 
     "Menu.About": "Sobre",
     "Menu.AddId": "Afegir paraula",

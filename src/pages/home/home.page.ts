@@ -6,6 +6,7 @@ import { LangToolsService } from '../../providers/lang-tools-service';
 
 import { LangFileObject, LangTranslationsObject, LangNodeObject, LangTopicObject } from '../../customTypes/langObject.types';
 import { UndoService } from '../../providers/undo-service';
+import { HistoryInfoObject } from 'src/customTypes/undoObject.types';
 
 @Component({
     selector: 'app-home',
@@ -22,6 +23,8 @@ export class HomePage implements OnInit {
     projectReady = false;
     addNodeOrIdReady = false;
     removeNodeReady = false;
+
+    public historyInfo: HistoryInfoObject;
 
     constructor(private electron: ElectronProvider,
         private langTools: LangToolsService,
@@ -41,6 +44,7 @@ export class HomePage implements OnInit {
                 }
             }
         });
+        this.undoService.historyInfo$.subscribe((info: HistoryInfoObject) => this.historyInfo = info);
     }
 
     doNewProject() {

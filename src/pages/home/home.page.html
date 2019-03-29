@@ -54,12 +54,15 @@
             <ion-icon src="assets/icon/undo.svg"></ion-icon>
             <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !undoService.hasHistory()}">
                 {{ "Menu.Undo" | translate }}</p>
+            <p class="history-info-tooltip" *ngIf="historyInfo.history > 0">{{ historyInfo.history }}</p>
+
         </div>
         <div class="menu-option tooltip" float-start [ngClass]="{'menu-disabled': !undoService.hasFuture()}"
             (click)="doRedo()">
             <ion-icon src="assets/icon/redo.svg"></ion-icon>
             <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !undoService.hasFuture()}">
                 {{ "Menu.Redo" | translate }}</p>
+            <p class="history-info-tooltip tooltip-right" *ngIf="historyInfo.future > 0">{{ historyInfo.future }}</p>
         </div>
         <div class="menu-option tooltip" float-end [ngClass]="{'menu-disabled': true}" (click)="doShowAbout()">
             <ion-icon src="assets/icon/bunny.svg"></ion-icon>
@@ -83,7 +86,7 @@
         <div class="sl-main-container">
 
             <div class="sl-list-container">
-                <h3>{{ "langs.keys" | translate }}</h3>
+                <h3>{{ "Home.Keys" | translate }}</h3>
 
                 <div class="sl-list-words">
                     <list-word class="sl-list-word" *ngFor="let word of words" [word]="word" [list]="level"></list-word>
@@ -92,7 +95,7 @@
 
             <div class="sl-translations-container">
                 <h3>
-                    {{ "langs.edit_translations" | translate }}
+                    {{ "Home.EditTranslations" | translate }}
                     <span *ngFor="let lang of translations.languages">[{{ lang }}]</span>
                 </h3>
 

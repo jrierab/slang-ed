@@ -5,3 +5,8 @@ export interface UndoObject {
     key: string;
     contents: string;
 }
+
+export interface HistoryInfoObject {
+    history: number;
+    future: number;
+}
