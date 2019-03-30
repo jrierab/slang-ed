@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavParams, PopoverController } from '@ionic/angular';
 import { LangNodeObject } from 'src/customTypes/langObject.types';
 import { LangToolsService } from 'src/providers/lang-tools-service';
