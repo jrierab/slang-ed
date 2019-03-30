@@ -6,7 +6,10 @@
     "APP.Home": "Home",
     "APP.lang-current": "Current language",
     "APP.language": "Language",
+    "APP.Ok": "Ok",
     "APP.title": "Simple Lang Files Editor",
+
+    "Config.TitleLanguage": "Language",
 
     "Home.EditTranslations": "Edit translations",
     "Home.Keys": "Keys to translate",

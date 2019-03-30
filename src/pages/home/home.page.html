@@ -69,9 +69,9 @@
             <p class="tooltiptext tooltip-left" [ngClass]="{'tooltiptext-disabled': true}">
                 {{ "Menu.About" | translate }}</p>
         </div>
-        <div class="menu-option tooltip" float-end [ngClass]="{'menu-disabled': true}" (click)="doOpenSettings()">
+        <div class="menu-option tooltip" float-end (click)="doOpenSettings()">
             <ion-icon src="assets/icon/settings.svg"></ion-icon>
-            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': true}">{{ "Menu.Settings" | translate }}</p>
+            <p class="tooltiptext">{{ "Menu.Settings" | translate }}</p>
         </div>
     </ion-toolbar>
 </ion-header>

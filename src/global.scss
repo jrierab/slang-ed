@@ -18,3 +18,34 @@
     --width: auto;
     border-radius: 6px;
 }
+
+.config-popup .alert-wrapper {
+    border-radius: 6px;
+
+    .alert-head {
+        background-color: var(--ion-color-secondary);
+        padding: 5px;
+        .alert-title {
+            color: Indigo;
+        }
+    }
+
+    .alert-button-group {
+        justify-content: center;
+    }
+    .alert-button {
+        background-color: var(--ion-color-secondary-shade);
+        border-radius: 6px;
+        border: 1px solid Indigo;
+        font-weight: bold;
+        color: white;
+        min-width: 40%;
+    }
+    .alert-button-inner, .alert-button {
+        justify-content: center;
+        &:hover {
+            background-color: blanchedalmond;
+            color: Indigo;
+        }
+    }
+}

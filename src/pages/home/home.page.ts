@@ -6,6 +6,9 @@ import { LangToolsService } from '../../providers/lang-tools-service';
 import { LangFileObject, LangTranslationsObject, LangNodeObject, LangTopicObject } from '../../customTypes/langObject.types';
 import { UndoService } from '../../providers/undo-service';
 import { HistoryInfoObject } from 'src/customTypes/undoObject.types';
+import { AlertController } from '@ionic/angular';
+import { LangService } from 'src/providers/lang-service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-home',
@@ -29,6 +32,9 @@ export class HomePage implements OnInit {
         private electron: ElectronProvider,
         private langTools: LangToolsService,
         private undoService: UndoService,
+        public translate: TranslateService,
+        private langService: LangService,
+        private alertCtrl: AlertController,
     ) {
     }
 
@@ -122,10 +128,6 @@ export class HomePage implements OnInit {
         }
     }
 
-    doOpenSettings() {
-        console.log('Open project settings');
-    }
-
     doShowAbout() {
         console.log('Show about');
     }
@@ -182,4 +184,41 @@ export class HomePage implements OnInit {
         this.electron.zoomOut();
     }
 
+    async doOpenSettings() {
+        const currentLang: string = this.langService.getCurrentLang();
+
+        const alert = await this.alertCtrl.create({
+            header: this.translate.instant('Config.TitleLanguage'),
+            cssClass: 'config-popup',
+            inputs: [
+                {
+                    name: 'ca',
+                    type: 'radio',
+                    label: 'Català',
+                    value: 'ca',
+                    checked: currentLang === 'ca'
+                },
+                {
+                    name: 'en',
+                    type: 'radio',
+                    label: 'English',
+                    value: 'en',
+                    checked: currentLang === 'en'
+                }
+            ],
+            buttons: [
+                {
+                    text: this.translate.instant('APP.Cancel'),
+                    role: 'cancel'
+                }, {
+                    text: this.translate.instant('APP.Ok'),
+                    handler: (lang: string) => {
+                        this.langService.setLanguage(lang);
+                    }
+                }
+            ]
+        });
+
+        await alert.present();
+    }
 }

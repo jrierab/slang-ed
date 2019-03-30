@@ -6,7 +6,10 @@
     "APP.Home": "Inici",
     "APP.lang-current": "Idioma actual",
     "APP.language": "Idioma",
+    "APP.Ok": "Acceptar",
     "APP.title": "Editor Senzill de fitxers d'Idioma",
+
+    "Config.TitleLanguage": "Idioma",
 
     "Home.EditTranslations": "Editar traduccions",
     "Home.Keys": "Claus a traduir",
