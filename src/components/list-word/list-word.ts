@@ -1,6 +1,8 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { LangToolsService } from '../../providers/lang-tools-service';
 import { LangNodeObject, LangTopicObject } from '../../customTypes/langObject.types';
+import { PopoverController } from '@ionic/angular';
+import { WordPopupMenuComponent } from '../word-popup-menu/word-popup-menu.component';
 
 /**
  * Generated class for the ListWordComponent component.
@@ -23,7 +25,9 @@ export class ListWordComponent implements OnChanges {
 
     indents: Array<number>;
 
-    constructor(private langTools: LangToolsService) {
+    constructor(private popoverController: PopoverController,
+        private langTools: LangToolsService,
+    ) {
         console.log('### ListWordComponent');
     }
 
@@ -38,12 +42,27 @@ export class ListWordComponent implements OnChanges {
         }
     }
 
-    public doClick() {
-        if (!this.word.isLeaf) {
-            this.showChilds = !this.showChilds;
-        }
+    public doEdit() {
         this.langTools.doRememberTranslations(this.word.full_key);
         this.langTools.doEditWord(this.word);
     }
 
+    public async doMenu(ev: any) {
+        console.log('Pop-up Menu for: ', this.word);
+
+        const popover = await this.popoverController.create({
+            component: WordPopupMenuComponent,
+            componentProps: { word: this.word },
+            event: ev,
+            cssClass: 'popover-menu',
+            translucent: true
+        });
+        return await popover.present();
+    }
+
+    public doSwitchChilds() {
+        if (!this.word.isLeaf) {
+            this.showChilds = !this.showChilds;
+        }
+    }
 }

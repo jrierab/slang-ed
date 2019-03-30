@@ -9,3 +9,12 @@
 @import '~@ionic/angular/css/text-alignment.css';
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
+
+
+// Pop-over menu for words
+.popover-menu .popover-content {
+    --min-width: 30%;
+    --max-width: 75%;
+    --width: auto;
+    border-radius: 6px;
+}

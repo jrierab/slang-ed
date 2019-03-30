@@ -5,20 +5,26 @@ import { FormsModule } from '@angular/forms';
 
 import { ListWordComponent } from './list-word/list-word';
 import { EditWordComponent } from './edit-word/edit-word';
+import { WordPopupMenuComponent } from './word-popup-menu/word-popup-menu.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
     declarations: [
         ListWordComponent,
-        EditWordComponent
+        EditWordComponent,
+        WordPopupMenuComponent
     ],
+    entryComponents: [WordPopupMenuComponent],
     imports: [
         CommonModule,
         FormsModule,
-        IonicModule
+        IonicModule,
+        TranslateModule
     ],
     exports: [
         ListWordComponent,
-        EditWordComponent
-    ]
+        EditWordComponent,
+        WordPopupMenuComponent
+    ],
 })
 export class ComponentsModule { }

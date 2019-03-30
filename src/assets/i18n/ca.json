@@ -24,5 +24,7 @@
     "Menu.SaveProject": "Guardar Projecte",
     "Menu.SaveTranslations": "Guardar Traduccions",
     "Menu.Settings": "Configuració",
-    "Menu.Undo": "Desfés"
+    "Menu.Undo": "Desfés",
+
+    "Popover.Copy": "Copiar"
 }

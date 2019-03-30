@@ -24,5 +24,7 @@
     "Menu.SaveProject": "Save Project",
     "Menu.SaveTranslations": "Save Translations",
     "Menu.Settings": "Settings",
-    "Menu.Undo": "Undo"
+    "Menu.Undo": "Undo",
+
+    "Popover.Copy": "Copy"
 }

@@ -1,0 +1,14 @@
+<div class="popup-bar">
+    <span>{{ word.full_key }}</span>
+    <ion-icon name="close" float-end (click)="doClose()"></ion-icon>
+</div>
+<ul>
+    <li *ngIf="word.isLeaf" (click)="doCopyToClipboard()">{{ "Popover.Copy" | translate }}: {{ '{{' }}
+        "..." | translate }}
+    </li>
+    <hr *ngIf="word.isLeaf">
+    <li *ngIf="!word.isLeaf" (click)="doAddNode()">{{ "Menu.AddNode" | translate }}</li>
+    <li *ngIf="!word.isLeaf" (click)="doAddId()">{{ "Menu.AddId" | translate }}</li>
+    <hr *ngIf="!word.isLeaf">
+    <li class="delete-option" (click)="doDelete()">{{ "Menu.Delete" | translate }}</li>
+</ul>

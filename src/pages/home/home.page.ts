@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
 
 import { ElectronProvider } from '../../providers/electron-provider';
 import { LangToolsService } from '../../providers/lang-tools-service';
@@ -26,10 +25,10 @@ export class HomePage implements OnInit {
 
     public historyInfo: HistoryInfoObject;
 
-    constructor(private electron: ElectronProvider,
+    constructor(
+        private electron: ElectronProvider,
         private langTools: LangToolsService,
         private undoService: UndoService,
-        private alertCtrl: AlertController
     ) {
     }
 
@@ -42,6 +41,11 @@ export class HomePage implements OnInit {
                 if (!data.isLeaf) {
                     this.addNodeOrIdReady = true;
                 }
+            }
+        });
+        this.langTools.translationsNeedsSaving$.subscribe((saveRequired: boolean) => {
+            if (saveRequired) {
+                this.projectNeedsSaving = true;
             }
         });
         this.undoService.historyInfo$.subscribe((info: HistoryInfoObject) => this.historyInfo = info);
@@ -131,7 +135,6 @@ export class HomePage implements OnInit {
             this.langTools.doClearEditWord();
 
             const newNode: LangNodeObject = this.langTools.createNodeAtLevel(this.level, 'New_Node');
-            this.projectNeedsSaving = true;
             this.langTools.doTranslationNeedsSaving(true);
             this.langTools.doEditWord(newNode);
         }
@@ -139,52 +142,19 @@ export class HomePage implements OnInit {
 
     doAddNode() {
         if (this.addNodeOrIdReady) {
-            const level: LangNodeObject = this.langTools.getCurrentlyEditedWordValue();
-
-            this.langTools.doClearEditWord();
-            const newNode: LangNodeObject = this.langTools.createNodeAtLevel(level, 'New_Node');
-            this.projectNeedsSaving = true;
-            this.langTools.doTranslationNeedsSaving(true);
-            this.langTools.doEditWord(newNode);
+            this.langTools.doAddNode();
         }
     }
 
     doAddId() {
         if (this.addNodeOrIdReady) {
-            const level: LangNodeObject = this.langTools.getCurrentlyEditedWordValue();
-
-            this.langTools.doClearEditWord();
-            const newId: LangNodeObject = this.langTools.createIdAtLevel(level, 'New_Id');
-            this.projectNeedsSaving = true;
-            this.langTools.doTranslationNeedsSaving(true);
-            this.langTools.doEditWord(newId);
+            this.langTools.doAddId();
         }
     }
 
     async doRemoveCurrent() {
         if (this.removeNodeReady) {
-            const level: LangNodeObject = this.langTools.getCurrentlyEditedWordValue();
-            const nodes = this.langTools.countDescendants(level);
-
-            const confirm = await this.alertCtrl.create({
-                header: 'Remove "' + level.full_key + '" ?',
-                message: 'This will DELETE ' + nodes + ' language definitions !',
-                buttons: [
-                    {
-                        text: 'Cancel'
-                    },
-                    {
-                        text: 'Agree',
-                        handler: () => {
-                            this.langTools.doClearEditWord();
-                            this.langTools.removeNode(level);
-                            this.projectNeedsSaving = true;
-                            this.langTools.doTranslationNeedsSaving(true);
-                        }
-                    }
-                ]
-            });
-            confirm.present();
+            this.langTools.doDelete();
         }
     }
 
