@@ -23,7 +23,7 @@ export class UndoService {
     private currentHistoryStatus: UndoObject = null;
 
     constructor() {
-        console.log('### UndoService');
+        // console.log('### UndoService');
     }
 
     clearHistory(translations: LangTranslationsObject): void {

@@ -1,4 +1,9 @@
 {
+    "About.Credits": "Icones de Flaticon",
+    "About.Icons": "Icones de",
+    "About.license": "amb llicència",
+    "About.Version": "Versió",
+
     "APP.About": "Sobre",
     "APP.Cancel": "Cancel·lar",
     "APP.Contact": "Contacte",
@@ -6,8 +11,9 @@
     "APP.Home": "Inici",
     "APP.lang-current": "Idioma actual",
     "APP.language": "Idioma",
+    "APP.Name": "slang-ed",
     "APP.Ok": "Acceptar",
-    "APP.title": "Editor Senzill de fitxers d'Idioma",
+    "APP.Title": "Editor Senzill de fitxers d'Idioma",
 
     "Config.TitleLanguage": "Idioma",
 

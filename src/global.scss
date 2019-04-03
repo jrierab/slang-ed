@@ -49,3 +49,19 @@
         }
     }
 }
+
+.about-popup .alert-wrapper {
+    border-radius: 6px;
+    --max-width: 75%;
+
+    div, h2 {
+        padding: 10px;
+    }
+    hr {
+        border-width: 1px;
+        margin: 0;
+    }
+    .alert-button-group {
+        padding-top: 0;
+    }
+}

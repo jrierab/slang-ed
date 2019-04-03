@@ -1,4 +1,9 @@
 {
+    "About.Credits": "Icons from Flaticon",
+    "About.Icons": "Icons from",
+    "About.license": "licensed by",
+    "About.Version": "Version",
+
     "APP.About": "About",
     "APP.Cancel": "Cancel",
     "APP.Contact": "Contact",
@@ -6,8 +11,9 @@
     "APP.Home": "Home",
     "APP.lang-current": "Current language",
     "APP.language": "Language",
+    "APP.Name": "slang-ed",
     "APP.Ok": "Ok",
-    "APP.title": "Simple Lang Files Editor",
+    "APP.Title": "Simple Lang Files Editor",
 
     "Config.TitleLanguage": "Language",
 

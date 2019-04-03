@@ -3,6 +3,8 @@
 const electron = require('electron');
 // Module to control application life.
 const app = electron.app;
+// Module to open allow opening of external URL in default browser (instead of inside the app)
+const shell = electron.shell;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
 
@@ -36,7 +38,16 @@ function createWindow() {
         // in an array if your app supports multi windows, this is the time
         // when you should delete the corresponding element.
         mainWindow = null
-    })
+    });
+
+    const openExternalLinksInOSBrowser = (event, url) => {
+        if (url.match(/.*localhost.*/gi) === null && (url.startsWith('http:') || url.startsWith('https:'))) {
+            event.preventDefault();
+            shell.openExternal(url);
+        }
+    };
+    mainWindow.webContents.on('new-window', openExternalLinksInOSBrowser);
+    mainWindow.webContents.on('will-navigate', openExternalLinksInOSBrowser);
 }
 
 // This method will be called when Electron has finished

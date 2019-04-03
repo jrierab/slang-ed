@@ -128,10 +128,6 @@ export class HomePage implements OnInit {
         }
     }
 
-    doShowAbout() {
-        console.log('Show about');
-    }
-
     doAddRootNode() {
         if (this.projectReady) {
             this.langTools.doClearEditWord();
@@ -221,4 +217,31 @@ export class HomePage implements OnInit {
 
         await alert.present();
     }
+
+
+    async doShowAbout() {
+        const appVersion = this.electron.getAppVersion();
+
+        const alert = await this.alertCtrl.create({
+            header: this.translate.instant('APP.Name') + ': ' + this.translate.instant('APP.Title'),
+            // tslint:disable: max-line-length
+            message: '<div>' + this.translate.instant('About.Version') + ': ' + this.translate.instant('APP.Name') + ' v' + appVersion + '<br/>'
+                + 'Github: <a href="https://github.com/jrierab/slang-ed" title="jrierab\'s Github">https://github.com/jrierab/slang-ed</a></div>'
+                + '<div>' + this.translate.instant('About.Icons') + ' <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> '
+                + this.translate.instant('About.license') + ' <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC 3.0 BY</a>:'
+                + '<br/>- <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>'
+                + '<br/>- <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a>'
+                + '</div><hr>',
+            // tslint:enable: max-line-length
+            cssClass: ['config-popup', 'about-popup'],
+            buttons: [
+                {
+                    text: this.translate.instant('APP.Ok')
+                }
+            ]
+        });
+
+        await alert.present();
+    }
+
 }

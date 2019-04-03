@@ -64,10 +64,9 @@
                 {{ "Menu.Redo" | translate }}</p>
             <p class="history-info-tooltip tooltip-right" *ngIf="historyInfo.future > 0">{{ historyInfo.future }}</p>
         </div>
-        <div class="menu-option tooltip" float-end [ngClass]="{'menu-disabled': true}" (click)="doShowAbout()">
+        <div class="menu-option tooltip" float-end (click)="doShowAbout()">
             <ion-icon src="assets/icon/bunny.svg"></ion-icon>
-            <p class="tooltiptext tooltip-left" [ngClass]="{'tooltiptext-disabled': true}">
-                {{ "Menu.About" | translate }}</p>
+            <p class="tooltiptext tooltip-left">{{ "Menu.About" | translate }}</p>
         </div>
         <div class="menu-option tooltip" float-end (click)="doOpenSettings()">
             <ion-icon src="assets/icon/settings.svg"></ion-icon>
