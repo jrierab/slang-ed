@@ -29,6 +29,7 @@ module.exports = function (config) {
     // browsers: ['Chrome'],
     // singleRun: false
     browsers: ['PhantomJS'],
+    browserNoActivityTimeout: 60000, // Note: default value (10000) is not enough`
     singleRun: true
   });
 };

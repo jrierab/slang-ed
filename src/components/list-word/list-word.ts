@@ -34,7 +34,7 @@ export class ListWordComponent implements OnChanges {
     ngOnChanges() {
         this.indents = Array(this.word.level - 1).fill(0).map((x, i) => i);
 
-        if (this.list.isLeaf) {
+        if (!this.list || this.list.isLeaf) {
             this.words = [];
         } else {
             this.words = this.word.nodes;
@@ -43,13 +43,11 @@ export class ListWordComponent implements OnChanges {
     }
 
     public doEdit() {
-        this.langTools.doRememberTranslations(this.word.full_key);
+        // this.langTools.doRememberTranslations(this.word.full_key);
         this.langTools.doEditWord(this.word);
     }
 
     public async doMenu(ev: any) {
-        console.log('Pop-up Menu for: ', this.word);
-
         const popover = await this.popoverController.create({
             component: WordPopupMenuComponent,
             componentProps: { word: this.word },

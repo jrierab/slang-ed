@@ -18,7 +18,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class HomePage implements OnInit {
     private translations: LangTranslationsObject = this.langTools.clearTranslations();
 
-    level: LangNodeObject;
+    rootLevel: LangNodeObject;
     words: Array<LangNodeObject | LangTopicObject>;
 
     projectNeedsSaving = false;
@@ -80,16 +80,15 @@ export class HomePage implements OnInit {
                 this.translations.options.projectFolder = folder;
                 this.translations.options.i18nFolder = path_to_i18n;
 
+                this.doSortTranslations(this.translations.root);
                 this.doInitFromTranslations(true);
             }
         }
     }
 
     doInitFromTranslations(shouldInit: boolean = false) {
-        this.level = this.translations.root;
-        this.words = this.level.nodes;
-        // this.langTools.sort(this.words as Array<langNodeObject>);
-        this.doSortTranslations(this.level);
+        this.rootLevel = this.translations.root;
+        this.words = this.rootLevel.nodes;
 
         this.projectNeedsSaving = true;
         this.projectReady = true;
@@ -130,11 +129,7 @@ export class HomePage implements OnInit {
 
     doAddRootNode() {
         if (this.projectReady) {
-            this.langTools.doClearEditWord();
-
-            const newNode: LangNodeObject = this.langTools.createNodeAtLevel(this.level, 'New_Node');
-            this.langTools.doTranslationNeedsSaving(true);
-            this.langTools.doEditWord(newNode);
+            this.langTools.doAddRootNode();
         }
     }
 

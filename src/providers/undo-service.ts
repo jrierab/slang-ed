@@ -41,14 +41,14 @@ export class UndoService {
 
         if (differs) {
             // Adds pending history and remember current status
-            const stored = JSON.parse(this.currentHistoryStatus.contents);
-            const value = stored.root.nodes[1]['key'];
+            // const stored = JSON.parse(this.currentHistoryStatus.contents);
+            // const value = stored.root.nodes[0]['key'];
 
-            const newKey = this.currentHistoryStatus.key;
+            const newKey = (this.currentHistoryStatus.key ? this.currentHistoryStatus.key : key);
             this.history.push({ key: this.currentHistoryStatus.key, contents: this.currentHistoryStatus.contents });
             this.future.length = 0;
             this.currentHistoryStatus = currentStatus;
-            // this.showHistory('* Add to history: ' + newKey + ' with value ' + value + ' because of ' + key);
+            // this.showHistory('* Add to history: ' + newKey + ' because of ' + key);
 
         } else {
             //  Simply updates the current key
@@ -116,4 +116,5 @@ export class UndoService {
         this.future.forEach((h, i) => console.log(' + ' + i + ': ' + h.key));
     }
     */
+
 }

@@ -22,7 +22,7 @@ export class LangToolsService {
         private alertCtrl: AlertController,
         private undoService: UndoService
     ) {
-        console.log('### LangToolsService');
+        // console.log('### LangToolsService');
     }
 
     clearTranslations(): LangTranslationsObject {
@@ -57,11 +57,16 @@ export class LangToolsService {
         console.log('> Lang structure...', this.translations);
 
         this.doTranslationNeedsSaving(false);
+        this.undoService.clearHistory(this.translations);
         this.doClearEditWord();
 
         // this.undoService.clearHistory(this.translations);
 
         return this.translations;
+    }
+
+    doSetTranslations(translations: LangTranslationsObject): void {
+        this.translations = translations;
     }
 
     createNodeAtLevel(parent: LangNodeObject, key: string): LangNodeObject {
@@ -144,15 +149,17 @@ export class LangToolsService {
 
     doEditWord(word: LangNodeObject): void {
         if (this.currentWord$.value !== word) {
-            // this.undoService.rememberThisHistory(this.wordNum, "Update Word: "+
-            // (this.currentWord.value? this.currentWord.value.full_key: "null"), this.translations);
+            // console.log("Edit: " + word.full_key);
+            this.doRememberTranslations(word.full_key);
             this.currentWord$.next(word);
         }
     }
 
     doClearEditWord() {
-        if (this.currentWord$.value) {
-            // this.undoService.rememberThisHistory(this.wordNum, "Clear Word: "+this.currentWord.value.full_key, this.translations);
+        const word: LangNodeObject = this.currentWord$.value;
+        if (word) {
+            // console.log("Clear Edit...");
+            this.doRememberTranslations((word ? word.key : ''));
             this.currentWord$.next(null);
         }
     }
@@ -232,7 +239,20 @@ export class LangToolsService {
 
     doRememberTranslations(key: string): void {
         this.undoService.rememberThisHistory(key, this.translations);
+    }
 
+    doAddRootNode(level?: LangNodeObject): LangTranslationsObject {
+        if (!level) {
+            level = this.translations.root;
+        }
+
+        this.doClearEditWord();
+
+        const newNode: LangNodeObject = this.createNodeAtLevel(level, 'New_Root');
+        this.doTranslationNeedsSaving(true);
+        this.doEditWord(newNode);
+
+        return JSON.parse(JSON.stringify(this.translations));
     }
 
     doAddNode(level?: LangNodeObject) {
@@ -241,6 +261,7 @@ export class LangToolsService {
         }
 
         this.doClearEditWord();
+
         const newNode: LangNodeObject = this.createNodeAtLevel(level, 'New_Node');
         this.doTranslationNeedsSaving(true);
         this.doEditWord(newNode);
@@ -252,6 +273,7 @@ export class LangToolsService {
         }
 
         this.doClearEditWord();
+
         const newId: LangNodeObject = this.createIdAtLevel(level, 'New_Id');
         this.doTranslationNeedsSaving(true);
         this.doEditWord(newId);

@@ -1,5 +1,6 @@
 import { UndoService } from './undo-service';
 import { LangTranslationsObject, LangNodeObject } from '../customTypes/langObject.types';
+import { LangToolsService } from './lang-tools-service';
 
 //
 // npm link @angular/cli
@@ -9,6 +10,7 @@ import { LangTranslationsObject, LangNodeObject } from '../customTypes/langObjec
 // Straight Jasmine testing without Angular's testing support
 describe('UndoService', () => {
     const undoService: UndoService = new UndoService();
+    const langTools: LangToolsService = new LangToolsService(null, undoService);
     let translations: LangTranslationsObject;
 
     beforeEach(() => {
@@ -223,4 +225,39 @@ describe('UndoService', () => {
             expect(undoService.hasFuture()).toBe(false, 'hasFuture');
         }
     });
+
+    it('AddRoot test', () => {
+        let myTranslations = JSON.parse(JSON.stringify(translations));
+
+        // Init and start
+        langTools.doSetTranslations(myTranslations);
+        undoService.clearHistory(myTranslations);
+
+        expect(myTranslations.root.nodes.length).toBe(2, 'Init');
+
+        // Add default root node
+        myTranslations = langTools.doAddRootNode();
+
+        expect(myTranslations.root.nodes.length).toBe(3, 'doAddRootNode (1)');
+        expect(undoService.hasHistory()).toBe(true, 'hasHistory');
+        expect(undoService.hasFuture()).toBe(false, 'hasFuture');
+
+        // Add default root node
+        myTranslations = langTools.doAddRootNode();
+
+        expect(myTranslations.root.nodes.length).toBe(4, 'doAddRootNode (2)');
+
+        // Undo
+        myTranslations = undoService.undo(myTranslations);
+        expect(myTranslations.root.nodes.length).toBe(3, 'UNDO doAddRootNode (2)');
+        expect(undoService.hasHistory()).toBe(true, 'hasHistory');
+        expect(undoService.hasFuture()).toBe(true, 'hasFuture');
+
+        // Undo
+        myTranslations = undoService.undo(myTranslations);
+        expect(myTranslations.root.nodes.length).toBe(2, 'UNDO doAddRootNode (1)');
+        expect(undoService.hasHistory()).toBe(false, 'hasHistory');
+        expect(undoService.hasFuture()).toBe(true, 'hasFuture');
+    });
+
 });
