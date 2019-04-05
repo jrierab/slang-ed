@@ -23,8 +23,19 @@ export class WordPopupMenuComponent {
         this.popoverController.dismiss();
     }
 
-    doCopyToClipboard() {
-        const item = '{{ "' + this.word.full_key + '" | translate }}';
+    doCopyToClipboard(mode: number) {
+        let item: string;
+
+        switch (mode) {
+            case 1:
+                item = '{{ "' + this.word.full_key + '" | translate }}';
+                break;
+            case 2:
+                item = 'this.translate.instant(' + this.word.full_key + ')';
+                break;
+            default:
+                item = 'doCopyToClipboard(mode) ERROR: Unknown mode = ' + mode;
+        }
 
         document.addEventListener('copy', (e: ClipboardEvent) => {
             e.clipboardData.setData('text/plain', (item));
