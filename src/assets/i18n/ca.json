@@ -1,14 +1,32 @@
 {
-	"APP.title": "Editor Senzill de fitxers d'Idioma",
-	"APP.Home": "Inici",
-	"APP.About": "Sobre",
-	"APP.Contact": "Contacte",
-	"APP.Done": "Fet",
-	"APP.Cancel": "Cancel·lar",
-	"APP.language": "Idioma",
-	"APP.lang-current": "Idioma actual",
-	"langs" : {
-		"keys": "Claus a traduir",
-		"edit_translations": "Editar traduccions"
-	}
+    "About.Icons": "Icones de",
+    "About.license": "amb llicència",
+    "About.Version": "Versió",
+
+    "APP.Cancel": "Cancel·lar",
+    "APP.Name": "slang-ed",
+    "APP.Ok": "Acceptar",
+    "APP.Title": "Editor Senzill de fitxers d'Idioma",
+
+    "Config.TitleLanguage": "Idioma",
+
+    "Home.EditTranslations": "Editar traduccions",
+    "Home.Keys": "Claus a traduir",
+
+    "Menu.About": "Sobre",
+    "Menu.AddId": "Afegir paraula",
+    "Menu.AddNode": "Afegir Node",
+    "Menu.AddRoot": "Afegir Arrel",
+    "Menu.Delete": "Esborrar",
+    "Menu.InitFrom": "Inicia des de...",
+    "Menu.NewProject": "Nou Prrojece",
+    "Menu.ngxTranslateDir": "Directori fitxers ngx-translate",
+    "Menu.OpenProject": "Obrir Projecte",
+    "Menu.Redo": "Refés",
+    "Menu.SaveProject": "Guardar Projecte",
+    "Menu.SaveTranslations": "Guardar Traduccions",
+    "Menu.Settings": "Configuració",
+    "Menu.Undo": "Desfés",
+
+    "Popover.Copy": "Copiar"
 }

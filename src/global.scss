@@ -9,3 +9,59 @@
 @import '~@ionic/angular/css/text-alignment.css';
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
+
+
+// Pop-over menu for words
+.popover-menu .popover-content {
+    --min-width: 30%;
+    --max-width: 75%;
+    --width: auto;
+    border-radius: 6px;
+}
+
+.config-popup .alert-wrapper {
+    border-radius: 6px;
+
+    .alert-head {
+        background-color: var(--ion-color-secondary);
+        padding: 5px;
+        .alert-title {
+            color: Indigo;
+        }
+    }
+
+    .alert-button-group {
+        justify-content: center;
+    }
+    .alert-button {
+        background-color: var(--ion-color-secondary-shade);
+        border-radius: 6px;
+        border: 1px solid Indigo;
+        font-weight: bold;
+        color: white;
+        min-width: 40%;
+    }
+    .alert-button-inner, .alert-button {
+        justify-content: center;
+        &:hover {
+            background-color: blanchedalmond;
+            color: Indigo;
+        }
+    }
+}
+
+.about-popup .alert-wrapper {
+    border-radius: 6px;
+    --max-width: 75%;
+
+    div, h2 {
+        padding: 10px;
+    }
+    hr {
+        border-width: 1px;
+        margin: 0;
+    }
+    .alert-button-group {
+        padding-top: 0;
+    }
+}
