@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { langNodeObject, langTopicObject } from "../../customTypes/langObject.types"
+import { Component, OnInit } from '@angular/core';
+import { LangNodeObject, LangTopicObject } from '../../customTypes/langObject.types';
 
 import { LangToolsService } from '../../providers/lang-tools-service';
 
@@ -14,74 +14,74 @@ import { LangToolsService } from '../../providers/lang-tools-service';
   templateUrl: 'edit-word.html',
   styleUrls: ['edit-word.scss']
 })
-export class EditWordComponent {
-  word: langNodeObject;
-  langs: Array<langTopicObject>;
+export class EditWordComponent implements OnInit {
+  word: LangNodeObject;
+  langs: Array<LangTopicObject>;
 
-  isLeaf : boolean = false;
+  isLeaf = false;
 
-  key_before : string;
-  key_after : string;
-  key_original : string;
+  key_before: string;
+  key_after: string;
+  key_original: string;
 
-  constructor(private langTools : LangToolsService) {
+  constructor(private langTools: LangToolsService) {
     console.log('### EditWordComponent');
   }
 
   ngOnInit() {
-    this.langTools.getCurrentlyEditedWord().subscribe((data: langNodeObject)=> {
+    this.langTools.getCurrentlyEditedWord().subscribe((data: LangNodeObject) => {
       this.word = data;
-      if(data) {
+      if (data) {
         this.doEdit();
       } else {
-        this.isLeaf = false;        
-        this.key_original = "";
-        this.key_after = "";
+        this.isLeaf = false;
+        this.key_original = '';
+        this.key_after = '';
       }
     });
   }
 
   doEdit() {
-    if(this.word) {
-      this.langs = this.word.nodes as Array<langTopicObject>;
+    if (this.word) {
+      this.langs = this.word.nodes as Array<LangTopicObject>;
       this.isLeaf = this.word.isLeaf;
 
       const key: string = this.word['full_key'] as string;
       const p: number = key.lastIndexOf('.');
-      if(p>0) {
+      if (p > 0) {
         this.key_before = key.substring(0, p);
-        this.key_after = key.substring(p+1);
+        this.key_after = key.substring(p + 1);
       } else {
-        this.key_before = "";
+        this.key_before = '';
         this.key_after = key;
       }
       this.key_original = this.key_after;
 
     } else {
       this.langs = [];
-      this.key_original = "";
-      this.key_after = "";
+      this.key_original = '';
+      this.key_after = '';
     }
   }
 
-  updatesWord(event) {
-    if( !this.langTools.isTranslationsSavingRequired() ) {
+  updatesWord(_event) {
+    if (!this.langTools.isTranslationsSavingRequired()) {
       this.langTools.doTranslationNeedsSaving(true);
     }
   }
 
-  updatesKeyAfter(event) {
+  updatesKeyAfter(_event) {
     this.word.key = this.key_after;
 
     this.langTools.doReplaceKeyInDescendants(this.word, this.key_before);
 
-    if( !this.langTools.isTranslationsSavingRequired() ) {
+    if (!this.langTools.isTranslationsSavingRequired()) {
       this.langTools.doTranslationNeedsSaving(true);
     }
   }
 
-  updateParent(event) {
-    if(this.key_original !== this.key_after) {
+  updateParent(_event) {
+    if (this.key_original !== this.key_after) {
       this.langTools.sortParentNodes(this.word);
     }
   }

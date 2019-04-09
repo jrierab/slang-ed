@@ -16,7 +16,7 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private langService : LangService
+    private langService: LangService
   ) {
     this.initializeApp();
   }
@@ -26,7 +26,7 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
-      this.langService.init("en", ["en", "ca"]);
+      this.langService.init('en', ['en', 'ca']);
     });
   }
 }

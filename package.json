@@ -1,113 +1,117 @@
 {
-  "name": "slang-ed",
-  "description": "Simple Lang files Editor",
-  "version": "0.0.1",
-  "license": "GNU General Public License v3.0",
-  "author": {
-    "name": "Jordi Riera-Baburés",
-    "email": "jrierab@gmail.com",
-    "url": "https://anomenaidesa.blogspot.com"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jrierab/slang-ed"
-  },
-  "bugs": {
-    "url": "https://github.com/jrierab/slang-ed/issues"
-  },
-  "homepage": "https://ionicframework.com/",
-  "private": true,
-  "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "foreman-start": "nf start",
-    "build": "ng build",
-    "ionic": "ionic serve --no-open",
-    "electron": "electron .",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder",
-    "test": "ng test",
-    "lint": "ng lint",
-    "docs": "./node_modules/.bin/compodoc -d ./docs/ -p ./tsconfig.json --theme vagrant",
-    "serve-docs": "./node_modules/.bin/compodoc -s -d ./docs"
-  },
-  "dependencies": {
-    "@angular/common": "^7.2.2",
-    "@angular/core": "^7.2.2",
-    "@angular/forms": "^7.2.2",
-    "@angular/http": "^7.2.2",
-    "@angular/platform-browser": "^7.2.2",
-    "@angular/platform-browser-dynamic": "^7.2.2",
-    "@angular/router": "^7.2.2",
-    "@ionic-native/core": "^5.0.0",
-    "@ionic-native/splash-screen": "^5.0.0",
-    "@ionic-native/status-bar": "^5.0.0",
-    "@ionic/angular": "^4.1.0",
-    "@ngx-translate/core": "^11.0.1",
-    "@ngx-translate/http-loader": "^4.0.0",
-    "core-js": "^2.5.4",
-    "rxjs": "~6.3.3",
-    "zone.js": "~0.8.29"
-  },
-  "devDependencies": {
-    "@angular-devkit/architect": "~0.12.3",
-    "@angular-devkit/build-angular": "~0.13.0",
-    "@angular-devkit/core": "~7.2.3",
-    "@angular-devkit/schematics": "~7.2.3",
-    "@angular/cli": "~7.3.1",
-    "@angular/compiler": "~7.2.2",
-    "@angular/compiler-cli": "~7.2.2",
-    "@angular/language-service": "~7.2.2",
-    "@compodoc/compodoc": "^1.1.9",
-    "@ionic/angular-toolkit": "~1.4.0",
-    "@types/jasmine": "~2.8.8",
-    "@types/jasminewd2": "~2.0.3",
-    "@types/node": "~10.12.0",
-    "codelyzer": "~4.5.0",
-    "electron": "^4.1.0",
-    "electron-builder": "^20.39.0",
-    "foreman": "^3.0.1",
-    "jasmine-core": "~2.99.1",
-    "jasmine-spec-reporter": "~4.2.1",
-    "karma": "~3.1.4",
-    "karma-chrome-launcher": "~2.2.0",
-    "karma-coverage-istanbul-reporter": "~2.0.1",
-    "karma-jasmine": "~1.1.2",
-    "karma-jasmine-html-reporter": "^0.2.2",
-    "karma-phantomjs-launcher": "^1.0.4",
-    "protractor": "~5.4.0",
-    "ts-node": "~8.0.0",
-    "tslint": "~5.12.0",
-    "typescript": "~3.1.6"
-  },
-  "config": {
-    "ionic_source_map_type": "source-map"
-  },
-  "main": "electron/main.js",
-  "build": {
-    "appId": "com.blogspot.anomenaidesa.slang-ed",
-    "files": [
-      "electron/main.js",
-      "www/**/*"
-    ],
-    "mac": {
-      "category": "productivity"
+    "name": "slang-ed",
+    "description": "Simple Lang files Editor",
+    "version": "0.1.0",
+    "license": "GNU General Public License v3.0",
+    "author": {
+        "name": "Jordi Riera-Baburés",
+        "email": "jrierab@gmail.com",
+        "url": "https://anomenaidesa.blogspot.com"
     },
-    "linux": {
-      "category": "Utility"
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jrierab/slang-ed"
+    },
+    "bugs": {
+        "url": "https://github.com/jrierab/slang-ed/issues"
+    },
+    "homepage": "https://github.com/jrierab/slang-ed/",
+    "private": true,
+    "scripts": {
+        "ng": "ng",
+        "start": "ng serve",
+        "foreman-start": "nf start",
+        "build": "ng build",
+        "ionic": "ionic serve --no-open",
+        "electron": "electron .",
+        "pack": "electron-builder --dir",
+        "dist": "electron-builder",
+        "test": "ng test",
+        "lint": "ng lint",
+        "docs": "./node_modules/.bin/compodoc -d ./docs/ -p ./tsconfig.json --theme vagrant",
+        "serve-docs": "./node_modules/.bin/compodoc -s -d ./docs"
+    },
+    "dependencies": {
+        "@angular/common": "^7.2.2",
+        "@angular/core": "^7.2.2",
+        "@angular/forms": "^7.2.2",
+        "@angular/http": "^7.2.2",
+        "@angular/platform-browser": "^7.2.2",
+        "@angular/platform-browser-dynamic": "^7.2.2",
+        "@angular/router": "^7.2.2",
+        "@ionic-native/core": "^5.0.0",
+        "@ionic-native/splash-screen": "^5.0.0",
+        "@ionic-native/status-bar": "^5.0.0",
+        "@ionic/angular": "^4.1.0",
+        "@ngx-translate/core": "^11.0.1",
+        "@ngx-translate/http-loader": "^4.0.0",
+        "core-js": "^2.5.4",
+        "rxjs": "~6.3.3",
+        "zone.js": "~0.8.29"
+    },
+    "devDependencies": {
+        "@angular-devkit/architect": "~0.12.3",
+        "@angular-devkit/build-angular": "~0.13.0",
+        "@angular-devkit/core": "~7.2.3",
+        "@angular-devkit/schematics": "~7.2.3",
+        "@angular/cli": "~7.3.1",
+        "@angular/compiler": "~7.2.2",
+        "@angular/compiler-cli": "~7.2.2",
+        "@angular/language-service": "~7.2.2",
+        "@compodoc/compodoc": "^1.1.9",
+        "@ionic/angular-toolkit": "~1.4.0",
+        "@types/jasmine": "~2.8.8",
+        "@types/jasminewd2": "~2.0.3",
+        "@types/node": "~10.12.0",
+        "codelyzer": "~4.5.0",
+        "electron": "^4.1.0",
+        "electron-builder": "^20.39.0",
+        "foreman": "^3.0.1",
+        "ionic": "^4.12.0",
+        "jasmine-core": "~2.99.1",
+        "jasmine-spec-reporter": "~4.2.1",
+        "karma": "~3.1.4",
+        "karma-chrome-launcher": "~2.2.0",
+        "karma-coverage-istanbul-reporter": "~2.0.1",
+        "karma-jasmine": "~1.1.2",
+        "karma-jasmine-html-reporter": "^0.2.2",
+        "karma-phantomjs-launcher": "^1.0.4",
+        "messageformat": "^2.1.0",
+        "ngx-translate-messageformat-compiler": "^4.4.0",
+        "ngx-translate-testing": "^2.0.0",
+        "protractor": "~5.4.0",
+        "ts-node": "~8.0.0",
+        "tslint": "~5.12.0",
+        "typescript": "~3.1.6"
+    },
+    "config": {
+        "ionic_source_map_type": "source-map"
+    },
+    "main": "electron/main.js",
+    "build": {
+        "appId": "com.blogspot.anomenaidesa.slang-ed",
+        "files": [
+            "electron/main.js",
+            "www/**/*"
+        ],
+        "mac": {
+            "category": "productivity"
+        },
+        "linux": {
+            "category": "Utility"
+        }
+    },
+    "cordova": {
+        "plugins": {
+            "cordova-plugin-file": {},
+            "cordova-plugin-whitelist": {},
+            "cordova-plugin-device": {},
+            "cordova-plugin-splashscreen": {},
+            "cordova-plugin-ionic-webview": {},
+            "cordova-plugin-ionic-keyboard": {}
+        },
+        "platforms": [
+            "browser"
+        ]
     }
-  },
-  "cordova": {
-    "plugins": {
-      "cordova-plugin-file": {},
-      "cordova-plugin-whitelist": {},
-      "cordova-plugin-device": {},
-      "cordova-plugin-splashscreen": {},
-      "cordova-plugin-ionic-webview": {},
-      "cordova-plugin-ionic-keyboard": {}
-    },
-    "platforms": [
-      "browser"
-    ]
-  }
 }

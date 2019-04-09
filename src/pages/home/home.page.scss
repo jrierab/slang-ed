@@ -2,6 +2,8 @@
     cursor: pointer;
     text-align: center;
     margin: 5px;
+    width: 40px;
+    height: 40px;
 
     ion-icon {
         color: var(--ion-color-dark-tint);
@@ -13,39 +15,120 @@
     p {
         margin: 0;
     }
+
+    &.tooltip {
+        position: relative;
+        display: inline-block;
+        &:hover ion-icon {
+            margin-top: 0;
+            font-size: 2.4rem;
+        }
+    }
+      
+    /* Tooltip undo/redo */
+    &.tooltip .history-info-tooltip {
+        background-color: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        padding: 2px 4px;
+        border-radius: 6px;
+        font-size: 75%;
+
+        position: absolute;
+        z-index: 1;
+        white-space: nowrap;
+        top: 0;
+
+        &.tooltip-right {
+            right: 0;
+        }
+    }
+
+    /* Tooltip text */
+    &.tooltip .tooltiptext {
+        visibility: hidden;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        text-align: center;
+        padding: 5px 10px;
+        border-radius: 6px;
+       
+        /* Position the tooltip text - see examples below! */
+        position: absolute;
+        z-index: 2;
+        min-width: 120px;
+        white-space: nowrap;
+        top: 50%;
+        left: 50%;
+        margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+        &.tooltip-right {
+            left: 60px;
+        }
+        &.tooltip-left {
+            left: -20px;
+        }
+    }
+      
+    /* Show the tooltip text when you mouse over the tooltip container */
+    &.tooltip:hover .tooltiptext {
+        visibility: visible;
+        &.tooltiptext-disabled {
+            background-color: rgba(0, 0, 0, 0.3);
+            color: grey;
+        }
+    }
 }
 
 .menu-disabled {
     cursor: default;
-    color: var(--ion-color-medium-tint);
 
     ion-icon {
-        color: var(--ion-color-medium-tint);
+        opacity: 0.5;
     }
 }
 
-h3 {
-    background-color: antiquewhite;
-    font-size: 115%;
-    padding: 5px;
-    margin: 0;
-    span {
-        margin-left: 10px;
-        background-color: azure;
-    }
-}
-
-.sl-main-container {
+.main-container {
     display: flex;
-    flex-direction: row;
-    min-height: 100%;
-}
-.sl-list-container {
-    background-color: azure;
-    border-right: 3px solid white;
-    min-width: 30%;
-}
-.sl-translations-container {
-    flex-grow: 1;
-}
+    flex-direction: column;
+    height: 100%;
 
+    h3 {
+        background-color: antiquewhite;
+        font-size: 115%;
+        padding: 5px;
+        margin: 0;
+        span {
+            margin-left: 10px;
+            background-color: azure;
+        }
+    }
+    .language-folder {
+        padding: 5px;
+        background-color: cadetblue;
+        color: white;
+
+        .lang-folder-title {
+            font-weight: bold;
+        }
+    }
+    .sl-main-container {
+        display: flex;
+        align-items: stretch;
+        flex-grow: 1;
+
+        .sl-list-container {
+            display: flex;
+            flex-direction: column;
+            background-color: azure;
+            border-right: 3px solid white;
+            min-width: 30%;
+    
+            .sl-list-words {
+                overflow-y: auto;
+            }
+        }
+        .sl-translations-container {
+            flex-grow: 1;
+        }
+    }
+
+}

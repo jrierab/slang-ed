@@ -1,0 +1,220 @@
+{
+  "options": null,
+  "languages": [],
+  "root": {
+    "key": "",
+    "full_key": "",
+    "isLeaf": false,
+    "level": 0,
+    "nodes": [
+      {
+        "key": "key_0",
+        "full_key": "key_0",
+        "isLeaf": false,
+        "level": 1,
+        "nodes": [
+          {
+            "key": "key_0",
+            "full_key": "key_0.key_0",
+            "isLeaf": true,
+            "level": 2,
+            "nodes": [
+              {
+                "lang": "ca",
+                "value": "value_ca_0_0",
+                "comment": "",
+                "approved": false,
+                "foundInSrc": false,
+                "preserve": false
+              },
+              {
+                "lang": "en",
+                "value": "value_en_0_0",
+                "comment": "",
+                "approved": false,
+                "foundInSrc": false,
+                "preserve": false
+              }
+            ]
+          },
+          {
+            "key": "key_1",
+            "full_key": "key_0.key_1",
+            "isLeaf": true,
+            "level": 2,
+            "nodes": [
+              {
+                "lang": "ca",
+                "value": "value_ca_0_1",
+                "comment": "",
+                "approved": false,
+                "foundInSrc": false,
+                "preserve": false
+              },
+              {
+                "lang": "en",
+                "value": "value_en_0_1",
+                "comment": "",
+                "approved": false,
+                "foundInSrc": false,
+                "preserve": false
+              }
+            ]
+          },
+          {
+            "key": "key_2",
+            "full_key": "key_0.key_2",
+            "isLeaf": true,
+            "level": 2,
+            "nodes": [
+              {
+                "lang": "ca",
+                "value": "value_ca_0_2",
+                "comment": "",
+                "approved": false,
+                "foundInSrc": false,
+                "preserve": false
+              },
+              {
+                "lang": "en",
+                "value": "value_en_0_2",
+                "comment": "",
+                "approved": false,
+                "foundInSrc": false,
+                "preserve": false
+              }
+            ]
+          },
+          {
+            "key": "key_3",
+            "full_key": "key_0.key_3",
+            "isLeaf": true,
+            "level": 2,
+            "nodes": [
+              {
+                "lang": "ca",
+                "value": "value_ca_0_3",
+                "comment": "",
+                "approved": false,
+                "foundInSrc": false,
+                "preserve": false
+              },
+              {
+                "lang": "en",
+                "value": "value_en_0_3",
+                "comment": "",
+                "approved": false,
+                "foundInSrc": false,
+                "preserve": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "key_1",
+        "full_key": "key_1",
+        "isLeaf": false,
+        "level": 1,
+        "nodes": [
+          {
+            "key": "key_0",
+            "full_key": "key_1.key_0",
+            "isLeaf": true,
+            "level": 2,
+            "nodes": [
+              {
+                "lang": "ca",
+                "value": "value_ca_1_0",
+                "comment": "",
+                "approved": false,
+                "foundInSrc": false,
+                "preserve": false
+              },
+              {
+                "lang": "en",
+                "value": "value_en_1_0",
+                "comment": "",
+                "approved": false,
+                "foundInSrc": false,
+                "preserve": false
+              }
+            ]
+          },
+          {
+            "key": "key_1",
+            "full_key": "key_1.key_1",
+            "isLeaf": true,
+            "level": 2,
+            "nodes": [
+              {
+                "lang": "ca",
+                "value": "value_ca_1_1",
+                "comment": "",
+                "approved": false,
+                "foundInSrc": false,
+                "preserve": false
+              },
+              {
+                "lang": "en",
+                "value": "value_en_1_1",
+                "comment": "",
+                "approved": false,
+                "foundInSrc": false,
+                "preserve": false
+              }
+            ]
+          },
+          {
+            "key": "key_2",
+            "full_key": "key_1.key_2",
+            "isLeaf": true,
+            "level": 2,
+            "nodes": [
+              {
+                "lang": "ca",
+                "value": "value_ca_1_2",
+                "comment": "",
+                "approved": false,
+                "foundInSrc": false,
+                "preserve": false
+              },
+              {
+                "lang": "en",
+                "value": "value_en_1_2",
+                "comment": "",
+                "approved": false,
+                "foundInSrc": false,
+                "preserve": false
+              }
+            ]
+          },
+          {
+            "key": "key_3",
+            "full_key": "key_1.key_3",
+            "isLeaf": true,
+            "level": 2,
+            "nodes": [
+              {
+                "lang": "ca",
+                "value": "value_ca_1_3",
+                "comment": "",
+                "approved": false,
+                "foundInSrc": false,
+                "preserve": false
+              },
+              {
+                "lang": "en",
+                "value": "value_en_1_3",
+                "comment": "",
+                "approved": false,
+                "foundInSrc": false,
+                "preserve": false
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

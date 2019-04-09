@@ -1,6 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { LangToolsService } from '../../providers/lang-tools-service';
-import { langNodeObject, langTopicObject } from "../../customTypes/langObject.types"
+import { LangNodeObject, LangTopicObject } from '../../customTypes/langObject.types';
+import { PopoverController } from '@ionic/angular';
+import { WordPopupMenuComponent } from '../word-popup-menu/word-popup-menu.component';
 
 /**
  * Generated class for the ListWordComponent component.
@@ -9,40 +11,56 @@ import { langNodeObject, langTopicObject } from "../../customTypes/langObject.ty
  * Components.
  */
 @Component({
-  selector: 'list-word',
-  templateUrl: 'list-word.html',
-  styleUrls: ['list-word.scss']
+    selector: 'list-word',
+    templateUrl: 'list-word.html',
+    styleUrls: ['list-word.scss']
 })
-export class ListWordComponent {
-  @Input() word : langNodeObject;
-  @Input() list: langNodeObject;
+export class ListWordComponent implements OnChanges {
+    @Input() word: LangNodeObject;
+    @Input() list: LangNodeObject;
 
-  words : Array<langNodeObject | langTopicObject>;
+    words: Array<LangNodeObject | LangTopicObject>;
 
-  showChilds : boolean = false;
-  
-  indents : Array<number>;
+    showChilds = false;
 
-  constructor(private langTools : LangToolsService) {
-    console.log('### ListWordComponent');
-  }
+    indents: Array<number>;
 
-  ngOnChanges() {
-    this.indents = Array(this.word.level).fill(0).map((x,i)=>i);
-
-    if(this.list.isLeaf) {
-      this.words = [];
-    } else {
-      this.words = this.word.nodes;
-      this.langTools.sort(this.words as Array<langNodeObject>);
+    constructor(private popoverController: PopoverController,
+        private langTools: LangToolsService,
+    ) {
+        console.log('### ListWordComponent');
     }
-  }
 
-  public doClick() {
-    if(!this.word.isLeaf) {
-      this.showChilds = !this.showChilds;
+    ngOnChanges() {
+        this.indents = Array(this.word.level - 1).fill(0).map((x, i) => i);
+
+        if (!this.list || this.list.isLeaf) {
+            this.words = [];
+        } else {
+            this.words = this.word.nodes;
+            // this.langTools.sort(this.words as Array<langNodeObject>);
+        }
     }
-    this.langTools.doEditWord(this.word);
-  }
 
+    public doEdit() {
+        // this.langTools.doRememberTranslations(this.word.full_key);
+        this.langTools.doEditWord(this.word);
+    }
+
+    public async doMenu(ev: any) {
+        const popover = await this.popoverController.create({
+            component: WordPopupMenuComponent,
+            componentProps: { word: this.word },
+            event: ev,
+            cssClass: 'popover-menu',
+            translucent: true
+        });
+        return await popover.present();
+    }
+
+    public doSwitchChilds() {
+        if (!this.word.isLeaf) {
+            this.showChilds = !this.showChilds;
+        }
+    }
 }

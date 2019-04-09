@@ -1,14 +1,32 @@
 {
-	"APP.title": "Simple Lang Files Editor",
-	"APP.Home": "Home",
-	"APP.About": "About",
-	"APP.Contact": "Contact",
-	"APP.Done": "Done",
-	"APP.Cancel": "Cancel",
-	"APP.language": "Language",
-	"APP.lang-current": "Current language",
-	"langs" : {
-		"keys": "Keys to translate",
-		"edit_translations": "Edit translations"
-	}
+    "About.Icons": "Icons from",
+    "About.license": "licensed by",
+    "About.Version": "Version",
+
+    "APP.Cancel": "Cancel",
+    "APP.Name": "slang-ed",
+    "APP.Ok": "Ok",
+    "APP.Title": "Simple Lang Files Editor",
+
+    "Config.TitleLanguage": "Language",
+
+    "Home.EditTranslations": "Edit translations",
+    "Home.Keys": "Keys to translate",
+
+    "Menu.About": "About",
+    "Menu.AddId": "Add Word",
+    "Menu.AddNode": "Add Node",
+    "Menu.AddRoot": "Add Root",
+    "Menu.Delete": "Delete",
+    "Menu.InitFrom": "Init from...",
+    "Menu.NewProject": "New Project",
+    "Menu.ngxTranslateDir": "ngx-translate files dir",
+    "Menu.OpenProject": "Open Project",
+    "Menu.Redo": "Redo",
+    "Menu.SaveProject": "Save Project",
+    "Menu.SaveTranslations": "Save Translations",
+    "Menu.Settings": "Settings",
+    "Menu.Undo": "Undo",
+
+    "Popover.Copy": "Copy"
 }

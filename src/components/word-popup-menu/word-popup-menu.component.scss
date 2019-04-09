@@ -1,0 +1,30 @@
+.popup-bar {
+    background-color: var(--ion-color-secondary);
+    color: Indigo;
+    padding: 5px;
+    ion-icon {
+        font-size: larger;
+        &:hover {
+            color: red;
+        }
+    }
+}
+ul {
+    list-style-type: none;
+    padding-inline-start: 0;
+    margin-block-end: 0;
+    margin-block-start: 1px;
+    li {
+        padding: 5px 10px;
+        &.delete-option {
+            color: crimson;
+        }
+        &:hover {
+            background-color: blanchedalmond;
+        }
+    }
+    hr {
+        border-width: 1px;
+        margin: 0;
+    }
+}
