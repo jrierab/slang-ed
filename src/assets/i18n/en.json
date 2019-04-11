@@ -10,6 +10,10 @@
 
     "Config.TitleLanguage": "Language",
 
+      "Electron.NewProject.ButtonLabel": "Save",
+      "Electron.NewProject.FileType": "slang-ed Project file (*.sprj)",
+      "Electron.NewProject.Title": "Save as New slang-ed Project",
+
     "Home.EditTranslations": "Edit translations",
     "Home.Keys": "Keys to translate",
 
@@ -19,7 +23,7 @@
     "Menu.AddRoot": "Add Root",
     "Menu.Delete": "Delete",
     "Menu.InitFrom": "Init from...",
-    "Menu.NewProject": "New Project",
+    "Menu.NewProject": "Save as New Project",
     "Menu.ngxTranslateDir": "ngx-translate files dir",
     "Menu.OpenProject": "Open Project",
     "Menu.Redo": "Redo",

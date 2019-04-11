@@ -23,6 +23,7 @@ export class HomePage implements OnInit {
 
     projectNeedsSaving = false;
     projectReady = false;
+    langFilesLoaded = false;
     addNodeOrIdReady = false;
     removeNodeReady = false;
 
@@ -58,7 +59,9 @@ export class HomePage implements OnInit {
     }
 
     doNewProject() {
-        console.log('Create New project');
+        if (this.langFilesLoaded) {
+            this.electron.doNewProject(this.translations);
+        }
     }
 
     doInitFrom() {
@@ -92,6 +95,7 @@ export class HomePage implements OnInit {
 
         this.projectNeedsSaving = true;
         this.projectReady = true;
+        this.langFilesLoaded = true;
 
         if (shouldInit) {
             this.undoService.clearHistory(this.translations);

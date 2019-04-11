@@ -4,9 +4,11 @@
             <ion-icon src="assets/icon/folder.svg"></ion-icon>
             <p class="tooltiptext tooltip-right">{{ "Menu.InitFrom" | translate }}</p>
         </div>
-        <div class="menu-option tooltip" [ngClass]="{'menu-disabled': true}" float-start (click)="doNewProject()">
+        <div class="menu-option tooltip" [ngClass]="{'menu-disabled': !langFilesLoaded}" float-start
+            (click)="doNewProject()">
             <ion-icon src="assets/icon/folder_new.svg"></ion-icon>
-            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': true}">{{ "Menu.NewProject" | translate }}</p>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !langFilesLoaded}">
+                {{ "Menu.NewProject" | translate }}</p>
         </div>
         <div class="menu-option tooltip" [ngClass]="{'menu-disabled': true}" float-start (click)="doOpenProject()">
             <ion-icon src="assets/icon/folder_clean.svg"></ion-icon>

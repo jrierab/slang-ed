@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 import { LangFileObject, LangTranslationsObject, LangNodeObject, LangTopicObject } from '../customTypes/langObject.types';
+
 
 // Not very elegant, but avoid types failing...
 const electron = window['require']('electron');
@@ -18,7 +20,7 @@ const fs = electron.remote.require('fs');
 export class ElectronProvider {
     currentZoom = 0;
 
-    constructor() {
+    constructor(public translate: TranslateService) {
         console.log('### ElectronProvider');
     }
 
@@ -39,6 +41,23 @@ export class ElectronProvider {
     getAppVersion() {
         const appVersion = electron.remote.require('../package.json').version;
         return appVersion;
+    }
+
+    doNewProject(translations: LangTranslationsObject): string {
+        const filename = electron.remote.dialog.showSaveDialog({
+            title: this.translate.instant('Electron.NewProject.Title'),
+            filters: [{ name: this.translate.instant('Electron.NewProject.FileType'), extensions: ['sprj'] }],
+            buttonLabel: this.translate.instant('Electron.NewProject.ButtonLabel')
+        });
+
+        if (filename) {
+            console.log(filename);
+            fs.writeFileSync(filename, JSON.stringify({
+                'slang-ed': this.getAppVersion(),
+                'data': translations
+            }));
+        }
+        return filename;
     }
 
     findTranslationsFolder(path): string {
