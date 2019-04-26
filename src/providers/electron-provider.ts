@@ -51,13 +51,17 @@ export class ElectronProvider {
         });
 
         if (filename) {
-            console.log(filename);
-            fs.writeFileSync(filename, JSON.stringify({
-                'slang-ed': this.getAppVersion(),
-                'data': translations
-            }));
+            this.doSaveProject(filename, translations);
         }
         return filename;
+    }
+
+    doSaveProject(filename: string, translations: LangTranslationsObject) {
+        console.log(filename);
+        fs.writeFileSync(filename, JSON.stringify({
+            'slang-ed': this.getAppVersion(),
+            'data': translations
+        }));
     }
 
     findTranslationsFolder(path): string {

@@ -14,10 +14,10 @@
             <ion-icon src="assets/icon/folder_clean.svg"></ion-icon>
             <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': true}">{{ "Menu.OpenProject" | translate }}</p>
         </div>
-        <div class="menu-option tooltip" float-start [ngClass]="{'menu-disabled': true || !projectNeedsSaving}"
+        <div class="menu-option tooltip" float-start [ngClass]="{'menu-disabled': !projectNeedsSaving}"
             (click)="doSaveProject()">
             <ion-icon src="assets/icon/folder-save.svg"></ion-icon>
-            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': true || !projectNeedsSaving}">
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !projectNeedsSaving}">
                 {{ "Menu.SaveProject" | translate }}</p>
         </div>
         <div class="menu-option tooltip" float-start

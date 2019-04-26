@@ -225,6 +225,7 @@ export class LangToolsService {
     sortParentNodes(node: LangNodeObject): void {
         const parent: LangNodeObject = this.getParent(node);
         this.sort(parent.nodes as Array<LangNodeObject>);
+        this.doTranslationNeedsSaving(true);
     }
 
     undo(): LangTranslationsObject {

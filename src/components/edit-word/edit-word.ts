@@ -65,9 +65,7 @@ export class EditWordComponent implements OnInit {
   }
 
   updatesWord(_event) {
-    if (!this.langTools.isTranslationsSavingRequired()) {
-      this.langTools.doTranslationNeedsSaving(true);
-    }
+    this.langTools.doTranslationNeedsSaving(true);
   }
 
   updatesKeyAfter(_event) {
@@ -75,9 +73,7 @@ export class EditWordComponent implements OnInit {
 
     this.langTools.doReplaceKeyInDescendants(this.word, this.key_before);
 
-    if (!this.langTools.isTranslationsSavingRequired()) {
-      this.langTools.doTranslationNeedsSaving(true);
-    }
+    this.langTools.doTranslationNeedsSaving(true);
   }
 
   updateParent(_event) {

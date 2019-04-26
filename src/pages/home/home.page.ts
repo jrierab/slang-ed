@@ -17,6 +17,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class HomePage implements OnInit {
     private translations: LangTranslationsObject = this.langTools.clearTranslations();
+    private projectFilename: string;
 
     rootLevel: LangNodeObject;
     words: Array<LangNodeObject | LangTopicObject>;
@@ -51,16 +52,18 @@ export class HomePage implements OnInit {
             }
         });
         this.langTools.translationsNeedsSaving$.subscribe((saveRequired: boolean) => {
-            if (saveRequired) {
-                this.projectNeedsSaving = true;
-            }
+            this.projectNeedsSaving = (this.projectNeedsSaving || saveRequired) && !!this.projectFilename;
         });
         this.undoService.historyInfo$.subscribe((info: HistoryInfoObject) => this.historyInfo = info);
     }
 
     doNewProject() {
         if (this.langFilesLoaded) {
-            this.electron.doNewProject(this.translations);
+            const filename: string = this.electron.doNewProject(this.translations);
+
+            if (filename) {
+                this.projectFilename = filename;
+            }
         }
     }
 
@@ -83,6 +86,9 @@ export class HomePage implements OnInit {
                 this.translations.options.projectFolder = folder;
                 this.translations.options.i18nFolder = path_to_i18n;
 
+                // Clear a possible old file project
+                this.projectFilename = null;
+
                 this.doSortTranslations(this.translations.root);
                 this.doInitFromTranslations(true);
             }
@@ -93,12 +99,12 @@ export class HomePage implements OnInit {
         this.rootLevel = this.translations.root;
         this.words = this.rootLevel.nodes;
 
-        this.projectNeedsSaving = true;
         this.projectReady = true;
         this.langFilesLoaded = true;
-
+        
         if (shouldInit) {
             this.undoService.clearHistory(this.translations);
+            this.projectNeedsSaving = false;
         }
     }
 
@@ -116,8 +122,9 @@ export class HomePage implements OnInit {
     }
 
     doSaveProject() {
-        if (this.projectNeedsSaving) {
-            console.log('Save current project');
+        if (this.projectNeedsSaving && this.projectFilename) {
+            this.electron.doSaveProject(this.projectFilename, this.translations);
+            this.projectNeedsSaving = false;
         }
     }
 
