@@ -43,6 +43,29 @@ export class ElectronProvider {
         return appVersion;
     }
 
+    doOpenProject(): {translations: LangTranslationsObject, filename: string} {
+        const files = electron.remote.dialog.showOpenDialog({
+            title: this.translate.instant('Electron.OpenProject.Title'),
+            filters: [{ name: this.translate.instant('Electron.NewProject.FileType'), extensions: ['sprj'] }],
+            buttonLabel: this.translate.instant('Electron.OpenProject.ButtonLabel')
+        });
+
+        if (files) {
+            const filename: string = files[0];
+            const filecontents = fs.readFileSync(filename, 'utf8');
+            if (filecontents) {
+                const fileObject = JSON.parse(filecontents);
+                const translations: LangTranslationsObject = fileObject.data;
+                const version: string = fileObject['slang-ed'];
+                console.log(filename, version);
+                // TODO: Verify version
+                // TODO: Verify if translations files had been touched by another program: datetime? Object comparison?
+                return {translations: translations, filename: filename};
+            }
+        }
+        return {translations: null, filename: null};
+    }
+
     doNewProject(translations: LangTranslationsObject): string {
         const filename = electron.remote.dialog.showSaveDialog({
             title: this.translate.instant('Electron.NewProject.Title'),

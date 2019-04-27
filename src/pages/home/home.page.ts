@@ -118,7 +118,17 @@ export class HomePage implements OnInit {
     }
 
     doOpenProject() {
-        console.log('Open existing project');
+        if (!(this.projectNeedsSaving || this.langTools.isTranslationsSavingRequired())) {
+            const project: {translations: LangTranslationsObject, filename: string} = this.electron.doOpenProject();
+
+            if (project.translations) {
+                this.projectFilename = project.filename;
+                this.translations = project.translations;
+
+                this.doSortTranslations(this.translations.root);
+                this.doInitFromTranslations(true);
+            }
+        }
     }
 
     doSaveProject() {

@@ -13,6 +13,8 @@
       "Electron.NewProject.ButtonLabel": "Save",
       "Electron.NewProject.FileType": "slang-ed Project file (*.sprj)",
       "Electron.NewProject.Title": "Save as New slang-ed Project",
+      "Electron.OpenProject.ButtonLabel": "Open",
+      "Electron.OpenProject.Title": "Open slang-ed Project",
 
     "Home.EditTranslations": "Edit translations",
     "Home.Keys": "Keys to translate",

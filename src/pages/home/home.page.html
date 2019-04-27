@@ -10,9 +10,9 @@
             <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': !langFilesLoaded}">
                 {{ "Menu.NewProject" | translate }}</p>
         </div>
-        <div class="menu-option tooltip" [ngClass]="{'menu-disabled': true}" float-start (click)="doOpenProject()">
+        <div class="menu-option tooltip" [ngClass]="{'menu-disabled': projectNeedsSaving || langTools.isTranslationsSavingRequired()}" float-start (click)="doOpenProject()">
             <ion-icon src="assets/icon/folder_clean.svg"></ion-icon>
-            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': true}">{{ "Menu.OpenProject" | translate }}</p>
+            <p class="tooltiptext" [ngClass]="{'tooltiptext-disabled': projectNeedsSaving || langTools.isTranslationsSavingRequired()}">{{ "Menu.OpenProject" | translate }}</p>
         </div>
         <div class="menu-option tooltip" float-start [ngClass]="{'menu-disabled': !projectNeedsSaving}"
             (click)="doSaveProject()">

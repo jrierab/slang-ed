@@ -13,6 +13,8 @@
       "Electron.NewProject.ButtonLabel": "Guardar",
       "Electron.NewProject.FileType": "Fitxer de Projecte slang-ed (*.sprj)",
       "Electron.NewProject.Title": "Guardar com a Nou Projecte slang-ed",
+      "Electron.OpenProject.ButtonLabel": "Obrir",
+      "Electron.OpenProject.Title": "Obrir Projecte slang-ed",
 
     "Home.EditTranslations": "Editar traduccions",
     "Home.Keys": "Claus a traduir",
