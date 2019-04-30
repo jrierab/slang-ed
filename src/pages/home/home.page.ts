@@ -68,7 +68,7 @@ export class HomePage implements OnInit {
     }
 
     doInitFrom() {
-        const folder = this.electron.selectFolder();
+        const folder = this.electron.selectFolder('Electron.InitFromDir.Title', 'Electron.InitFromDir.ButtonLabel');
 
         // console.log("> Selected folder: "+folder);
 
@@ -122,11 +122,36 @@ export class HomePage implements OnInit {
             const project: {translations: LangTranslationsObject, filename: string} = this.electron.doOpenProject();
 
             if (project.translations) {
-                this.projectFilename = project.filename;
-                this.translations = project.translations;
+                let allFound : boolean;
+                let cancel: boolean = false;
+                let path_to_i18n: string;
+                do {
+                    allFound = this.electron.verifyTranslationFilesDir(project.translations);
+                    if (!allFound) {
+                        const folder = this.electron.selectFolder('Electron.NewLocation.Title', 'Electron.NewLocation.ButtonLabel');           
+                        if (folder) {
+                            path_to_i18n = this.electron.findTranslationsFolder(folder);
+                            // Remember new paths
+                            project.translations.options.projectFolder = folder;
+                            project.translations.options.i18nFolder = path_to_i18n;
+                       } else {
+                           cancel = true;
+                       }
+                    }
+                } while(!allFound && !cancel);
+                
+                if (allFound) {
+                    // TODO: Verify if translations files had been touched by another program: datetime? Object comparison?
 
-                this.doSortTranslations(this.translations.root);
-                this.doInitFromTranslations(true);
+                    this.projectFilename = project.filename;
+                    this.translations = project.translations;
+
+                    this.doSortTranslations(this.translations.root);
+                    this.doInitFromTranslations(true);
+
+                    // Should save if it has required to search for its new location
+                    this.projectNeedsSaving = !!path_to_i18n;
+                }
             }
         }
     }

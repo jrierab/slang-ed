@@ -10,6 +10,10 @@
 
     "Config.TitleLanguage": "Language",
 
+      "Electron.InitFromDir.ButtonLabel": "Init From here...",
+      "Electron.InitFromDir.Title": "Choose the folder/project containing the ngx-translate files",
+      "Electron.NewLocation.ButtonLabel": "Select",
+      "Electron.NewLocation.Title": "Ngx-translate files not found. Choose the folder/project containing them",
       "Electron.NewProject.ButtonLabel": "Save",
       "Electron.NewProject.FileType": "slang-ed Project file (*.sprj)",
       "Electron.NewProject.Title": "Save as New slang-ed Project",

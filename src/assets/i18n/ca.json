@@ -10,6 +10,10 @@
 
     "Config.TitleLanguage": "Idioma",
 
+      "Electron.InitFromDir.ButtonLabel": "Inicia des d'aquí...",
+      "Electron.InitFromDir.Title": "Seleccioni el directori/projecte que conté els fitxers ngx-translate",
+      "Electron.NewLocation.ButtonLabel": "Seleccionar",
+      "Electron.NewLocation.Title": "Fitxers ngx-translate no trobats. Seleccioni el directori/projecte que els conté",
       "Electron.NewProject.ButtonLabel": "Guardar",
       "Electron.NewProject.FileType": "Fitxer de Projecte slang-ed (*.sprj)",
       "Electron.NewProject.Title": "Guardar com a Nou Projecte slang-ed",

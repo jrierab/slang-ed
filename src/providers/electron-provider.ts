@@ -32,8 +32,12 @@ export class ElectronProvider {
         electron.webFrame.setZoomLevel(--this.currentZoom);
     }
 
-    selectFolder(): string {
-        const pathArray = electron.remote.dialog.showOpenDialog({ properties: ['openDirectory'] });
+    selectFolder(title: string, okLabel: string): string {
+        const pathArray = electron.remote.dialog.showOpenDialog({ 
+            title: this.translate.instant(title), 
+            buttonLabel: this.translate.instant(okLabel),
+            properties: ['openDirectory'] 
+        });
         const path = (pathArray ? pathArray[0] : '');
         return path;
     }
@@ -58,12 +62,23 @@ export class ElectronProvider {
                 const translations: LangTranslationsObject = fileObject.data;
                 const version: string = fileObject['slang-ed'];
                 console.log(filename, version);
-                // TODO: Verify version
-                // TODO: Verify if translations files had been touched by another program: datetime? Object comparison?
+                // TODO: Verify version. Some things should probably be adapted in the future
+
                 return {translations: translations, filename: filename};
             }
         }
         return {translations: null, filename: null};
+    }
+
+    verifyTranslationFilesDir(translations: LangTranslationsObject): boolean {
+        let allExist : boolean = true;
+
+        translations.languages.forEach((lang)=> {
+            const filename: string = translations.options.i18nFolder+"/"+lang+".json";
+
+            if (!fs.existsSync(filename)) { allExist= false; }
+        });
+        return allExist;
     }
 
     doNewProject(translations: LangTranslationsObject): string {
