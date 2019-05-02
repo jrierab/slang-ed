@@ -54,8 +54,6 @@ export class LangToolsService {
             }
         });
 
-        console.log('> Lang structure...', this.translations);
-
         this.doTranslationNeedsSaving(false);
         this.undoService.clearHistory(this.translations);
         this.doClearEditWord();
@@ -67,6 +65,7 @@ export class LangToolsService {
 
     doSetTranslations(translations: LangTranslationsObject): void {
         this.translations = translations;
+        console.log('> Lang structure...', this.translations);
     }
 
     createNodeAtLevel(parent: LangNodeObject, key: string): LangNodeObject {

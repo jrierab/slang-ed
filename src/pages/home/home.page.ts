@@ -103,6 +103,7 @@ export class HomePage implements OnInit {
         this.langFilesLoaded = true;
         
         if (shouldInit) {
+            this.langTools.doSetTranslations(this.translations);
             this.undoService.clearHistory(this.translations);
             this.projectNeedsSaving = false;
         }
