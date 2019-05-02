@@ -229,11 +229,15 @@ export class LangToolsService {
 
     undo(): LangTranslationsObject {
         this.translations = this.undoService.undo(this.translations);
+        this.doClearEditWord();
+
         return this.translations;
     }
 
     redo(): LangTranslationsObject {
         this.translations = this.undoService.redo(this.translations);
+        this.doClearEditWord();
+
         return this.translations;
     }
 
