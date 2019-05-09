@@ -1,6 +1,6 @@
 # slang-ed
 
-[Català](#català)
+[Català](#catala)
 [English](#english)
 
 ![slang-ed](./images/slang-ed_01.png  "slang-ed")
@@ -11,19 +11,34 @@ slang-ed: Simple Lang Files Editor - An Electron/Ionic 4 application to edit i18
 It is intended to ease the translation of your content to different languages when using the [ngx-translate](http://www.ngx-translate.com/) internationalization (i18n) library for Angular. Allows the edition of JSON translation files.
 
 ### Usage
+
+#### Create a New Project
 1. "*Init from...*" an already prepared Angular/Ionic directory.
 * Search in a typical "*src/assets/i18n*" directory structure.
 * Language files should be JSON files which follow the 2-char language abbreviation [2-char language abbreviation](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (like 'en.json').
+2. "*Save As New Project*" to create a slang-ed project file.
+
+#### Working with a Project
+1. "*Open Project*" to load the current translations.
 2. Edit language keys as you like...
 3. "*Save Translations*" to update the i18n language files.
+4. "*Save Project*" to update the project with the new translations.
+
+#### Edit Translations
+* "*Add Root*" to add a node at root level.
+* "*Add Node*" to add an intermediate node at current level.
+* "*Add Word*" to add a translatable word at current level.
+* "*Delete*" to delete current word/node.
+* "*Undo*" / "*Redo*" to recover from mistakes.
+
 
 ### Download
 
-slang-ed V0.1.0 is currently available. Without much frills, it allows us to do the work. You can download it from:
+slang-ed V0.2.0 is currently available. Without much frills, it allows us to do the work. You can download it from:
 
-* Linux [AppImage](https://github.com/jrierab/slang-ed/releases/download/V0.1.0/slang-ed.0.1.0.AppImage) 
-* Linux [snap](https://github.com/jrierab/slang-ed/releases/download/V0.1.0/slang-ed_0.1.0_amd64.snap) 
-* Windows [installer ](https://github.com/jrierab/slang-ed/releases/download/V0.1.0/slang-ed.Setup.0.1.0.exe)
+* Linux [AppImage](https://github.com/jrierab/slang-ed/releases/download/V0.2.0/slang-ed.0.2.0.AppImage) 
+* Linux [snap](https://github.com/jrierab/slang-ed/releases/download/V0.2.0/slang-ed_0.2.0_amd64.snap) 
+* Windows [installer ](https://github.com/jrierab/slang-ed/releases/download/V0.2.0/slang-ed.Setup.0.2.0.exe)
 
 ### Install from source code
 1. Install NVM (*Node Version Manager*) from [https://github.com/creationix/nvm](https://github.com/creationix/nvm)
@@ -58,8 +73,7 @@ npm run dist
 
 ### To Do
 
-* Manage project files: create, open, save (this will allow to store "extra" info in language definitions.
-* Support for properties in language definitions: *comment* (for translators), *approved* (verified), foundInSrc (present in source code), preserve (do not remove, even if not found in source code).
+* Support for properties in language definitions: *comment* (for translators), *approved* (verified), *foundInSrc* (present in source code), *preserve* (do not remove, even if not found in source code).
 * Add/remove languages in current project.
 * Save i18n files in *object* format (instead of *full key string* format).
 * Multi-word edition (all the descendants of a certain node).
@@ -81,24 +95,37 @@ Està pensat per facilitar la traducció del vostre contingut a diferents idiome
 
 ### Ús
 
+#### Creatr un Nou Projecte
 1. "*Inicia des de...*" per obrir un directori Angular/Ionic ja preparat:
 * busca una estructura de directoris típica "*src/assets/i18n*"
 * els fitxers d'idioma han de ser JSON amb un nom que segueixi l'[abreviació amb 2 caràcters](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)  (per exemple, 'ca.json').
+2. "*Guardar com Nou Projecte*" per a crear un fitxer de projecte slang-ed.
+
+#### Treballant en un Projecte
+1. "*Obrir Projecte*" per carregar les traduccions actuals.
 2. Tot seguit edita els identificadors i les traduccions tant com calgui.
 3. "*Guardar Traduccions*" per actualitzar els fitxers d'idioma i18n.
+4. "*Guardar Projecte*" per actualitzar el fitxer de projecte amb les noves traduccions.
+
+#### Editar Traduccions
+* "*Afegir Arrel*" per afegir un node al nivell de l'arrel.
+* "*Afegir Node*" per afegir un node intermig al nivell actual.
+* "*Afegir paraula*" per afegir una paraula a traduir en el nivell actual.
+* "*Esborrar*" per esborrar el node/paraula actual.
+* "*Desfés*" / "*Refés*" per recuperar en cas d'errada.
+
 
 ### Descàrrega
 
-Actualment hi ha disponible la versió slang-ed V0.1.0. Sense gaire floritures, permet fer la feina. Podeu descarregar-la directament:
+Actualment hi ha disponible la versió slang-ed V0.2.0. Sense gaire floritures, permet fer la feina. Podeu descarregar-la directament:
 
-* Linux [AppImage](https://github.com/jrierab/slang-ed/releases/download/V0.1.0/slang-ed.0.1.0.AppImage) 
-* Linux [snap](https://github.com/jrierab/slang-ed/releases/download/V0.1.0/slang-ed_0.1.0_amd64.snap) 
-* Windows [instal·lador ](https://github.com/jrierab/slang-ed/releases/download/V0.1.0/slang-ed.Setup.0.1.0.exe)
+* Linux [AppImage](https://github.com/jrierab/slang-ed/releases/download/V0.2.0/slang-ed.0.2.0.AppImage) 
+* Linux [snap](https://github.com/jrierab/slang-ed/releases/download/V0.2.0/slang-ed_0.2.0_amd64.snap) 
+* Windows [instal·lador ](https://github.com/jrierab/slang-ed/releases/download/V0.2.0/slang-ed.Setup.0.2.0.exe)
 
 ### Pendent (To Do)
 
-* Gestionar els fitxers del projecte: crear, obrir, desar (això permetrà emmagatzemar informació "extra" a les definicions d'idioma). 
-* Suport per a propietats en les definicions d'idioma: comentari (per a traductors), aprovat (traducció verificada), *foundInSrc* (clau present en el codi font), conserva (no eliminar la clau, encara que no es trobi en el codi font). 
+* Suport per a propietats en les definicions d'idioma: *comentari* (per a traductors), *aprovat* (traducció verificada), *foundInSrc* (clau present en el codi font), *conserva* (no eliminar la clau, encara que no es trobi en el codi font). 
 * Afegir / eliminar idiomes en el projecte actual. 
 * Desar els fitxers i18n en el format d'objecte (en lloc del format de cadena de clau completa que s'utilitza ara). 
  * Edició de múltiples paraules alhora (per exemple, tots els descendents d’un determinat node). 
