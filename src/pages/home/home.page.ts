@@ -17,12 +17,14 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class HomePage implements OnInit {
     private translations: LangTranslationsObject = this.langTools.clearTranslations();
+    private projectFilename: string;
 
     rootLevel: LangNodeObject;
     words: Array<LangNodeObject | LangTopicObject>;
 
     projectNeedsSaving = false;
     projectReady = false;
+    langFilesLoaded = false;
     addNodeOrIdReady = false;
     removeNodeReady = false;
 
@@ -50,19 +52,23 @@ export class HomePage implements OnInit {
             }
         });
         this.langTools.translationsNeedsSaving$.subscribe((saveRequired: boolean) => {
-            if (saveRequired) {
-                this.projectNeedsSaving = true;
-            }
+            this.projectNeedsSaving = (this.projectNeedsSaving || saveRequired) && !!this.projectFilename;
         });
         this.undoService.historyInfo$.subscribe((info: HistoryInfoObject) => this.historyInfo = info);
     }
 
     doNewProject() {
-        console.log('Create New project');
+        if (this.langFilesLoaded) {
+            const filename: string = this.electron.doNewProject(this.translations);
+
+            if (filename) {
+                this.projectFilename = filename;
+            }
+        }
     }
 
     doInitFrom() {
-        const folder = this.electron.selectFolder();
+        const folder = this.electron.selectFolder('Electron.InitFromDir.Title', 'Electron.InitFromDir.ButtonLabel');
 
         // console.log("> Selected folder: "+folder);
 
@@ -80,6 +86,9 @@ export class HomePage implements OnInit {
                 this.translations.options.projectFolder = folder;
                 this.translations.options.i18nFolder = path_to_i18n;
 
+                // Clear a possible old file project
+                this.projectFilename = null;
+
                 this.doSortTranslations(this.translations.root);
                 this.doInitFromTranslations(true);
             }
@@ -90,11 +99,13 @@ export class HomePage implements OnInit {
         this.rootLevel = this.translations.root;
         this.words = this.rootLevel.nodes;
 
-        this.projectNeedsSaving = true;
         this.projectReady = true;
-
+        this.langFilesLoaded = true;
+        
         if (shouldInit) {
+            this.langTools.doSetTranslations(this.translations);
             this.undoService.clearHistory(this.translations);
+            this.projectNeedsSaving = false;
         }
     }
 
@@ -108,12 +119,48 @@ export class HomePage implements OnInit {
     }
 
     doOpenProject() {
-        console.log('Open existing project');
+        if (!(this.projectNeedsSaving || this.langTools.isTranslationsSavingRequired())) {
+            const project: {translations: LangTranslationsObject, filename: string} = this.electron.doOpenProject();
+
+            if (project.translations) {
+                let allFound : boolean;
+                let cancel: boolean = false;
+                let path_to_i18n: string;
+                do {
+                    allFound = this.electron.verifyTranslationFilesDir(project.translations);
+                    if (!allFound) {
+                        const folder = this.electron.selectFolder('Electron.NewLocation.Title', 'Electron.NewLocation.ButtonLabel');           
+                        if (folder) {
+                            path_to_i18n = this.electron.findTranslationsFolder(folder);
+                            // Remember new paths
+                            project.translations.options.projectFolder = folder;
+                            project.translations.options.i18nFolder = path_to_i18n;
+                       } else {
+                           cancel = true;
+                       }
+                    }
+                } while(!allFound && !cancel);
+                
+                if (allFound) {
+                    // TODO: Verify if translations files had been touched by another program: datetime? Object comparison?
+
+                    this.projectFilename = project.filename;
+                    this.translations = project.translations;
+
+                    this.doSortTranslations(this.translations.root);
+                    this.doInitFromTranslations(true);
+
+                    // Should save if it has required to search for its new location
+                    this.projectNeedsSaving = !!path_to_i18n;
+                }
+            }
+        }
     }
 
     doSaveProject() {
-        if (this.projectNeedsSaving) {
-            console.log('Save current project');
+        if (this.projectNeedsSaving && this.projectFilename) {
+            this.electron.doSaveProject(this.projectFilename, this.translations);
+            this.projectNeedsSaving = false;
         }
     }
 
