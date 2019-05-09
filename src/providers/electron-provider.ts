@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 import { LangFileObject, LangTranslationsObject, LangNodeObject, LangTopicObject } from '../customTypes/langObject.types';
+
 
 // Not very elegant, but avoid types failing...
 const electron = window['require']('electron');
@@ -18,7 +20,7 @@ const fs = electron.remote.require('fs');
 export class ElectronProvider {
     currentZoom = 0;
 
-    constructor() {
+    constructor(public translate: TranslateService) {
         console.log('### ElectronProvider');
     }
 
@@ -30,8 +32,12 @@ export class ElectronProvider {
         electron.webFrame.setZoomLevel(--this.currentZoom);
     }
 
-    selectFolder(): string {
-        const pathArray = electron.remote.dialog.showOpenDialog({ properties: ['openDirectory'] });
+    selectFolder(title: string, okLabel: string): string {
+        const pathArray = electron.remote.dialog.showOpenDialog({ 
+            title: this.translate.instant(title), 
+            buttonLabel: this.translate.instant(okLabel),
+            properties: ['openDirectory'] 
+        });
         const path = (pathArray ? pathArray[0] : '');
         return path;
     }
@@ -39,6 +45,61 @@ export class ElectronProvider {
     getAppVersion() {
         const appVersion = electron.remote.require('../package.json').version;
         return appVersion;
+    }
+
+    doOpenProject(): {translations: LangTranslationsObject, filename: string} {
+        const files = electron.remote.dialog.showOpenDialog({
+            title: this.translate.instant('Electron.OpenProject.Title'),
+            filters: [{ name: this.translate.instant('Electron.NewProject.FileType'), extensions: ['sprj'] }],
+            buttonLabel: this.translate.instant('Electron.OpenProject.ButtonLabel')
+        });
+
+        if (files) {
+            const filename: string = files[0];
+            const filecontents = fs.readFileSync(filename, 'utf8');
+            if (filecontents) {
+                const fileObject = JSON.parse(filecontents);
+                const translations: LangTranslationsObject = fileObject.data;
+                const version: string = fileObject['slang-ed'];
+                console.log(filename, version);
+                // TODO: Verify version. Some things should probably be adapted in the future
+
+                return {translations: translations, filename: filename};
+            }
+        }
+        return {translations: null, filename: null};
+    }
+
+    verifyTranslationFilesDir(translations: LangTranslationsObject): boolean {
+        let allExist : boolean = true;
+
+        translations.languages.forEach((lang)=> {
+            const filename: string = translations.options.i18nFolder+"/"+lang+".json";
+
+            if (!fs.existsSync(filename)) { allExist= false; }
+        });
+        return allExist;
+    }
+
+    doNewProject(translations: LangTranslationsObject): string {
+        const filename = electron.remote.dialog.showSaveDialog({
+            title: this.translate.instant('Electron.NewProject.Title'),
+            filters: [{ name: this.translate.instant('Electron.NewProject.FileType'), extensions: ['sprj'] }],
+            buttonLabel: this.translate.instant('Electron.NewProject.ButtonLabel')
+        });
+
+        if (filename) {
+            this.doSaveProject(filename, translations);
+        }
+        return filename;
+    }
+
+    doSaveProject(filename: string, translations: LangTranslationsObject) {
+        console.log(filename);
+        fs.writeFileSync(filename, JSON.stringify({
+            'slang-ed': this.getAppVersion(),
+            'data': translations
+        }));
     }
 
     findTranslationsFolder(path): string {

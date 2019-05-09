@@ -10,6 +10,16 @@
 
     "Config.TitleLanguage": "Idioma",
 
+      "Electron.InitFromDir.ButtonLabel": "Inicia des d'aquí...",
+      "Electron.InitFromDir.Title": "Seleccioni el directori/projecte que conté els fitxers ngx-translate",
+      "Electron.NewLocation.ButtonLabel": "Seleccionar",
+      "Electron.NewLocation.Title": "Fitxers ngx-translate no trobats. Seleccioni el directori/projecte que els conté",
+      "Electron.NewProject.ButtonLabel": "Guardar",
+      "Electron.NewProject.FileType": "Fitxer de Projecte slang-ed (*.sprj)",
+      "Electron.NewProject.Title": "Guardar com a Nou Projecte slang-ed",
+      "Electron.OpenProject.ButtonLabel": "Obrir",
+      "Electron.OpenProject.Title": "Obrir Projecte slang-ed",
+
     "Home.EditTranslations": "Editar traduccions",
     "Home.Keys": "Claus a traduir",
 
@@ -19,7 +29,7 @@
     "Menu.AddRoot": "Afegir Arrel",
     "Menu.Delete": "Esborrar",
     "Menu.InitFrom": "Inicia des de...",
-    "Menu.NewProject": "Nou Prrojece",
+    "Menu.NewProject": "Guardar com Nou Projecte",
     "Menu.ngxTranslateDir": "Directori fitxers ngx-translate",
     "Menu.OpenProject": "Obrir Projecte",
     "Menu.Redo": "Refés",

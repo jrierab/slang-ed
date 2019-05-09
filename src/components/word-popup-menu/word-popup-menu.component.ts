@@ -31,7 +31,7 @@ export class WordPopupMenuComponent {
                 item = '{{ "' + this.word.full_key + '" | translate }}';
                 break;
             case 2:
-                item = 'this.translate.instant(' + this.word.full_key + ')';
+                item = 'this.translate.instant(\'' + this.word.full_key + '\')';
                 break;
             default:
                 item = 'doCopyToClipboard(mode) ERROR: Unknown mode = ' + mode;
